@@ -1,0 +1,9 @@
+﻿using Foundation;
+
+namespace TalaGrid;
+
+[Register("AppDelegate")]
+public class AppDelegate : MauiUIApplicationDelegate
+{
+	protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+}
