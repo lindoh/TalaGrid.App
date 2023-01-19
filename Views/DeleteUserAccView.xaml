@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TalaGrid.Views.DeleteUserAccView"
+             xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
+             x:DataType="viewmodel:DeleteUserAccViewModel"
+             xmlns:model="clr-namespace:TalaGrid.Models"
+             Title="DeleteUserAccView"
+             BackgroundImageSource="background_desktop.jpeg">
+
+    <VerticalStackLayout WidthRequest="450" Margin="30">
+        <Label Text="Delete Collector Account" VerticalOptions="Center" HorizontalOptions="Center" 
+               FontSize="Title" TextColor="#155ca1" Margin="10"/>
+
+        <!--
+        <Label Text="Select User"/>
+        <HorizontalStackLayout>
+            <RadioButton x:Name="AdminRadioBtn" Content="Admin" CheckedChanged="RadioButton_CheckedChanged"/>
+            <RadioButton x:Name="CollectorRadioBtn" Content="Collector" CheckedChanged="RadioButton_CheckedChanged"/>
+        </HorizontalStackLayout>
+        -->
+
+        <Label Text="Search User from Database" VerticalOptions="End" HorizontalOptions="Start" 
+               FontSize="Caption" TextColor="Gray" Margin="10"/>
+        <SearchBar x:Name="searchBar" 
+                   SearchCommand="{Binding SearchCommand}"
+                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+
+        <ListView Margin="10" Header="Results" HorizontalOptions="Start"
+                  x:Name="usersListView" BackgroundColor="LightGray" 
+                  ItemSelected="usersListView_ItemSelected"
+                  ItemsSource="{Binding UsersList}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:Users">
+                    <ViewCell>
+                        <HorizontalStackLayout Spacing="2">
+                            <Label Text="{Binding FirstName}"/>
+                            <Label Text="{Binding LastName}"/>
+                        </HorizontalStackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Label Text="{Binding ControlLabel.Message}" TextColor="{Binding ControlLabel.Color}" 
+               IsVisible="{Binding ControlLabel.ShowLabel}"
+               FontSize="Caption" HorizontalOptions="Start" Margin="10, 20, 5, 5"/>
+
+        <!-- Delete Button Tag                                 -->
+        <Button x:Name="deleteBtn" Text="Delete" FontSize="Small" BackgroundColor="#155ca1"
+                Margin="20" Padding="5" WidthRequest="200"
+                Command="{Binding DeleteCommand}"/>
+    </VerticalStackLayout>
+      
+</ContentPage>

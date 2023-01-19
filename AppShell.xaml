@@ -4,11 +4,82 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:TalaGrid"
-    Shell.FlyoutBehavior="Disabled">
+    xmlns:views="clr-namespace:TalaGrid.Views"
+    NavBarIsVisible="False"
+    FlyoutBehavior="Locked" 
+    FlyoutHeaderBehavior="Fixed" FlyoutVerticalScrollMode="Auto"
+    FlyoutBackgroundColor="#6e9b19">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="50, *" Padding="10">
+                <Image Source="{Binding Icon}" WidthRequest="20" HeightRequest="20"/>
+                <Label Grid.Column="1" Text="{Binding Title}" TextColor="Black" FontAttributes="Bold"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+
+
+    <FlyoutItem Title="Home" Icon="home.png">
+        <ShellContent 
+              ContentTemplate="{x:DataTemplate views:HomeView}"
+              Route="HomeView"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Capture New Waste Material" Icon="recycle.png">
+        <ShellContent 
+              ContentTemplate="{x:DataTemplate views:CaptureNewBottlesView}"
+              Route="CaptureNewBottlesView"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Create User Account" Icon="user.png">
+        <ShellContent 
+              ContentTemplate="{x:DataTemplate views:CreateUserAccountView}"
+              Route="CreateUserAccountView"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Update User Account" Icon="update.png">
+        <ShellContent 
+              ContentTemplate="{x:DataTemplate views:UpdateUserAccountView}"
+              Route="UpdateUserAccountView"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Update Banking Details" Icon="usd_circle.png">
+        <ShellContent 
+              ContentTemplate="{x:DataTemplate views:UpdateBankingView}"
+              Route="UpdateBankingView"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Delete User Account" Icon="delete_user.png">
+        <ShellContent  
+              ContentTemplate="{x:DataTemplate views:DeleteUserAccView}"
+              Route="DeleteUserAccView"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="About" Icon="about.png">
+        <ShellContent 
+              ContentTemplate="{x:DataTemplate views:AboutView}"
+              Route="PaymentView"/>
+    </FlyoutItem>
+
+    <!--
+    <FlyoutItem Title="Settings" Icon="settings.png">
+        <ShellContent/>
+    </FlyoutItem>
+    -->
+
+    <FlyoutItem Title="Manage Password" Icon="password.png">
+        <ShellContent
+            ContentTemplate="{x:DataTemplate views:ManagePasswordView}"
+            Route="ManagePasswordView"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Logout" Icon="logout.png">
+        <ShellContent
+            ContentTemplate="{x:DataTemplate views:LogoutView}"
+            Route="LogoutView"/>
+    </FlyoutItem >
+
 
 </Shell>

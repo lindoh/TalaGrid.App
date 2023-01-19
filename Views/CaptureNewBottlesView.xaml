@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
+             xmlns:model="clr-namespace:TalaGrid.Models"
+             xmlns:cct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+             xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+             x:DataType="viewmodel:CaptureBottlesViewModel"
+             x:Class="TalaGrid.Views.CaptureNewBottlesView"
+             Title="CaptureWasteMaterial"
+             BackgroundImageSource="background_desktop.jpeg">
+    <ScrollView WidthRequest="450">
+        <VerticalStackLayout Margin="20">
+            <VerticalStackLayout IsVisible="{Binding CaptureBottleDisplay}">
+                <Label Text="Capture New Waste Material" VerticalOptions="Center" HorizontalOptions="Center" 
+                   FontSize="Title" TextColor="#155ca1" Margin="10"/>
+                
+                <!--Choose between Bottles and Other Waste Material-->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0">
+                    <Label Text="Type of Waste Material"/>
+                    <HorizontalStackLayout>
+                        <RadioButton x:Name="BottleRadioBtn" Content="Bottles" CheckedChanged="RadioButton_CheckedChanged"/>
+                        <RadioButton  x:Name="OtherWasteRadioBtn" Content="Other Waste Material" CheckedChanged="RadioButton_CheckedChanged"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!--Search User from Database-->
+                <Label Text="Search User from Database" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10"/>
+                <SearchBar x:Name="searchBar"  
+                       SearchCommand="{Binding SearchCommand}"
+                       SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+
+                <!--List with matching user names-->
+                <ListView Margin="10" Header="Results" MaximumHeightRequest="90"
+                      x:Name="usersListView" BackgroundColor="LightGray" 
+                      ItemSelected="usersListView_ItemSelected"
+                      ItemsSource="{Binding UsersList}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Users">
+                            <ViewCell>
+                                <HorizontalStackLayout Spacing="2">
+                                    <Label Text="{Binding FirstName}"/>
+                                    <Label Text="{Binding LastName}"/>
+                                </HorizontalStackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <!-- Bottle Type Name Tag -->
+                <ListView Margin="10" MaximumHeightRequest="90" Header="Bottle Name and Size"
+                      x:Name=" bottlesListView"
+                      BackgroundColor="LightGray" 
+                      ItemSelected="bottlesListView_ItemSelected"
+                      ItemsSource="{Binding BottlesList}"
+                      IsVisible="{Binding ShowBottles}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:BottleDataSource">
+                            <TextCell Text="{Binding BottleName}" Detail="{Binding Size}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+
+                <!-- Other Waste Material Name Tag -->
+                <ListView Margin="10" MaximumHeightRequest="90" Header="Other Waste Material"
+                      x:Name="wasteListView"
+                      BackgroundColor="LightGray" 
+                          ItemSelected="wasteListView_ItemSelected"
+                      ItemsSource="{Binding WasteMaterialList}"
+                      IsVisible="{Binding ShowOtherWaste}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:WasteMaterial">
+                            <TextCell Text="{Binding MaterialName}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+
+
+                <!-- Bottle Quantity Tags-->
+                <VerticalStackLayout IsVisible="{Binding ShowBottles}">
+                    <Label Text="Quantity" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
+                    <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
+                    TextColor="Black" Text="{Binding Quantity}"/>
+                </VerticalStackLayout>
+                
+
+                <!--========================= Other Waste Material ===========================================================-->
+                <!--Size and Price To Be Completed by the admin-->
+                <HorizontalStackLayout IsVisible="{Binding ShowOtherWaste}">
+
+                    <!--Size in Kg-->
+                    <VerticalStackLayout>
+                        <Label Text="Size (Kg)" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10"/>
+                        <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
+                                TextColor="Black" Text="{Binding WasteMaterialData.Size}" 
+                                Margin="10,0" />
+                    </VerticalStackLayout>
+
+                    <!--Price (Rands)-->
+                    <VerticalStackLayout>
+                        <Label Text="Price (Rands)" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10"/>
+                        <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
+                                TextColor="Black" Text="{Binding WasteMaterialData.Price}" 
+                                Margin="10,0"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+                <!--=============================================================================================================-->
+
+                <!-- Add New Data Button Tag -->
+                <Button x:Name="addNewDataBtn" Text="Calculate and Add New Entry" FontSize="Small" BackgroundColor="#155ca1"
+                    Margin="20" Padding="5" Command="{Binding Add_and_CalculateCommand}"/>
+
+                <!--Amount Due Tag-->
+                <HorizontalStackLayout>
+                    <Label Text="Current Amount" VerticalOptions="End" HorizontalOptions="Start" 
+                       FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"
+                       FontAttributes="Bold"/>
+                    <Label Text="{Binding AmountString}" VerticalOptions="End" HorizontalOptions="Start" 
+                       FontSize="Caption" TextColor="Black" Margin="0, 5, 5, 0"/>
+                </HorizontalStackLayout>
+
+                <!-- Captured Bottles List-->
+                <ListView Header="Captured Bottles"  Margin="10" MaximumHeightRequest="90"
+                          BackgroundColor="LightGray" ItemsSource="{Binding CapturedBottles}"
+                          IsVisible="{Binding ShowBottles}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Bottles">
+                            <TextCell Text="{Binding BottleName}" Detail="{Binding Quantity}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <!-- Captured Other Waste List-->
+                <ListView Header="Captured Other Waste"  Margin="10" MaximumHeightRequest="90"
+                          BackgroundColor="LightGray" ItemsSource="{Binding CapturedWaste}"
+                          IsVisible="{Binding ShowOtherWaste}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:OtherWaste">
+                            <TextCell Text="{Binding MaterialName}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+
+
+                <!-- Submit Button Tag -->
+                <Button x:Name="submitBtn" Text="Submit" FontSize="Small" BackgroundColor="#155ca1"
+                    Margin="20" Padding="5" WidthRequest="200"
+                    Command="{Binding SubmitCommand}"/>
+
+            </VerticalStackLayout>
+
+            <!--=====================================================================================================-->
+            <!--                                           Payment Section                                           -->
+            <!--=====================================================================================================-->
+            <VerticalStackLayout IsVisible="{Binding PaymentsDisplay}">
+                <!--Title Tag-->
+                <Label Text="Payment Due" VerticalOptions="Center" HorizontalOptions="Center" 
+                   FontSize="Title" TextColor="#155ca1" Margin="10"/>
+
+                <!--Amount Due Tag-->
+                <HorizontalStackLayout>
+                    <Label Text="Current Amount" VerticalOptions="End" HorizontalOptions="Start" 
+                       FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"
+                       FontAttributes="Bold"/>
+                    <Label Text="{Binding AmountString}" VerticalOptions="End" HorizontalOptions="Start" 
+                       FontSize="Caption" TextColor="Black" Margin="0, 5, 5, 0"/>
+                </HorizontalStackLayout>
+
+                <Label Text="Preferred Payment Method?" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
+                <VerticalStackLayout>
+                    <RadioButton x:Name="BankPaymentRadioBtn" Content="Bank Payment" CheckedChanged="PayMethodRadioBtn_CheckedChanged"/>
+                    <RadioButton x:Name="MobilePaymentRadioBtn" Content="Mobile Money Payment" CheckedChanged="PayMethodRadioBtn_CheckedChanged"/>
+                    <RadioButton x:Name="CashPaymentRadioBtn" Content="Cash Payment" CheckedChanged="PayMethodRadioBtn_CheckedChanged"/>
+                </VerticalStackLayout>
+
+                <!--========================================== Confirm Bank Payment ==========================================-->
+                <VerticalStackLayout IsVisible="{Binding Display_0}">
+                    <Label Text="Confirm Bank Payment" VerticalOptions="End"
+                       HorizontalOptions="Start" FontSize="Small" FontAttributes="Bold" 
+                       TextColor="Gray" Margin="10, 15, 5, 0"/>
+
+                    <!--Bank Name Tag-->
+                    <HorizontalStackLayout>
+                        <Label Text="Bank Name" VerticalOptions="End" HorizontalOptions="Start" 
+                           FontSize="Caption" FontAttributes="Bold" TextColor="Black" Margin="10, 20, 5, 0"/>
+                        <Label  VerticalOptions="End" HorizontalOptions="Start" 
+                            FontSize="Caption" TextColor="Black"
+                            Text="{Binding Banker.BankName}"/>
+                    </HorizontalStackLayout>
+
+
+                    <!--Branch Name Tag-->
+                    <HorizontalStackLayout>
+                        <Label Text="Branch Name" VerticalOptions="End" HorizontalOptions="Start" 
+                       FontSize="Caption" FontAttributes="Bold" TextColor="Black" Margin="10, 5, 5, 0"/>
+                        <Label VerticalOptions="End" HorizontalOptions="Start" 
+                       FontSize="Caption" TextColor="Black" 
+                       Text="{Binding Banker.BranchName}"/>
+                    </HorizontalStackLayout>
+
+                    <!--Branch Code Tag-->
+                    <HorizontalStackLayout>
+                        <Label Text="Branch Code" VerticalOptions="End" HorizontalOptions="Start" 
+                               FontSize="Caption" FontAttributes="Bold" TextColor="Black" Margin="10, 5, 5, 0"/>
+                        <Label VerticalOptions="End" HorizontalOptions="Start" 
+                               FontSize="Caption" TextColor="Black"
+                               Text="{Binding Banker.BranchCode}"/>
+                    </HorizontalStackLayout>
+
+
+                    <!--Account Type Tag-->
+                    <HorizontalStackLayout>
+                        <Label Text="Account Type" VerticalOptions="End" HorizontalOptions="Start" 
+                           FontSize="Caption" FontAttributes="Bold" TextColor="Black" Margin="10, 5, 5, 0"/>
+                        <Label  VerticalOptions="End" HorizontalOptions="Start" 
+                            FontSize="Caption" TextColor="Black"
+                            Text="{Binding Banker.AccountType}"/>
+                    </HorizontalStackLayout>
+
+
+                    <!--Account Number Tag-->
+                    <HorizontalStackLayout>
+                        <Label Text="Account Number" VerticalOptions="End" HorizontalOptions="Start" 
+                           FontSize="Caption" FontAttributes="Bold" TextColor="Black" Margin="10, 5, 5, 0"/>
+                        <Label VerticalOptions="End" HorizontalOptions="Start" 
+                           FontSize="Caption" TextColor="Black"
+                           Text="{Binding Banker.AccountNumber}"/>
+                    </HorizontalStackLayout>
+
+                    <Label Text="If Banking Details have changed please update from the UPDATE BANKING DETAILS Tab and Return to this page to continue." 
+                           VerticalOptions="End" HorizontalOptions="Start" FontAttributes="Italic"
+                           FontSize="Caption" TextColor="Blue" Margin="10, 20, 5, 0"/>
+                </VerticalStackLayout>
+
+                <!-- ========================================== Confirm Mobile Money Payment ==========================================-->
+                <VerticalStackLayout IsVisible="{Binding Display_1}">
+                    <Label Text="Confirm Mobile Money Payment (EWallet services)" VerticalOptions="End"
+                       HorizontalOptions="Start" FontSize="Small" FontAttributes="Bold" 
+                       TextColor="Gray" Margin="10, 15, 5, 0"/>
+
+                    <HorizontalStackLayout>
+                        <Label Text="Confirm Mobile Number: " VerticalOptions="End" HorizontalOptions="Start" 
+                           FontSize="Caption" FontAttributes="Bold" TextColor="Black" Margin="10, 20, 5, 0"/>
+                        <Label VerticalOptions="End" HorizontalOptions="Start" 
+                           FontSize="Caption" TextColor="Black"
+                           Text="{Binding User.CellNumber}"/>
+                    </HorizontalStackLayout>
+
+                    <Label Text="If Mobile number has changed please update from the UPDATE USER ACCOUNT Tab and Return to this page to continue." 
+                           VerticalOptions="End" HorizontalOptions="Start" FontAttributes="Italic"
+                           FontSize="Caption" TextColor="Blue" Margin="10, 20, 5, 0"/>
+                </VerticalStackLayout>
+
+                <!-- ========================================== Confirm Cash Payment ==========================================-->
+                <VerticalStackLayout IsVisible="{Binding Display_2}">
+                    <Label Text="Confirm Cash Payment" VerticalOptions="End"
+                       HorizontalOptions="Start" FontSize="Small" FontAttributes="Bold" 
+                       TextColor="Gray" Margin="10, 15, 5, 0"/>
+
+                    <cct:DrawingView x:Name="SignatureDrawing"
+                                     HorizontalOptions="Center"
+                                     WidthRequest="300" HeightRequest="200"
+                                     BackgroundColor="LightGray" IsMultiLineModeEnabled="True"/>
+
+                    <HorizontalStackLayout Margin="10">
+                        <Label Text="Clear" FontSize="Small" Margin="5"/>
+                        <CheckBox x:Name="ClearCheckBox" CheckedChanged="CheckBox_CheckedChanged" Margin="5"/>
+                    </HorizontalStackLayout>
+
+                    <Button Text="Sign" Clicked="Button_Clicked"/>
+                </VerticalStackLayout>
+
+                <Button Text="Submit Transaction Record" FontSize="Small" BackgroundColor="#155ca1"
+                    Margin="20" Padding="5" Command="{Binding SubmitTransactionCommand}"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TalaGrid.Views.AboutView"
+             Title="AboutView"
+             BackgroundImageSource="background_desktop.jpeg">
+    
+    <VerticalStackLayout Margin="30" WidthRequest="450">
+        <Label Margin="10" FontSize="Subtitle"
+            Text="About TalaGrid"  TextColor="#155ca1" />
+        
+        <Label FontSize="Body" TextColor="Black" Margin="5, 20, 5, 5"
+            Text="TalaGrid is a recycling information Application founded by GreenWay Africa. This App is used to collect information about collected waste materials within South Africa. Waste material of interest currently includes alcohol bottles, plastics, and many more. This App also collects user information, i.e., the waste material collectors and Buy back Center Administrators or Employees responsible for capturing this information."/>
+        <Label FontSize="Body" TextColor="Black" Margin="5, 20"
+               Text="TalaGrid is owned by GreenWay Africa (Pty) Ltd. and was Developed and Managed by Farecost (Pty) Ltd."/>
+    </VerticalStackLayout>
+</ContentPage>

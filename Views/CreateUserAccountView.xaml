@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TalaGrid.Views.CreateUserAccountView"
+             xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
+             x:DataType="viewmodel:CreateUserAccViewModel"
+             Title="CreateUserAccountView"
+             BackgroundImageSource="background_desktop.jpeg">
+    
+    <!-- To Do: Find better way to populate street address, suburb, and city data -->
+
+    <ScrollView WidthRequest="450" Margin="20">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Title Tag                                 -->
+            <Label 
+            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+            Text="Create A New User Account" VerticalOptions="Center" HorizontalOptions="Center" 
+            FontSize="Title" TextColor="#155ca1" 
+            Margin="10"/>
+            
+            <!-- First Name Tag                                 -->
+            <Label 
+            Grid.Row="1" Grid.Column="0"
+            Text="First Name" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry Grid.Row="2" Grid.Column="0" x:Name="firstNameTxt"
+            VerticalOptions="Start" HorizontalOptions="Fill" 
+            FontSize="Caption" TextColor="Black"
+            Margin="10, 0, 5, 5" Text="{Binding User.FirstName, Mode=TwoWay}"/>
+
+            <!-- Last Name Tag                                 -->
+            <Label 
+            Grid.Row="1" Grid.Column="1"
+            Text="Last Name" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry Grid.Row="2" Grid.Column="1" x:Name="lastNameTxt"
+            VerticalOptions="Start" HorizontalOptions="Fill" 
+            FontSize="Caption" TextColor="Black"
+            Margin="10, 0, 5, 5" Text="{Binding User.LastName, Mode=TwoWay}"/>
+
+            <!-- Id Number Tag                                 -->
+            <Label 
+            Grid.Row="3" Grid.Column="0"
+            Text="ID Number" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry Grid.Row="4" Grid.Column="0" x:Name="idNumberTxt"
+            VerticalOptions="Start" HorizontalOptions="Fill" 
+            FontSize="Caption" TextColor="Black"
+            Margin="10, 0, 5, 5" Text="{Binding User.IdNumber, Mode=TwoWay}"/>
+
+            <!-- Gender Tag                                 -->
+            <Label 
+            Grid.Row="3" Grid.Column="1"
+            Text="Gender" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Picker 
+                Grid.Row="4" Grid.Column="1" x:Name="genderPicker" SelectedItem="{Binding User.Gender, Mode=TwoWay}"
+                FontSize="Caption" TextColor="Black" HorizontalOptions="FillAndExpand">
+                <Picker.Items>
+                    <x:String>Male</x:String>
+                    <x:String>Female</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <!-- Highest Qualification Tag                                 -->
+            <Label 
+            Grid.Row="5" Grid.Column="0"
+            Text="Highest Qualification" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Picker
+                Grid.Row="6" Grid.Column="0" x:Name="highestQlfnPicker"
+                FontSize="Caption" TextColor="Black" SelectedItem="{Binding User.HighestQlfn, Mode=TwoWay}">
+                <Picker.Items>
+                    <x:String>Grade 9</x:String>
+                    <x:String>Grade 10 or National (vocational) Certificates level 2</x:String>
+                    <x:String>Grade 11 or National (vocational) Certificates level 3</x:String>
+                    <x:String>Grade 12 (National Senior Certificate) or National (vocational) Cert. level 4</x:String>
+                    <x:String>Higher Certificates or Advanced National (vocational) Cert.</x:String>
+                    <x:String>National Diploma or Advanced certificates</x:String>
+                    <x:String>Bachelor's degree, Advanced Diplomas, Post Graduate Certificate or B-tech</x:String>
+                    <x:String>Honours degree, Post Graduate diploma or other Professional Qualifications</x:String>
+                    <x:String>Master's degree</x:String>
+                    <x:String>Doctor's degree</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <!-- Income Range Tag                                 -->
+            <Label 
+            Grid.Row="5" Grid.Column="1"
+            Text="Income Range" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Picker 
+                Grid.Row="6" Grid.Column="1" x:Name="incomeRangePicker" SelectedItem="{Binding User.IncomeRange, Mode=TwoWay}"
+                FontSize="Caption" TextColor="Black" HorizontalOptions="FillAndExpand">
+                <Picker.Items>
+                    <x:String>Less than R1000</x:String>
+                    <x:String>Between R1001 and R5000</x:String>
+                    <x:String>Between R5001 and R10000</x:String>
+                    <x:String>Between R10001 and R20000</x:String>
+                    <x:String>Between R20001 and R50000</x:String>
+                    <x:String>Between R50001 and R100000</x:String>
+                    <x:String>Over R100000</x:String>
+                </Picker.Items>
+            </Picker>
+            <!-- Email Address Tag                                 -->
+            <Label 
+            Grid.Row="7" Grid.Column="0"
+            Text="Email Address (Optional)" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry Grid.Row="8" Grid.Column="0" x:Name="emailTxt"
+            VerticalOptions="Start" HorizontalOptions="Fill" 
+            FontSize="Caption" TextColor="Black"
+            Margin="10, 0, 5, 5" Text="{Binding User.Email, Mode=TwoWay}"/>
+
+            <!-- Cell Number Tag                                 -->
+            <Label 
+            Grid.Row="7" Grid.Column="1"
+            Text="Cell Number (Optional)" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry Grid.Row="8" Grid.Column="1" x:Name="cellNumberTxt"
+            VerticalOptions="Start" HorizontalOptions="Fill" 
+            FontSize="Caption" TextColor="Black"
+            Margin="10, 0, 5, 5" Text="{Binding User.CellNumber, Mode=TwoWay}"/>
+
+            <!-- Physical Address Tag                                 -->
+            <Label 
+            Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
+            Text="Physical Address" VerticalOptions="End" HorizontalOptions="Center" 
+            FontSize="Subtitle" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+
+            <!-- Street Address Tag                                 -->
+            <Label 
+            Grid.Row="10" Grid.Column="0"
+            Text="Street Address/Locality" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry Grid.Row="11" Grid.Column="0" x:Name="streetAddTxt"
+            VerticalOptions="Start" HorizontalOptions="Fill" Placeholder="e.g. Bhomela, Ward 24"
+            PlaceholderColor="Brown"
+            FontSize="Caption" TextColor="Black"
+            Margin="10, 0, 5, 5" Text="{Binding User.StreetAddress, Mode=TwoWay}"/>
+
+            <!-- Suburb Tag                                 -->
+            <Label 
+            Grid.Row="10" Grid.Column="1"
+            Text="Suburb (Optional)" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry Grid.Row="11" Grid.Column="1" x:Name="suburbTxt"
+            VerticalOptions="Start" HorizontalOptions="Fill" 
+            FontSize="Caption" TextColor="Black"
+            Margin="10, 0, 5, 5" Text="{Binding User.Suburb, Mode=TwoWay}"/>
+
+            <!-- City Tag                                 -->
+            <Label 
+            Grid.Row="12" Grid.Column="0"
+            Text="City" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry Grid.Row="13" Grid.Column="0" x:Name="cityTxt"
+            VerticalOptions="Start" HorizontalOptions="Fill" 
+            FontSize="Caption" TextColor="Black"
+            Margin="10, 0, 5, 5" Text="{Binding User.City, Mode=TwoWay}"/>
+
+            <!-- Province Tag                                 -->
+            <Label 
+            Grid.Row="12" Grid.Column="1"
+            Text="Province" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Picker 
+                Grid.Row="13" Grid.Column="1" x:Name="provincePicker" SelectedItem="{Binding User.Province, Mode=TwoWay}"
+                FontSize="Caption" TextColor="Black" HorizontalOptions="FillAndExpand">
+                <Picker.Items>
+                    <x:String>Eastern Cape</x:String>
+                    <x:String>Free State</x:String>
+                    <x:String>Gauteng</x:String>
+                    <x:String>KwaZulu-Natal</x:String>
+                    <x:String>Limpopo</x:String>
+                    <x:String>Mpumalanga</x:String>
+                    <x:String>Northern Cape</x:String>
+                    <x:String>North West</x:String>
+                    <x:String>Western Cape</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <!-- Country Tag                                 -->
+            <Label 
+            Grid.Row="14" Grid.Column="0"
+            Text="Country" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Label 
+                Grid.Row="18" Grid.Column="0" Text="{Binding User.Country, Mode=TwoWay}"
+                FontSize="Caption" TextColor="Black" HorizontalOptions="Fill"
+                Margin="15, 0">
+            </Label>
+
+            <!-- Save Button Tag                                 -->
+            <Button 
+                Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="2"
+                x:Name="saveBtn" Text="Save" FontSize="Small" BackgroundColor="#155ca1"
+                Margin="20" Padding="5" WidthRequest="200"
+                Command="{Binding SaveCommand}"/>
+
+        </Grid>
+    </ScrollView>
+    
+</ContentPage>

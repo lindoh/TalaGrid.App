@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
+             x:DataType="viewmodel:LoginViewModel"
+             x:Class="TalaGrid.Views.LoginView"
+             xmlns:forms="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+             Title="LoginView"
+             MaximumWidthRequest="600">
+
+  
+
+    <ScrollView>
+        
+        <VerticalStackLayout Margin="80">
+            <Image Source="appicon.png" 
+               HorizontalOptions="Center" VerticalOptions="Start" 
+               MaximumWidthRequest="150" MaximumHeightRequest="150"/>
+
+            <Label Text="Hey There!," TextColor="#6e9b19" FontSize="Title" HorizontalTextAlignment="Center"/>
+            <Label Text="Welcome Back" TextColor="#6e9b19" FontSize="Caption" HorizontalTextAlignment="Center"/>
+
+            <Label Text="{Binding ControlLabel.Message}" TextColor="{Binding ControlLabel.Color}" 
+               IsVisible="{Binding ControlLabel.ShowLabel}"
+               FontSize="Caption" HorizontalOptions="Start" Margin="10, 50, 5, 5"/>
+
+            <!--Username Tag-->
+            <Label 
+            Text="Username/Email" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry 
+            VerticalOptions="Start" HorizontalOptions="Fill" 
+            FontSize="Caption" TextColor="Black"
+            Margin="10, 0, 5, 5" Text="{Binding UserLogin.Username, Mode=TwoWay}"/>
+
+            <!--Password Tag-->
+            <Label 
+            Text="Password" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Entry 
+            VerticalOptions="Start" HorizontalOptions="Fill" 
+            FontSize="Caption" TextColor="Black" IsPassword="True"
+            Margin="10, 0, 5, 5" Text="{Binding UserLogin.Password, Mode=TwoWay}"/>
+
+            <!--Login Button Tag-->
+            <Button 
+             Text="Login" FontSize="Small" BackgroundColor="#155ca1"
+             Margin="20" Padding="5" WidthRequest="200"
+             Command="{Binding LoginCommand}"/>
+
+            <Button Text="Forgot Password? Click To Reset Password"
+               HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="White"
+               TextColor="BlueViolet" FontAttributes="Italic" FontSize="Caption" Padding="2"
+               Command="{Binding ResetPasswordCommand}"/>
+
+            <Button Text="Don't Have An Account Yet? Register A New Account Now" Margin="10"
+               HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="White"
+               TextColor="Blue" FontAttributes="Italic" FontSize="Caption" Padding="2"
+                Command="{Binding ToRegisterCommand}"/>
+
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

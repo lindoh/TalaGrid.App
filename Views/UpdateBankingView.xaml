@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TalaGrid.Views.UpdateBankingView"
+             xmlns:model="clr-namespace:TalaGrid.Models"
+             xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
+             x:DataType="viewmodel:UpdateBankingViewModel"
+             xmlns:views="clr-namespace:TalaGrid.Views"
+             Title="UpdateBankingView"
+             BackgroundImageSource="background_desktop.jpeg"
+             >
+
+    <ScrollView WidthRequest="450" Margin="30">
+        <VerticalStackLayout>
+            <Label Text="Update Banking Account Details" VerticalOptions="Center" HorizontalOptions="Center" 
+                   FontSize="Title" TextColor="#155ca1" Margin="10"/>
+
+            <Label Text="Search User from Database" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10"/>
+            <SearchBar x:Name="searchBar"  
+                       SearchCommand="{Binding SearchCommand}"
+                       SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+
+            <ListView Margin="10" Header="Results"
+                      x:Name="usersListView" BackgroundColor="LightGray" 
+                      ItemSelected="usersListView_ItemSelected"
+                      ItemsSource="{Binding UsersList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Users">
+                        <ViewCell>
+                            <HorizontalStackLayout Spacing="2">
+                                <Label Text="{Binding FirstName}"/>
+                                <Label Text="{Binding LastName}"/>
+                            </HorizontalStackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+                <!--Bank Name Tag-->
+                <Label Text="Bank Name" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
+                <Picker HorizontalOptions="Start" FontSize="Caption" TextColor="Black"
+                    SelectedItem="{Binding Banker.BankName, Mode=TwoWay}">
+                    <Picker.Items>
+                        <x:String>Absa</x:String>
+                        <x:String>Capitec</x:String>
+                        <x:String>First National Bank</x:String>
+                        <x:String>Nedbank</x:String>
+                        <x:String>Standard Bank</x:String>
+                        <x:String>Tyme Bank</x:String>
+                    </Picker.Items>
+                </Picker>
+
+                <!--Branch Name Tag-->
+                <Label Text="Branch Name" VerticalOptions="End" HorizontalOptions="Start" 
+                       FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
+                <Entry VerticalOptions="Start" HorizontalOptions="Start" 
+                       FontSize="Caption" TextColor="Black" 
+                       Text="{Binding Banker.BranchName, Mode=TwoWay}"/>
+
+                <!--Branch Code Tag-->
+                <Label Text="Branch Code" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
+                <Entry VerticalOptions="Start" HorizontalOptions="Start" 
+                       FontSize="Caption" TextColor="Black"
+                       Text="{Binding Banker.BranchCode, Mode=TwoWay}"/>
+
+                <!--Account Type Tag-->
+                <Label Text="Account Type" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
+                <Picker HorizontalOptions="Start" FontSize="Caption" TextColor="Black"
+                        SelectedItem="{Binding Banker.AccountType, Mode=TwoWay}">
+                    <Picker.Items>
+                        <x:String>Savings</x:String>
+                        <x:String>Cheque</x:String>
+                    </Picker.Items>
+                </Picker>
+
+                <!--Account Number Tag-->
+                <Label Text="Account Number" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
+                <Entry VerticalOptions="Start" HorizontalOptions="Start" 
+                       FontSize="Caption" TextColor="Black"
+                       Text="{Binding Banker.AccountNumber, Mode=TwoWay}"/>
+
+                <!-- Update/Save Button Tag   -->
+            <Button 
+                    x:Name="updateBtn" Text="{Binding UpdateSaveBtnText}" FontSize="Small" BackgroundColor="#155ca1"
+                    Margin="20" Padding="5" WidthRequest="200" 
+                    Command="{Binding UpdateSaveCommand}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

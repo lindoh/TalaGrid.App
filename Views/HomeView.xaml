@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
+             x:DataType="viewmodel:HomeViewModel"
+             x:Class="TalaGrid.Views.HomeView"
+             Title="HomeView"
+             BackgroundImageSource="background_desktop.jpeg">
+
+    <VerticalStackLayout Margin="30" WidthRequest="450">
+        <Label Text="Hi, There!" FontSize="Large" FontAttributes="Italic"
+               TextColor="#155ca1" HorizontalOptions="Center"
+               Margin="10"/>
+        <Label Text="Welcome Back" FontSize="Small" FontAttributes="Italic"
+               TextColor="#155ca1" HorizontalOptions="Center"/>
+        <Label Text="Navigate through the left pane to capture collected bottles, 
+               Update user information and banking details, delete user account, and more."
+               TextColor="Black" HorizontalOptions="StartAndExpand" Margin="10, 50, 10, 10"
+               Padding="20"/>
+
+    </VerticalStackLayout>
+</ContentPage>
