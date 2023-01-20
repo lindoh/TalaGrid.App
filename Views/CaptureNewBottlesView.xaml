@@ -4,7 +4,6 @@
              xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
              xmlns:model="clr-namespace:TalaGrid.Models"
              xmlns:cct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-             xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
              x:DataType="viewmodel:CaptureBottlesViewModel"
              x:Class="TalaGrid.Views.CaptureNewBottlesView"
              Title="CaptureWasteMaterial"
@@ -72,7 +71,7 @@
                       IsVisible="{Binding ShowOtherWaste}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:WasteMaterial">
-                            <TextCell Text="{Binding MaterialName}"/>
+                            <TextCell Text="{Binding MaterialName, Mode=TwoWay}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
 
@@ -84,7 +83,7 @@
                     <Label Text="Quantity" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
                     <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
-                    TextColor="Black" Text="{Binding Quantity}"/>
+                    TextColor="Black" Text="{Binding Quantity, Mode=TwoWay}"/>
                 </VerticalStackLayout>
                 
 
@@ -97,7 +96,7 @@
                         <Label Text="Size (Kg)" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10"/>
                         <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
-                                TextColor="Black" Text="{Binding WasteMaterialData.Size}" 
+                                TextColor="Black" Text="{Binding WasteMaterialData.Size, Mode=TwoWay}" 
                                 Margin="10,0" />
                     </VerticalStackLayout>
 
@@ -106,7 +105,7 @@
                         <Label Text="Price (Rands)" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10"/>
                         <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
-                                TextColor="Black" Text="{Binding WasteMaterialData.Price}" 
+                                TextColor="Black" Text="{Binding WasteMaterialData.Price, Mode=TwoWay}" 
                                 Margin="10,0"/>
                     </VerticalStackLayout>
                 </HorizontalStackLayout>
@@ -127,22 +126,22 @@
 
                 <!-- Captured Bottles List-->
                 <ListView Header="Captured Bottles"  Margin="10" MaximumHeightRequest="90"
-                          BackgroundColor="LightGray" ItemsSource="{Binding CapturedBottles}"
+                          BackgroundColor="LightGray" ItemsSource="{Binding CapturedBottles, Mode=TwoWay}"
                           IsVisible="{Binding ShowBottles}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:Bottles">
-                            <TextCell Text="{Binding BottleName}" Detail="{Binding Quantity}"/>
+                            <TextCell Text="{Binding BottleName, Mode=TwoWay}" Detail="{Binding Quantity, Mode=TwoWay}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
                 <!-- Captured Other Waste List-->
                 <ListView Header="Captured Other Waste"  Margin="10" MaximumHeightRequest="90"
-                          BackgroundColor="LightGray" ItemsSource="{Binding CapturedWaste}"
+                          BackgroundColor="LightGray" ItemsSource="{Binding CapturedWaste, Mode=TwoWay}"
                           IsVisible="{Binding ShowOtherWaste}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:OtherWaste">
-                            <TextCell Text="{Binding MaterialName}"/>
+                            <TextCell Text="{Binding MaterialName, Mode=TwoWay}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -169,7 +168,7 @@
                     <Label Text="Current Amount" VerticalOptions="End" HorizontalOptions="Start" 
                        FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"
                        FontAttributes="Bold"/>
-                    <Label Text="{Binding AmountString}" VerticalOptions="End" HorizontalOptions="Start" 
+                    <Label Text="{Binding AmountString, Mode=TwoWay}" VerticalOptions="End" HorizontalOptions="Start" 
                        FontSize="Caption" TextColor="Black" Margin="0, 5, 5, 0"/>
                 </HorizontalStackLayout>
 

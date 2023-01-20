@@ -4,6 +4,11 @@ namespace TalaGrid.Models
 {
     public partial class Transaction : ObservableObject
     {
+        public Transaction()
+        {
+            signature = new byte[0];
+        }
+
         [ObservableProperty]
         string transactionType;
 

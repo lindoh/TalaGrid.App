@@ -15,12 +15,12 @@
 		<ApplicationTitle>TalaGrid</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.talagrid</ApplicationId>
-		<ApplicationIdGuid>84C51454-D2D0-4A6A-B66E-CC039A8EBEF5</ApplicationIdGuid>
+		<ApplicationId>com.farecost.talagrid</ApplicationId>
+		<ApplicationIdGuid>CN=511DC740-BCFF-4487-BE1B-366B06D878A9</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+		<ApplicationVersion>2.0</ApplicationVersion>
 
 		
 		

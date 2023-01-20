@@ -64,6 +64,11 @@ public partial class CaptureNewBottlesView : ContentPage
         }
     }
 
+    /// <summary>
+    /// Sign Button Clicked Saves the signature as a byte image
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private async void Button_Clicked(object sender, EventArgs e)
     {
         using var stream = await SignatureDrawing.GetImageStream(1024, 1024);
@@ -81,13 +86,6 @@ public partial class CaptureNewBottlesView : ContentPage
         else
             await alerts.ShowAlertAsync("Failure", "System could not save Signature");
 
-
-#if WINDOWS
-        await System.IO.File.WriteAllBytesAsync("D:\\EngineeringWork\\Test\\test.png", imageFile);
-
-#elif ANDROID
-
-#endif
     }
 
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)

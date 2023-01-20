@@ -342,6 +342,9 @@ namespace TalaGrid.ViewModels
                 Amount = 0.0;
                 AmountString = $"R{amount}";
                 CapturedBottles.Clear();
+                CapturedWaste.Clear();
+                WasteMaterial.Size = 0.0;
+                WasteMaterial.Price = 0.0;
             }
 
             BottleData.Size = null;
