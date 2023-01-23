@@ -1,4 +1,6 @@
 ﻿using TalaGrid.Views;
+using TalaGrid.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace TalaGrid;
 
@@ -20,5 +22,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(ResetPasswordView), typeof(ResetPasswordView));
         Routing.RegisterRoute(nameof(UpdateBankingView), typeof(UpdateBankingView));
         Routing.RegisterRoute(nameof(UpdateUserAccountView), typeof(UpdateUserAccountView));
+
     }
 }

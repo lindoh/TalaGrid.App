@@ -7,7 +7,7 @@
     xmlns:views="clr-namespace:TalaGrid.Views"
     NavBarIsVisible="False"
     FlyoutBehavior="Locked" 
-    FlyoutHeaderBehavior="Fixed" FlyoutVerticalScrollMode="Auto"
+    FlyoutHeaderBehavior="CollapseOnScroll" FlyoutVerticalScrollMode="Auto"
     FlyoutBackgroundColor="#6e9b19">
 
     <Shell.ItemTemplate>
@@ -18,7 +18,6 @@
             </Grid>
         </DataTemplate>
     </Shell.ItemTemplate>
-
 
 
     <FlyoutItem Title="Home" Icon="home.png">
