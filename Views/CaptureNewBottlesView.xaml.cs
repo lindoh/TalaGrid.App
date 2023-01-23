@@ -1,3 +1,4 @@
+using TalaGrid.Models;
 using TalaGrid.Services;
 using TalaGrid.ViewModels;
 
@@ -108,5 +109,13 @@ public partial class CaptureNewBottlesView : ContentPage
         }
     }
 
+    private void CapturedBottleList_ItemSelected(object sender, SelectedItemChangedEventArgs args)
+    {
+        viewModel.CapturedBottleItem = args.SelectedItem as Bottles;
+    }
 
+    private void CapturedWasteList_ItemSelected(object sender, SelectedItemChangedEventArgs args)
+    {
+        viewModel.CapturedOtherWasteItem = args.SelectedItem as OtherWaste;
+    }
 }

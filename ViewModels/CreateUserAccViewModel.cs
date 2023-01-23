@@ -61,9 +61,10 @@ namespace TalaGrid.ViewModels
             {
                 await alerts.ShowAlertAsync("Operation Failed", "One or more empty text fields found");
             }
-            #endregion
+            
 
         }
+        #endregion
 
         #region Helper Methods
 
@@ -103,7 +104,6 @@ namespace TalaGrid.ViewModels
             user.Suburb = "";
             user.City = "";
             user.Province = "";
-            user.Country = "";
         }
 
         #endregion

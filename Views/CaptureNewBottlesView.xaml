@@ -8,8 +8,9 @@
              x:Class="TalaGrid.Views.CaptureNewBottlesView"
              Title="CaptureWasteMaterial"
              BackgroundImageSource="background_desktop.jpeg">
-    <ScrollView WidthRequest="450">
-        <VerticalStackLayout Margin="20">
+    
+    <ScrollView WidthRequest="450" Margin="20, 30">
+        <VerticalStackLayout>
             <VerticalStackLayout IsVisible="{Binding CaptureBottleDisplay}">
                 <Label Text="Capture New Waste Material" VerticalOptions="Center" HorizontalOptions="Center" 
                    FontSize="Title" TextColor="#155ca1" Margin="10"/>
@@ -66,7 +67,7 @@
                 <ListView Margin="10" MaximumHeightRequest="90" Header="Other Waste Material"
                       x:Name="wasteListView"
                       BackgroundColor="LightGray" 
-                          ItemSelected="wasteListView_ItemSelected"
+                      ItemSelected="wasteListView_ItemSelected"
                       ItemsSource="{Binding WasteMaterialList}"
                       IsVisible="{Binding ShowOtherWaste}">
                     <ListView.ItemTemplate>
@@ -125,9 +126,14 @@
                 </HorizontalStackLayout>
 
                 <!-- Captured Bottles List-->
-                <ListView Header="Captured Bottles"  Margin="10" MaximumHeightRequest="90"
-                          BackgroundColor="LightGray" ItemsSource="{Binding CapturedBottles, Mode=TwoWay}"
-                          IsVisible="{Binding ShowBottles}">
+                <ListView x:Name="CapturedBottleList"
+                          Header="Captured Bottles" Margin="10" 
+                          MaximumHeightRequest="90"
+                          BackgroundColor="LightGray" 
+                          
+                          ItemSelected="CapturedBottleList_ItemSelected"
+                          ItemsSource="{Binding CapturedBottles, Mode=TwoWay}"
+                          IsVisible="{Binding ShowBottles}" >
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:Bottles">
                             <TextCell Text="{Binding BottleName, Mode=TwoWay}" Detail="{Binding Quantity, Mode=TwoWay}"/>
@@ -136,8 +142,12 @@
                 </ListView>
 
                 <!-- Captured Other Waste List-->
-                <ListView Header="Captured Other Waste"  Margin="10" MaximumHeightRequest="90"
-                          BackgroundColor="LightGray" ItemsSource="{Binding CapturedWaste, Mode=TwoWay}"
+                <ListView x:Name="CapturedWasteList"
+                          Header="Captured Other Waste"  
+                          Margin="10" MaximumHeightRequest="90"
+                          BackgroundColor="LightGray" 
+                          ItemSelected="CapturedWasteList_ItemSelected"
+                          ItemsSource="{Binding CapturedWaste, Mode=TwoWay}"
                           IsVisible="{Binding ShowOtherWaste}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:OtherWaste">
@@ -146,7 +156,11 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-
+                <!--Delete Selected Item Button-->
+                <Button Text="Delete Item" FontSize="Small" TextColor="#155ca1"
+                        BackgroundColor="White"
+                        Margin="20, 20, 20, 0" Padding="5" WidthRequest="200"
+                        Command="{Binding DeleteItemCommand}"/>
 
                 <!-- Submit Button Tag -->
                 <Button x:Name="submitBtn" Text="Submit" FontSize="Small" BackgroundColor="#155ca1"
@@ -179,6 +193,11 @@
                     <RadioButton x:Name="MobilePaymentRadioBtn" Content="Mobile Money Payment" CheckedChanged="PayMethodRadioBtn_CheckedChanged"/>
                     <RadioButton x:Name="CashPaymentRadioBtn" Content="Cash Payment" CheckedChanged="PayMethodRadioBtn_CheckedChanged"/>
                 </VerticalStackLayout>
+
+                <Button Text="Go Back" FontSize="Small" TextColor="#155ca1"
+                        BackgroundColor="White"
+                        Margin="20, 20, 20, 0" Padding="5" WidthRequest="200"
+                        Command="{Binding GoBackCommand}"/>
 
                 <!--========================================== Confirm Bank Payment ==========================================-->
                 <VerticalStackLayout IsVisible="{Binding Display_0}">

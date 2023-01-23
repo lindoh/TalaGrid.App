@@ -119,7 +119,13 @@ namespace TalaGrid.ViewModels
         ObservableCollection<Bottles> capturedBottles;
 
         [ObservableProperty]
+        Bottles capturedBottleItem;
+
+        [ObservableProperty]
         ObservableCollection<OtherWaste> capturedWaste;
+
+        [ObservableProperty]
+        OtherWaste capturedOtherWasteItem;
 
         //Switch Display Between capturing bottle data to payment section
         [ObservableProperty]
@@ -151,6 +157,9 @@ namespace TalaGrid.ViewModels
 
         [ObservableProperty]
         Image imageSource;
+
+        [ObservableProperty]
+        int capturedBottleIndex;
 
         #endregion
 
@@ -184,6 +193,8 @@ namespace TalaGrid.ViewModels
             else if (showOtherWaste)
             {
                 SaveCapturedOtherWaste();
+                WasteMaterial.Size = 0.0;
+                WasteMaterial.Price = 0.0;
             }
 
             //Reset Bottle size and Quantity
@@ -234,11 +245,49 @@ namespace TalaGrid.ViewModels
                 return;
             }
 
+            if(transactions.TransactionType == String.Empty)
+            {
+                await alerts.ShowAlertAsync("Operation Failed", "Transaction type must be selected");
+                return;
+            }
+
             if (showBottles)
                 MaterialTransactionId(BottleIdList);
             else if (showOtherWaste)
                 MaterialTransactionId(otherWasteIdList);
 
+        }
+
+        [RelayCommand]
+        public void DeleteItem()
+        {
+            if(showBottles)
+            {
+                if (capturedBottleItem != null)
+                {
+                    Amount -= capturedBottleItem.Amount;
+                    AmountString = $"R{Amount}";
+                    capturedBottles.Remove(capturedBottleItem);
+
+                }
+            }
+            else if (showOtherWaste)
+            {
+                if(capturedOtherWasteItem != null)
+                {
+                    Amount -= capturedOtherWasteItem.Amount;
+                    AmountString = $"R{Amount}";
+                    CapturedWaste.Remove(capturedOtherWasteItem);
+                }
+            }
+            
+        }
+
+        [RelayCommand]
+        public void GoBack()
+        {
+            PaymentsDisplay = false;
+            CaptureBottleDisplay = true;
         }
 
         #endregion
