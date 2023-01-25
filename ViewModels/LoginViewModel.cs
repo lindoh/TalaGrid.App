@@ -15,6 +15,7 @@ namespace TalaGrid.ViewModels
             alerts = new AlertService();
             userLogin = new Login();
             ControlLabel = new LabelControl();
+            buyBackCentre = new BuyBackCentre();
         }
 
         DatabaseService dataService;
@@ -54,12 +55,6 @@ namespace TalaGrid.ViewModels
                     {
                         UserLogin.IsBBCUpdated = true;
                         UserLogin.BBCId = buyBackCentre.BBCId;
-                    }
-                    else
-                    {
-                        await alerts.ShowAlertAsync("Missing Information Detected", "The user is required to Update BuyBackCentre Details under Update User Account Tab and ReLogin");
-
-                        //await Shell.Current.GoToAsync("../../../");
                     }
 
                     //Navigate to the Home Page

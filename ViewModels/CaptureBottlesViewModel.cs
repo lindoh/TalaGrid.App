@@ -22,6 +22,8 @@ namespace TalaGrid.ViewModels
             capturedBottles = new ObservableCollection<Bottles>();
             capturedWaste = new();
 
+            buyBackCentre = new BuyBackCentre();
+
             wasteMaterialList = new();
             wasteMaterialData = new();
 
@@ -72,6 +74,13 @@ namespace TalaGrid.ViewModels
         [ObservableProperty]
         WasteMaterial wasteMaterialData;
 
+        //List of Other Waste Material
+        [ObservableProperty]
+        ObservableCollection<WasteMaterial> wasteMaterialList;
+
+        [ObservableProperty]
+        OtherWaste wasteMaterial;
+
         //Represents a given bottle
         [ObservableProperty]
         Bottles bottle;
@@ -83,16 +92,17 @@ namespace TalaGrid.ViewModels
         //List of OtherWaste Id's
         List<int> otherWasteIdList;
 
+        //Store the collected waste material in the list before submition to database
+        [ObservableProperty]
+        ObservableCollection<OtherWaste> capturedWaste;
+
+        //Selected item from the captured list
+        [ObservableProperty]
+        OtherWaste capturedOtherWasteItem;
+
         //List of Bottles from the database
         [ObservableProperty]
         ObservableCollection<BottleDataSource> bottlesList;
-
-        //List of Other Waste Material
-        [ObservableProperty]
-        ObservableCollection<WasteMaterial> wasteMaterialList;
-
-        [ObservableProperty]
-        OtherWaste wasteMaterial;
 
         //The quantity of bottles submitted by the Collector
         [ObservableProperty]
@@ -116,14 +126,6 @@ namespace TalaGrid.ViewModels
         //Selected item from the captured list
         [ObservableProperty]
         Bottles capturedBottleItem;
-
-        //Store the collected waste material in the list before submition to database
-        [ObservableProperty]
-        ObservableCollection<OtherWaste> capturedWaste;
-
-        //Selected item from the captured list
-        [ObservableProperty]
-        OtherWaste capturedOtherWasteItem;
 
         //Switch Display Between capturing bottle data to payment section
         [ObservableProperty]
@@ -153,6 +155,8 @@ namespace TalaGrid.ViewModels
         [ObservableProperty]
         Transaction transactions;
 
+        BuyBackCentre buyBackCentre;
+
         #endregion
 
         #region Button Methods
@@ -160,6 +164,15 @@ namespace TalaGrid.ViewModels
         [RelayCommand]
         public async void Add_and_Calculate()
         {
+            //Confirm if the Admin has registered a BuyBackCentre
+            buyBackCentre = dataService.SearchBBC(currentAdmin.UserLogin.AdminId);
+
+            if (buyBackCentre.BBCId == 0)
+            {
+                await alerts.ShowAlertAsync("Missing Information Detected", "The user is required to Update BuyBackCentre Details under Update User Account Tab and ReLogin");
+                return;
+            }
+
             //Confirm if a User is selected
             if (user.Id == 0)
             {
@@ -167,6 +180,7 @@ namespace TalaGrid.ViewModels
                 return;
             }
 
+            //If Capturing Bottles
             if (showBottles)
             {
                 if (CapturedWaste.Count > 0)
@@ -175,6 +189,7 @@ namespace TalaGrid.ViewModels
                     SaveCapturedBottles();
 
             }
+            //If Capturing Other Waste Material
             else if (showOtherWaste)
             {
                 if (capturedBottles.Count > 0)
@@ -367,6 +382,7 @@ namespace TalaGrid.ViewModels
             else
             {
                 alerts.ShowAlertAsync("Operation Failed", "Select a bottle name from the list and enter quantity value");
+                return;
             }
         }
 
@@ -411,7 +427,6 @@ namespace TalaGrid.ViewModels
                 WasteMaterial.Price = 0.0;
             }
 
-            BottleData.Size = null;
             Quantity = 0;
         }
 
@@ -565,7 +580,7 @@ namespace TalaGrid.ViewModels
 
             if (IdList == null)
             {
-                await alerts.ShowAlertAsync("Operation Failed", "No data were captured, please capture bottles first");
+                await alerts.ShowAlertAsync("Operation Failed", "No data were captured, please capture waste material first");
                 return;
             }
             else

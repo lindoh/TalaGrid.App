@@ -123,6 +123,7 @@ namespace TalaGrid.ViewModels
                 {
                     alerts.ShowAlertAsync("BBC Data Update Required", "No assocciated BuyBackCentre data found, please Update!");
                     NewBBCUser = true;
+                    BBC.Country = "South Africa";
                 }
                 else
                     NewBBCUser = false;
