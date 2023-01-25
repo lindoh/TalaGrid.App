@@ -14,6 +14,11 @@
 
         <Label Text="Please Create Login Credentials" TextColor="#6e9b19" FontSize="Title" HorizontalTextAlignment="Center"/>
 
+
+        <Label Text="{Binding ControlLabel.Message}" TextColor="{Binding ControlLabel.Color}" 
+               IsVisible="{Binding ControlLabel.ShowLabel}"
+               FontSize="Caption" HorizontalOptions="Start" Margin="10, 50, 5, 5"/>
+        
         <!--Username Tag-->
         <Label 
             Text="Username/Email" VerticalOptions="End" HorizontalOptions="Start" 

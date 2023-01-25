@@ -16,6 +16,8 @@ namespace TalaGrid.ViewModels
             createLoginsVM = new CreateLoginsViewModel();
             login = new LoginViewModel();
             email = new EmailService();
+
+            Reset_or_Update_Password();
         }
 
         [ObservableProperty]
@@ -56,10 +58,9 @@ namespace TalaGrid.ViewModels
         [RelayCommand]
         async void Update()
         {
+            //If user updates password return true, else false move to validate password for Password reset
             if (reset_Update_Password)
             {
-                if (Login.UserLogin.IsLoggedIn)
-                {
                     //Confirm Old Password
                     if (oldPassword == null || NewPassword == null || confirmPassword == null)
                     {
@@ -79,13 +80,10 @@ namespace TalaGrid.ViewModels
                         await alerts.ShowAlertAsync("Operation Failed", "Your new password cannot be similar to your old password");
                         return;
                     }
-                }
-                else
-                    await alerts.ShowAlertAsync("Operation Failed", "The user is not Logged in");
             }
 
 
-            //Validate password
+            //Validate password, Password Reset
             if (!createLoginsVM.ValidatePassword(NewPassword))
                 await alerts.ShowAlertAsync("Invalid Password", "Please check Password Guidlines Highlighted in red below!");
             else if (!(NewPassword == confirmPassword))
@@ -97,10 +95,9 @@ namespace TalaGrid.ViewModels
                 if (isUpdated)
                 {
                     await alerts.ShowAlertAsync("Operation Successful", "Password Updated Successfully");
-                    Clear();
-                    //Navigate to the Home Page
-                    //App.Current.MainPage = new AppShell();
-                    //await Shell.Current.GoToAsync(nameof(LoginView));
+
+                    //Navigate to the Login Page
+                    App.Current.MainPage = new LoginView();
                 }
                 else
                     await alerts.ShowAlertAsync("Operation Failed", "The password could not be updated!");
@@ -185,7 +182,14 @@ namespace TalaGrid.ViewModels
             email.SendEmail(user.Email, user.FirstName, user.LastName, oneTimePin);
         }
 
-
-
+        private void Reset_or_Update_Password()
+        {
+            if (Login.UserLogin.IsLoggedIn)
+            {
+                reset_Update_Password = true;
+            }
+            else
+                reset_Update_Password = false;
+        }
     }
 }

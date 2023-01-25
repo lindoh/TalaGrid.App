@@ -54,11 +54,13 @@ namespace TalaGrid.ViewModels
         [RelayCommand]
         async void Register()
         {
-            if (user.IdNumber == null || user.IdNumber.Length != 13)
-            {
-                await alerts.ShowAlertAsync("Registration Operation Failed", "Id Number must be 13 digits long");
-            }
-            else if (CheckTextFields(user))
+            if(dataService.SearchAdmin(User.IdNumber).Id > 0)
+                 await alerts.ShowAlertAsync("Operation Failed", "Id Number or User already exists");
+
+            else if (user.IdNumber == null || user.IdNumber.Length != 13)
+                await alerts.ShowAlertAsync("Operation Failed", "Id Number must be 13 digits long");
+
+            else if (!CheckTextFields(user))
             {
                 dataService.SaveAdminData(user);
                 await alerts.ShowAlertAsync("Success", "User Account Created Successfully");
@@ -101,10 +103,10 @@ namespace TalaGrid.ViewModels
         {
             bool emptyFields = false;
 
-            if (!(user.FirstName == "" || user.LastName == "" || user.IdNumber == "" ||
+            if (user.FirstName == "" || user.LastName == "" || user.IdNumber == "" ||
                 user.Gender == "" || user.HighestQlfn == "" || user.IncomeRange == "" ||
                 user.CellNumber == "" || user.StreetAddress == "" ||
-                user.City == "" || user.Province == "" || user.Country == ""))
+                user.City == "" || user.Province == "" || user.Country == "")
             {
                 emptyFields = true;
 

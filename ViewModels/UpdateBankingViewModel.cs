@@ -90,32 +90,50 @@ namespace TalaGrid.ViewModels
         [RelayCommand]
         async void UpdateSave()
         {
-            if (updateSaveBtnText == "Update")
+            if (!CheckTextFields())
             {
-                bool isUpdated = dataService.UpdateBankingDetails(banker);
+                if (updateSaveBtnText == "Update")
+                {
+                    bool isUpdated = dataService.UpdateBankingDetails(banker);
 
-                if (isUpdated)
-                    await alerts.ShowAlertAsync("Update Operation Successful", "User Banking Details Updated Successfully");
-                else
-                    await alerts.ShowAlertAsync("Update Operation Failed", "User banking Details Could Not Be Updated");
+                    if (isUpdated)
+                        await alerts.ShowAlertAsync("Update Operation Successful", "User Banking Details Updated Successfully");
+                    else
+                        await alerts.ShowAlertAsync("Update Operation Failed", "User banking Details Could Not Be Updated");
+                }
+                else if (updateSaveBtnText == "Save")
+                {
+
+                    bool isSaved = dataService.NewBankingDetails(banker, user);
+
+                    if (isSaved)
+                        await alerts.ShowAlertAsync("Save Operation Successful", "User Banking Details Were Saved Successfully");
+                    else
+                        await alerts.ShowAlertAsync("Save Operation Failed", "User banking Details Could Not Be Saved");
+                }
+
+                Clear();
             }
-            else if (updateSaveBtnText == "Save")
-            {
-
-                bool isSaved = dataService.NewBankingDetails(banker, user);
-
-                if (isSaved)
-                    await alerts.ShowAlertAsync("Save Operation Successful", "User Banking Details Were Saved Successfully");
-                else
-                    await alerts.ShowAlertAsync("Save Operation Failed", "User banking Details Could Not Be Saved");
-            }
-
-            Clear();
+            else
+                await alerts.ShowAlertAsync("Operation Failed", "One or more empty text fields found");  
         }
 
         #endregion
 
         #region Helper Methods
+        private bool CheckTextFields()
+        {
+            bool emptyFields = false;
+
+            if (Banker.BankName == "" || Banker.BranchName == "" || Banker.BranchCode == "" ||
+                Banker.AccountNumber == "" || Banker.AccountType == "")
+            {
+                emptyFields = true;
+            }
+
+            return emptyFields;
+        }
+
         /// <summary>
         /// Clear all text fields
         /// </summary>

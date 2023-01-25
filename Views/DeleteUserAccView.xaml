@@ -23,7 +23,7 @@
         <Label Text="Search User from Database" VerticalOptions="End" HorizontalOptions="Start" 
                FontSize="Caption" TextColor="Gray" Margin="10"/>
         <SearchBar x:Name="searchBar" 
-                   SearchCommand="{Binding SearchCommand}"
+                   TextChanged="searchBar_TextChanged"
                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
 
         <ListView Margin="10" Header="Results" HorizontalOptions="Start"

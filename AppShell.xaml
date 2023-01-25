@@ -8,7 +8,8 @@
     NavBarIsVisible="False"
     FlyoutBehavior="Locked" 
     FlyoutHeaderBehavior="CollapseOnScroll" FlyoutVerticalScrollMode="Auto"
-    FlyoutBackgroundColor="#6e9b19">
+    FlyoutBackgroundColor="#6e9b19"
+    MinimumWidthRequest="300">
 
     <Shell.ItemTemplate>
         <DataTemplate>

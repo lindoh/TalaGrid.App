@@ -1,3 +1,4 @@
+using TalaGrid.Services;
 using TalaGrid.ViewModels;
 
 namespace TalaGrid.Views;
@@ -5,11 +6,14 @@ namespace TalaGrid.Views;
 public partial class UpdateUserAccountView : ContentPage
 {
     UpdateUserAccViewModel viewModel;
+    SearchService searchService;
+
     public UpdateUserAccountView()
     {
         InitializeComponent();
         viewModel = new();
         BindingContext = viewModel;
+        searchService = new SearchService();
     }
     private void usersListView_ItemSelected(object sender, SelectedItemChangedEventArgs args)
     {
@@ -28,5 +32,11 @@ public partial class UpdateUserAccountView : ContentPage
             viewModel.SelectedUser = "Collector";
             viewModel.ShowBBCSection = false;
         }
+    }
+
+    private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        SearchBar searchBar = (SearchBar)sender;
+        viewModel.UsersList = searchService.FindUser(searchBar.Text, viewModel.SelectedUser);
     }
 }

@@ -5,7 +5,7 @@
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
-  <Identity Name="Farecost.TalaGrid" Publisher="CN=511DC740-BCFF-4487-BE1B-366B06D878A9" Version="2.0.0.0" />
+  <Identity Name="Farecost.TalaGrid" Publisher="CN=511DC740-BCFF-4487-BE1B-366B06D878A9" Version="2.1.0.0" />
 
   <Properties>
     <DisplayName>TalaGrid</DisplayName>

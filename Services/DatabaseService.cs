@@ -244,6 +244,48 @@ namespace TalaGrid.Services
 
         #endregion
 
+        #region Search Admin Username to Avoid Duplications
+        public int SearchAdminUsername(string username)
+        {
+            int id = 0;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.CommandText = "SearchAdminUsername";
+
+                sqlCommand.Parameters.AddWithValue("@Username", username);
+
+                //Open Sql Connection
+                sqlConnection.Open();
+
+                var sqlDataReader = sqlCommand.ExecuteReader();
+
+                if (sqlDataReader.HasRows)
+                {
+
+                    while (sqlDataReader.Read())
+                    {
+                        id = sqlDataReader.GetInt32(0);
+                    }
+                    sqlDataReader.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return id;
+        }
+
+        #endregion
+
         #region GetAll User's Data 
         /// <summary>
         /// Get all data that matches a given name, i.e., Firstname

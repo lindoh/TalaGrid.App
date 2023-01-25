@@ -5,8 +5,9 @@
              x:DataType="viewmodel:RegistrationViewModel"
              x:Class="TalaGrid.Views.RegistrationView"
              Title="RegistrationView"
-             >
-    <ScrollView Margin="30, 80, 30, 30" WidthRequest="450">
+             MaximumWidthRequest="800">
+    
+    <ScrollView Margin="80">
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -31,8 +32,8 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Title Tag                                 -->

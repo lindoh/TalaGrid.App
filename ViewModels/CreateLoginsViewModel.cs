@@ -15,6 +15,7 @@ namespace TalaGrid.ViewModels
             alerts = new AlertService();
             confirmPassword = "";
             userLogins = new Login();
+            controlLabel = new LabelControl();
         }
 
         [ObservableProperty]
@@ -30,11 +31,29 @@ namespace TalaGrid.ViewModels
 
         AlertService alerts;
 
+        [ObservableProperty]
+        LabelControl controlLabel;
 
         [RelayCommand]
         async void Continue()
         {
             Users user = new Users();
+
+            //Check if the Username provided is already taken
+            int id = dataService.SearchAdminUsername(UserLogins.Username);
+            if (id > 0)
+            {
+                ControlLabel.Color = Colors.Red;
+                ControlLabel.Message = ControlLabel.messages["Username Invalid"];
+                ControlLabel.ShowLabel = true;
+                return;
+            }
+            else
+            {
+                ControlLabel.Color = Colors.Green;
+                ControlLabel.Message = ControlLabel.messages["Username Valid"];
+                ControlLabel.ShowLabel = true;
+            }
 
             user = dataService.SearchAdmin(idNumber);
 
@@ -58,6 +77,7 @@ namespace TalaGrid.ViewModels
                     await alerts.ShowAlertAsync("Operation Failed", "The password could not be updated!");
             }
 
+            ControlLabel.ShowLabel = false;
             Clear();
 
         }

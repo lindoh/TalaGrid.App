@@ -12,9 +12,12 @@ public partial class CaptureNewBottlesView : ContentPage
         viewModel = new CaptureBottlesViewModel();
         BindingContext = viewModel;
         alerts = new AlertService();
+        viewModel.SelectedUser = "Collector";
+        searchService = new SearchService();
     }
 
     AlertService alerts;
+    SearchService searchService;
 
     CaptureBottlesViewModel viewModel;
 
@@ -117,5 +120,11 @@ public partial class CaptureNewBottlesView : ContentPage
     private void CapturedWasteList_ItemSelected(object sender, SelectedItemChangedEventArgs args)
     {
         viewModel.CapturedOtherWasteItem = args.SelectedItem as OtherWaste;
+    }
+
+    private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        SearchBar searchBar = (SearchBar)sender;
+        viewModel.UsersList = searchService.FindUser(searchBar.Text, viewModel.SelectedUser);
     }
 }

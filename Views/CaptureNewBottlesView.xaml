@@ -28,8 +28,8 @@
                 <Label Text="Search User from Database" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10"/>
                 <SearchBar x:Name="searchBar"  
-                       SearchCommand="{Binding SearchCommand}"
-                       SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+                           TextChanged="searchBar_TextChanged"
+                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
 
                 <!--List with matching user names-->
                 <ListView Margin="10" Header="Results" MaximumHeightRequest="90"
@@ -156,11 +156,20 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <!--Delete Selected Item Button-->
-                <Button Text="Delete Item" FontSize="Small" TextColor="#155ca1"
+                <HorizontalStackLayout>
+                    <!--Delete Selected Item Button-->
+                    <Button Text="Delete Item" FontSize="Small" TextColor="#155ca1"
                         BackgroundColor="White"
-                        Margin="20, 20, 20, 0" Padding="5" WidthRequest="200"
+                        Margin="20, 20, 0, 0" WidthRequest="200"
                         Command="{Binding DeleteItemCommand}"/>
+
+                    <!--Delete All Item Button-->
+                    <Button Text="Delete All Items" FontSize="Small" TextColor="#155ca1"
+                        BackgroundColor="White"
+                        Margin="0, 20, 20, 0" WidthRequest="200"
+                        Command="{Binding DeleteAllItemsCommand}"/>
+                </HorizontalStackLayout>
+                
 
                 <!-- Submit Button Tag -->
                 <Button x:Name="submitBtn" Text="Submit" FontSize="Small" BackgroundColor="#155ca1"

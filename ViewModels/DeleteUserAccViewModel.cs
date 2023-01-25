@@ -19,6 +19,7 @@ namespace TalaGrid.ViewModels
             UsersList = new ObservableCollection<Users>();
             searchService = new SearchService();
             ControlLabel = new LabelControl();
+            selectedUser = "Collector";
         }
 
         #region Class Properties
@@ -47,15 +48,6 @@ namespace TalaGrid.ViewModels
         #endregion
 
         #region ViewModel Buttons
-        /// <summary>
-        /// Search method calls the Database service method
-        /// to search for the current user in the database
-        /// </summary>
-        [RelayCommand]
-        void Search(string name)
-        {
-            UsersList = searchService.FindUser(name, selectedUser);
-        }
 
         [RelayCommand]
         void Delete()

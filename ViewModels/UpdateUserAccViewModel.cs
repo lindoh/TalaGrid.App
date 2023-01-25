@@ -19,6 +19,8 @@ namespace TalaGrid.ViewModels
             createUserAccViewModel = new CreateUserAccViewModel();
             searchService = new SearchService();
             ShowBBCSection = false;
+            User.Country = "South Africa";
+            BBC.Country = "South Africa";
         }
 
         #endregion
@@ -61,16 +63,6 @@ namespace TalaGrid.ViewModels
         #endregion
 
         #region ViewModel Buttons
-        /// <summary>
-        /// Search method calls the Database service method
-        /// to search for the current user in the database
-        /// </summary>
-        [RelayCommand]
-        void Search(string name)
-        {
-            UsersList = searchService.FindUser(name, selectedUser);
-
-        }
 
         /// <summary>
         /// Update Method calls the Database service Update Method
@@ -96,7 +88,7 @@ namespace TalaGrid.ViewModels
                     Clear();    //Clear text fields
                 }
             }
-            else if (CheckTextFields())
+            else
             {
                 await alerts.ShowAlertAsync("Operation Failed", "One or more empty text fields found");
             }
@@ -159,15 +151,29 @@ namespace TalaGrid.ViewModels
         {
             bool emptyFields = false;
 
-            if ((user.FirstName == "" || user.LastName == "" || user.IdNumber == "" ||
-                user.Gender == "" || user.HighestQlfn == "" || user.IncomeRange == "" ||
-                user.StreetAddress == "" || user.City == "" || user.Province == "" ||
-                user.Country == "" || bBC.BuyBackCentreName == "" || bBC.StreetAddress == "" ||
-                bBC.City == "" || bBC.Province == "" || bBC.Country == ""))
+            if (selectedUser == "Admin")
             {
-                emptyFields = true;
-
+                if (user.FirstName == "" || user.LastName == "" || user.IdNumber == "" ||
+               user.Gender == "" || user.HighestQlfn == "" || user.IncomeRange == "" ||
+               user.StreetAddress == "" || user.City == "" || user.Province == "" ||
+               user.Country == "" || bBC.BuyBackCentreName == "" || bBC.StreetAddress == "" ||
+               bBC.City == "" || bBC.Province == "" || bBC.Country == "")
+                {
+                    emptyFields = true;
+                }
             }
+            else
+            {
+                if (user.FirstName == "" || user.LastName == "" || user.IdNumber == "" ||
+               user.Gender == "" || user.HighestQlfn == "" || user.IncomeRange == "" ||
+               user.StreetAddress == "" || user.City == "" || user.Province == "" ||
+               user.Country == "")
+                {
+                    emptyFields = true;
+
+                }
+            }
+           
 
             return emptyFields;
         }
@@ -189,13 +195,11 @@ namespace TalaGrid.ViewModels
             user.Suburb = "";
             user.City = "";
             user.Province = "";
-            user.Country = "";
             bBC.BuyBackCentreName = "";
             bBC.StreetAddress = "";
             bBC.Suburb = "";
             bBC.City = "";
             bBC.Province = "";
-            bBC.Country = "";
         }
 
         #endregion

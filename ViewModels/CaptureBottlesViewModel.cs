@@ -3,12 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using TalaGrid.Models;
 using TalaGrid.Services;
 using System.Collections.ObjectModel;
-//using Android.Views;
 
-
-
-/*TO DO
-    */
 
 namespace TalaGrid.ViewModels
 {
@@ -118,12 +113,15 @@ namespace TalaGrid.ViewModels
         [ObservableProperty]
         ObservableCollection<Bottles> capturedBottles;
 
+        //Selected item from the captured list
         [ObservableProperty]
         Bottles capturedBottleItem;
 
+        //Store the collected waste material in the list before submition to database
         [ObservableProperty]
         ObservableCollection<OtherWaste> capturedWaste;
 
+        //Selected item from the captured list
         [ObservableProperty]
         OtherWaste capturedOtherWasteItem;
 
@@ -155,25 +153,9 @@ namespace TalaGrid.ViewModels
         [ObservableProperty]
         Transaction transactions;
 
-        [ObservableProperty]
-        Image imageSource;
-
-        [ObservableProperty]
-        int capturedBottleIndex;
-
         #endregion
 
         #region Button Methods
-
-        /// <summary>
-        /// Update the List of User's by searching the database
-        /// </summary>
-        /// <param name="name"> User's Name from SearchBox</param>
-        [RelayCommand]
-        public void Search(string name)
-        {
-            UsersList = searchService.FindUser(name, selectedUser);
-        }
 
         [RelayCommand]
         public async void Add_and_Calculate()
@@ -187,14 +169,23 @@ namespace TalaGrid.ViewModels
 
             if (showBottles)
             {
-                SaveCapturedBottles();
+                if (CapturedWaste.Count > 0)
+                    await alerts.ShowAlertAsync("Operation Failed", "One type of Waste Material can be captured at a time!");
+                else
+                    SaveCapturedBottles();
 
             }
             else if (showOtherWaste)
             {
-                SaveCapturedOtherWaste();
-                WasteMaterial.Size = 0.0;
-                WasteMaterial.Price = 0.0;
+                if (capturedBottles.Count > 0)
+                    await alerts.ShowAlertAsync("Operation Failed", "One type of Waste Material can be captured at a time!");
+                else
+                {
+                    SaveCapturedOtherWaste();
+                    WasteMaterialData.Size = 0.0;
+                    WasteMaterialData.Price = 0.0;
+                }
+                
             }
 
             //Reset Bottle size and Quantity
@@ -259,7 +250,7 @@ namespace TalaGrid.ViewModels
         }
 
         [RelayCommand]
-        public void DeleteItem()
+        public async void DeleteItem()
         {
             if(showBottles)
             {
@@ -267,19 +258,43 @@ namespace TalaGrid.ViewModels
                 {
                     Amount -= capturedBottleItem.Amount;
                     AmountString = $"R{Amount}";
-                    capturedBottles.Remove(capturedBottleItem);
-
+                    CapturedBottles.Remove(capturedBottleItem);
                 }
+                else
+                    await alerts.ShowAlertAsync("Error!", "Select an item to delete from the list");
             }
             else if (showOtherWaste)
             {
-                if(capturedOtherWasteItem != null)
+                if (capturedOtherWasteItem != null)
                 {
                     Amount -= capturedOtherWasteItem.Amount;
                     AmountString = $"R{Amount}";
                     CapturedWaste.Remove(capturedOtherWasteItem);
                 }
+                else
+                    await alerts.ShowAlertAsync("Error!", "Select an item to delete from the list");
             }
+
+        }
+
+        [RelayCommand]
+        public async void DeleteAllItems()
+        {
+            bool answer = await alerts.ShowConfirmationAsync("Confirmation", "Are you sure you want to delete all items", "Yes", "No");
+
+            if (answer)
+            {
+
+                Amount = 0.0;
+                AmountString = $"R{Amount}";
+
+                if (showBottles)
+                    CapturedBottles.Clear();
+                else if (showOtherWaste)
+                    CapturedWaste.Clear();
+            }
+            else
+                return;
             
         }
 
