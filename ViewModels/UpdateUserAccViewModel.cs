@@ -21,6 +21,7 @@ namespace TalaGrid.ViewModels
             ShowBBCSection = false;
             User.Country = "South Africa";
             BBC.Country = "South Africa";
+            BBC.Suburb = " ";
         }
 
         #endregion
@@ -124,6 +125,7 @@ namespace TalaGrid.ViewModels
                     alerts.ShowAlertAsync("BBC Data Update Required", "No assocciated BuyBackCentre data found, please Update!");
                     NewBBCUser = true;
                     BBC.Country = "South Africa";
+                    BBC.Suburb = " ";
                 }
                 else
                     NewBBCUser = false;

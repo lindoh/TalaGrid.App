@@ -42,7 +42,6 @@ namespace TalaGrid.ViewModels
             ShowBottles = true;
             ShowOtherWaste = false;
 
-            //vm = new();
         }
 
         #endregion
@@ -52,6 +51,7 @@ namespace TalaGrid.ViewModels
         SearchService searchService;
         AlertService alerts;
 
+        //Collector
         [ObservableProperty]
         Users user;
 
@@ -231,7 +231,6 @@ namespace TalaGrid.ViewModels
             if (display_0)   //If display is set to Banking Display
             {
                 transactions.TransactionType = "Bank Payment";
-                //transactions.Signature = null;
 
                 //Find the Banking details
                 Banker = dataService.SearchBanking(user.Id);
@@ -245,11 +244,13 @@ namespace TalaGrid.ViewModels
             //Set the Date and Time to the current computer time
             transactions.LocalDate = DateTime.Now;
 
-            if (transactions.LocalDate.Hour < 6 || transactions.LocalDate.Hour > 18)
+            //Set Operation Hours
+           /* if (transactions.LocalDate.Hour < 6 || transactions.LocalDate.Hour > 18)
             {
                 await alerts.ShowAlertAsync("Operation Failed", "Time out of business hours");
                 return;
             }
+           */
 
             if(transactions.TransactionType == String.Empty)
             {
@@ -257,10 +258,21 @@ namespace TalaGrid.ViewModels
                 return;
             }
 
-            if (showBottles)
+            //Which type of waste material is being captured
+            if (showBottles)            //Bottles
+            {
+                transactions.WasteMaterialType = "Bottles";
                 MaterialTransactionId(BottleIdList);
-            else if (showOtherWaste)
+            }
+            else if (showOtherWaste)    //Other Waste material
+            {
+                transactions.WasteMaterialType = "Other Waste Material";
                 MaterialTransactionId(otherWasteIdList);
+            }
+
+            //Save the collectorId and AdminId with the transaction
+            transactions.AdminId = buyBackCentre.AdminId;
+            transactions.CollectorId = user.Id;
 
         }
 
@@ -329,6 +341,7 @@ namespace TalaGrid.ViewModels
         /// </summary>
         public void selectedItem(object sender, SelectedItemChangedEventArgs args)
         {
+            //The collector selected from the Listview
             User = args.SelectedItem as Users;
         }
 
@@ -423,8 +436,8 @@ namespace TalaGrid.ViewModels
                 AmountString = $"R{amount}";
                 CapturedBottles.Clear();
                 CapturedWaste.Clear();
-                WasteMaterial.Size = 0.0;
-                WasteMaterial.Price = 0.0;
+                WasteMaterialData.Size = 0.0;
+                WasteMaterialData.Price = 0.0;
             }
 
             Quantity = 0;
@@ -455,16 +468,16 @@ namespace TalaGrid.ViewModels
                 Bottle.Quantity = quantity;
                 Bottle.BottleDataSourceId = BottleData.BottleDataSourceId;
                 Bottle.CollectorId = user.Id;
-                Bottle.BBCId = currentAdmin.UserLogin.BBCId;
+                Bottle.BBCId = buyBackCentre.BBCId;
                 Bottle.Amount = currentAmount;
-                Bottle.AdminId = currentAdmin.UserLogin.AdminId;
+                Bottle.AdminId = buyBackCentre.AdminId;
 
                 //Update and Display Captured Bottles
                 capturedBottles.Insert(0, Bottle);
 
             }
             else
-                await alerts.ShowAlertAsync("Operation Failed", "Please Login to continue.");
+                await alerts.ShowAlertAsync("Operation Failed", "Botlles were not captured correctly.");
         }
 
         private async void SaveCapturedOtherWaste()

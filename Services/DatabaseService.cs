@@ -1093,6 +1093,9 @@ namespace TalaGrid.Services
                 sqlCommand.Parameters.AddWithValue("WasteMaterialId", transaction.WasteMaterialId);
                 sqlCommand.Parameters.AddWithValue("BankDetailsId", transaction.BankDetailsId);
                 sqlCommand.Parameters.AddWithValue("Signature", transaction.Signature);
+                sqlCommand.Parameters.AddWithValue("WasteMaterialType", transaction.WasteMaterialType);
+                sqlCommand.Parameters.AddWithValue("AdminId", transaction.AdminId);
+                sqlCommand.Parameters.AddWithValue("CollectorId", transaction.CollectorId);
 
 
 
