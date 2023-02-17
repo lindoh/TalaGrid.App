@@ -33,14 +33,16 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#FFFFFF" />
+		<MauiIcon Include="Resources\Splash\appicon.png">
+		  <Color>#512BD4</Color>
+		  <ForegroundFile>Resources\AppIcon\appiconfg.svg</ForegroundFile>
+		</MauiIcon>
 
 		<!-- Splash Screen -->
     
-
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -50,12 +52,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Remove="Resources\Images\splash.svg" />
+	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_16s.png" />
+	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_24s.png" />
+	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_256s.png" />
+	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_32s.png" />
+	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_48s.png" />
+	  <None Remove="Resources\Images\appicon_scale_100s.png" />
+	  <None Remove="Resources\Images\appicon_scale_125s.png" />
+	  <None Remove="Resources\Images\appicon_scale_150s.png" />
+	  <None Remove="Resources\Images\appicon_scale_200s.png" />
+	  <None Remove="Resources\Images\appicon_scale_400s.png" />
+	  <None Remove="Resources\Images\appicon_targetsize_16s.png" />
+	  <None Remove="Resources\Images\appicon_targetsize_24s.png" />
+	  <None Remove="Resources\Images\appicon_targetsize_256s.png" />
+	  <None Remove="Resources\Images\appicon_targetsize_32s.png" />
+	  <None Remove="Resources\Images\appicon_targetsize_48s.png" />
+	  <None Remove="Resources\Splash\appicon.png" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Remove="Resources\Images\splash.svg" />
-	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Aspose.Email" Version="22.12.0" />
@@ -66,6 +80,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Resources\Styles\Strings.xaml.cs">
+	    <DependentUpon>Strings.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Resources\Styles\Strings.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\AboutView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

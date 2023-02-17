@@ -5,81 +5,76 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:TalaGrid"
     xmlns:views="clr-namespace:TalaGrid.Views"
-    NavBarIsVisible="False"
-    FlyoutBehavior="Locked" 
-    FlyoutHeaderBehavior="CollapseOnScroll" FlyoutVerticalScrollMode="Auto"
+    Shell.FlyoutBehavior="{x:OnPlatform Android=Flyout, WinUI=Locked}"
+    FlyoutVerticalScrollMode="Auto"
     FlyoutBackgroundColor="#6e9b19"
-    MinimumWidthRequest="300">
+    Shell.BackgroundColor="{x:OnPlatform Android=#6e9b19, WinUI=White}"
+    NavBarIsVisible="True">
+
 
     <Shell.ItemTemplate>
         <DataTemplate>
-            <Grid ColumnDefinitions="50, *" Padding="10">
+            <Grid ColumnDefinitions="50, *" Padding="5, 10, 0, 10">
                 <Image Source="{Binding Icon}" WidthRequest="20" HeightRequest="20"/>
                 <Label Grid.Column="1" Text="{Binding Title}" TextColor="Black" FontAttributes="Bold"/>
             </Grid>
         </DataTemplate>
     </Shell.ItemTemplate>
 
-
-    <FlyoutItem Title="Home" Icon="home.png">
+    <FlyoutItem Title="Home" Icon="home.png" x:DataType="views:HomeView" FlyoutDisplayOptions="AsSingleItem">
         <ShellContent 
               ContentTemplate="{x:DataTemplate views:HomeView}"
               Route="HomeView"/>
     </FlyoutItem>
-
-    <FlyoutItem Title="Capture New Waste Material" Icon="recycle.png">
+    
+    <FlyoutItem Title="Capture New Waste Material" Icon="recycle.png" x:DataType="views:CaptureNewBottlesView">
         <ShellContent 
               ContentTemplate="{x:DataTemplate views:CaptureNewBottlesView}"
               Route="CaptureNewBottlesView"/>
     </FlyoutItem>
-
-    <FlyoutItem Title="Create User Account" Icon="user.png">
+    
+    <FlyoutItem Title="Create User Account" Icon="user.png" x:DataType="views:CreateUserAccountView">
         <ShellContent 
               ContentTemplate="{x:DataTemplate views:CreateUserAccountView}"
               Route="CreateUserAccountView"/>
     </FlyoutItem>
-
-    <FlyoutItem Title="Update User Account" Icon="update.png">
+    
+    <FlyoutItem Title="Update User Account" Icon="update.png" x:DataType="views:UpdateUserAccountView">
         <ShellContent 
               ContentTemplate="{x:DataTemplate views:UpdateUserAccountView}"
               Route="UpdateUserAccountView"/>
     </FlyoutItem>
-
-    <FlyoutItem Title="Update Banking Details" Icon="usd_circle.png">
+    
+    <FlyoutItem Title="Update Banking Details" Icon="usd_circle.png" x:DataType="views:UpdateBankingView">
         <ShellContent 
               ContentTemplate="{x:DataTemplate views:UpdateBankingView}"
               Route="UpdateBankingView"/>
     </FlyoutItem>
-
-    <FlyoutItem Title="Delete User Account" Icon="delete_user.png">
+    
+    <FlyoutItem Title="Delete User Account" Icon="delete_user.png" x:DataType="views:DeleteUserAccView">
         <ShellContent  
               ContentTemplate="{x:DataTemplate views:DeleteUserAccView}"
               Route="DeleteUserAccView"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="About" Icon="about.png">
+    <FlyoutItem Title="About" Icon="about.png" x:DataType="views:AboutView">
         <ShellContent 
               ContentTemplate="{x:DataTemplate views:AboutView}"
               Route="PaymentView"/>
     </FlyoutItem>
 
-    <!--
-    <FlyoutItem Title="Settings" Icon="settings.png">
-        <ShellContent/>
-    </FlyoutItem>
-    -->
-
-    <FlyoutItem Title="Manage Password" Icon="password.png">
-        <ShellContent
+    <FlyoutItem Title="Manage Password" Icon="password.png" x:DataType="views:ManagePasswordView">
+            <ShellContent
             ContentTemplate="{x:DataTemplate views:ManagePasswordView}"
             Route="ManagePasswordView"/>
-    </FlyoutItem>
+        </FlyoutItem>
 
-    <FlyoutItem Title="Logout" Icon="logout.png">
+    <FlyoutItem Title="Logout" Icon="logout.png" x:DataType="views:LogoutView">
         <ShellContent
             ContentTemplate="{x:DataTemplate views:LogoutView}"
             Route="LogoutView"/>
     </FlyoutItem >
+
 
 
 </Shell>

@@ -307,7 +307,12 @@ namespace TalaGrid.ViewModels
         [RelayCommand]
         public async void DeleteAllItems()
         {
-            bool answer = await alerts.ShowConfirmationAsync("Confirmation", "Are you sure you want to delete all items", "Yes", "No");
+            bool answer = false;
+
+            if (capturedBottleItem != null || capturedOtherWasteItem != null)
+                answer = await alerts.ShowConfirmationAsync("Confirmation", "Are you sure you want to delete all items", "Yes", "No");
+            else
+                await alerts.ShowAlertAsync("Error!", "Select an item to delete from the list");
 
             if (answer)
             {

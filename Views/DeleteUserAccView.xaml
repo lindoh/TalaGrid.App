@@ -5,10 +5,9 @@
              xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
              x:DataType="viewmodel:DeleteUserAccViewModel"
              xmlns:model="clr-namespace:TalaGrid.Models"
-             Title="DeleteUserAccView"
              BackgroundImageSource="background_desktop.jpeg">
 
-    <VerticalStackLayout WidthRequest="450" Margin="30">
+    <VerticalStackLayout MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" Margin="10"  Padding="10">
         <Label Text="Delete Collector Account" VerticalOptions="Center" HorizontalOptions="Center" 
                FontSize="Title" TextColor="#155ca1" Margin="10"/>
 

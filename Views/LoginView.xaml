@@ -4,13 +4,11 @@
              xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
              x:DataType="viewmodel:LoginViewModel"
              x:Class="TalaGrid.Views.LoginView"
-             xmlns:forms="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
-             Title="LoginView"
              MaximumWidthRequest="600">
 
-  
 
-    <ScrollView>
+
+    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" Margin="10"  Padding="10">
         
         <VerticalStackLayout Margin="80">
             <Image Source="appicon.png" 
@@ -31,7 +29,7 @@
             Margin="10, 5, 5, 0"/>
             <Entry 
             VerticalOptions="Start" HorizontalOptions="Fill" 
-            FontSize="Caption" TextColor="Black"
+            FontSize="Caption" TextColor="Black" BackgroundColor="LightGray"
             Margin="10, 0, 5, 5" Text="{Binding UserLogin.Username, Mode=TwoWay}"/>
 
             <!--Password Tag-->
@@ -40,7 +38,7 @@
             FontSize="Caption" TextColor="Gray"
             Margin="10, 5, 5, 0"/>
             <Entry 
-            VerticalOptions="Start" HorizontalOptions="Fill" 
+            VerticalOptions="Start" HorizontalOptions="Fill" BackgroundColor="LightGray"
             FontSize="Caption" TextColor="Black" IsPassword="True"
             Margin="10, 0, 5, 5" Text="{Binding UserLogin.Password, Mode=TwoWay}"/>
 

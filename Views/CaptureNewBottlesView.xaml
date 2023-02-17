@@ -6,10 +6,9 @@
              xmlns:cct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
              x:DataType="viewmodel:CaptureBottlesViewModel"
              x:Class="TalaGrid.Views.CaptureNewBottlesView"
-             Title="CaptureWasteMaterial"
              BackgroundImageSource="background_desktop.jpeg">
-    
-    <ScrollView WidthRequest="450" Margin="20, 30">
+
+    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" Margin="10"  Padding="10">
         <VerticalStackLayout>
             <VerticalStackLayout IsVisible="{Binding CaptureBottleDisplay}">
                 <Label Text="Capture New Waste Material" VerticalOptions="Center" HorizontalOptions="Center" 
@@ -32,7 +31,7 @@
                            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
 
                 <!--List with matching user names-->
-                <ListView Margin="10" Header="Results" MaximumHeightRequest="90"
+                <ListView Margin="10" Header="Results" MaximumHeightRequest="120"
                       x:Name="usersListView" BackgroundColor="LightGray" 
                       ItemSelected="usersListView_ItemSelected"
                       ItemsSource="{Binding UsersList}">
@@ -83,8 +82,8 @@
                 <VerticalStackLayout IsVisible="{Binding ShowBottles}">
                     <Label Text="Quantity" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
-                    <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
-                    TextColor="Black" Text="{Binding Quantity, Mode=TwoWay}"/>
+                    <Entry  VerticalOptions="Start" HorizontalOptions="Fill" FontSize="Caption" Margin="10, 0, 5, 5"
+                    TextColor="Black" Text="{Binding Quantity, Mode=TwoWay}" BackgroundColor="LightGray"/>
                 </VerticalStackLayout>
                 
 
@@ -98,7 +97,7 @@
                    FontSize="Caption" TextColor="Gray" Margin="10"/>
                         <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
                                 TextColor="Black" Text="{Binding WasteMaterialData.Size, Mode=TwoWay}" 
-                                Margin="10,0" />
+                                Margin="10" BackgroundColor="LightGray" />
                     </VerticalStackLayout>
 
                     <!--Price (Rands)-->
@@ -107,7 +106,7 @@
                    FontSize="Caption" TextColor="Gray" Margin="10"/>
                         <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
                                 TextColor="Black" Text="{Binding WasteMaterialData.Price, Mode=TwoWay}" 
-                                Margin="10,0"/>
+                                Margin="10,0" BackgroundColor="LightGray"/>
                     </VerticalStackLayout>
                 </HorizontalStackLayout>
                 <!--=============================================================================================================-->
@@ -156,17 +155,17 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <HorizontalStackLayout>
+                <HorizontalStackLayout Margin="5">
                     <!--Delete Selected Item Button-->
                     <Button Text="Delete Item" FontSize="Small" TextColor="#155ca1"
                         BackgroundColor="White"
-                        Margin="20, 20, 0, 0" WidthRequest="200"
+                        Margin="10, 0, 0, 0" 
                         Command="{Binding DeleteItemCommand}"/>
 
                     <!--Delete All Item Button-->
                     <Button Text="Delete All Items" FontSize="Small" TextColor="#155ca1"
                         BackgroundColor="White"
-                        Margin="0, 20, 20, 0" WidthRequest="200"
+                        Margin="0, 0, 10, 0" 
                         Command="{Binding DeleteAllItemsCommand}"/>
                 </HorizontalStackLayout>
                 

@@ -3,11 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
              x:DataType="viewmodel:CreateLoginsViewModel"
-             x:Class="TalaGrid.Views.CreateLoginsView"
-             Title="CreateLoginsView"
-             >
+             x:Class="TalaGrid.Views.CreateLoginsView">
 
-    <VerticalStackLayout Margin="30" MaximumWidthRequest="600">
+    <VerticalStackLayout MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" Margin="10"  Padding="10">
         <Image Source="appicon.png"
                HorizontalOptions="Center" VerticalOptions="Start" 
                MaximumWidthRequest="150" MaximumHeightRequest="150"/>
@@ -26,7 +24,7 @@
             Margin="10, 50, 5, 0"/>
         <Entry 
             VerticalOptions="Start" HorizontalOptions="Fill" 
-            FontSize="Caption" TextColor="Black"
+            FontSize="Caption" TextColor="Black" BackgroundColor="LightGray"
             Margin="10, 0, 5, 5" Text="{Binding UserLogins.Username, Mode=TwoWay}"/>
 
         <!--Password Tag-->
@@ -35,7 +33,7 @@
             FontSize="Caption" TextColor="Gray"
             Margin="10, 5, 5, 0"/>
         <Entry 
-            VerticalOptions="Start" HorizontalOptions="Fill" 
+            VerticalOptions="Start" HorizontalOptions="Fill" BackgroundColor="LightGray"
             FontSize="Caption" TextColor="Black" IsPassword="True"
             Margin="10, 0, 5, 5" Text="{Binding UserLogins.Password, Mode=TwoWay}"/>
 
@@ -45,7 +43,7 @@
             FontSize="Caption" TextColor="Gray"
             Margin="10, 5, 5, 0"/>
         <Entry 
-            VerticalOptions="Start" HorizontalOptions="Fill" 
+            VerticalOptions="Start" HorizontalOptions="Fill" BackgroundColor="LightGray"
             FontSize="Caption" TextColor="Black" IsPassword="True"
             Margin="10, 0, 5, 5" Text="{Binding ConfirmPassword, Mode=TwoWay}"/>
         

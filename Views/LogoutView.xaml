@@ -4,10 +4,10 @@
              xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
              x:DataType="viewmodel:LoginViewModel"
              x:Class="TalaGrid.Views.LogoutView"
-             Title="LogoutView" 
              BackgroundImageSource="background_desktop.jpeg">
 
-    <VerticalStackLayout Margin="20" HorizontalOptions="Center" VerticalOptions="Center">
+    <VerticalStackLayout MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" Margin="10"  Padding="10"
+                         HorizontalOptions="Center" VerticalOptions="Center">
         <Label Text="We hope to see you again soon!" FontSize="Title" FontAttributes="Italic"
                TextColor="#155ca1" HorizontalOptions="Center"
                Margin="10"/>
