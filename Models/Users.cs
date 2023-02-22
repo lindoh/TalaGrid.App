@@ -8,7 +8,9 @@ namespace TalaGrid.Models
     {
         public Users()
         {
-
+            Email = "";
+            CellNumber = "";
+            Suburb = "";
         }
 
         #region Class Properties

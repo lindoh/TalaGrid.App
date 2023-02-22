@@ -156,21 +156,20 @@ namespace TalaGrid.ViewModels
 
             if (selectedUser == "Admin")
             {
-                if (user.FirstName == "" || user.LastName == "" || user.IdNumber == "" ||
-               user.Gender == "" || user.HighestQlfn == "" || user.IncomeRange == "" ||
-               user.StreetAddress == "" || user.City == "" || user.Province == "" ||
-               user.Country == "" || bBC.BuyBackCentreName == "" || bBC.StreetAddress == "" ||
-               bBC.City == "" || bBC.Province == "" || bBC.Country == "")
+                if (user.FirstName == null || user.LastName == null || user.IdNumber == null ||
+                user.Gender == null || user.HighestQlfn == null || user.IncomeRange == null ||
+                user.StreetAddress == null || user.City == null || user.Province == null || user.Country == null
+                || bBC.BuyBackCentreName == null || bBC.StreetAddress == null ||
+               bBC.City == null || bBC.Province == null || bBC.Country == null)
                 {
                     emptyFields = true;
                 }
             }
             else
             {
-                if (user.FirstName == "" || user.LastName == "" || user.IdNumber == "" ||
-               user.Gender == "" || user.HighestQlfn == "" || user.IncomeRange == "" ||
-               user.StreetAddress == "" || user.City == "" || user.Province == "" ||
-               user.Country == "")
+                if (user.FirstName == null || user.LastName == null || user.IdNumber == null ||
+                user.Gender == null || user.HighestQlfn == null || user.IncomeRange == null ||
+                user.StreetAddress == null || user.City == null || user.Province == null || user.Country == null)
                 {
                     emptyFields = true;
 

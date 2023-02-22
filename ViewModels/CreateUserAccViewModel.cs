@@ -51,15 +51,15 @@ namespace TalaGrid.ViewModels
             {
                 await alerts.ShowAlertAsync("Operation Failed", "Id Number must be 13 digits long");
             }
-            else if (!CheckTextFields(this.user))
+            else if (CheckTextFields(this.user))
+            {
+                await alerts.ShowAlertAsync("Operation Failed", "One or more empty text fields found");  
+            }
+            else
             {
                 dataService.SaveData(user);
                 await alerts.ShowAlertAsync("Success", "User Account Created Successfully");
                 Clear(this.user);    //Clear text fields
-            }
-            else
-            {
-                await alerts.ShowAlertAsync("Operation Failed", "One or more empty text fields found");
             }
             
 
@@ -76,9 +76,9 @@ namespace TalaGrid.ViewModels
         {
             bool emptyFields = false;
 
-            if (user.FirstName == "" || user.LastName == "" || user.IdNumber == "" ||
-                user.Gender == "" || user.HighestQlfn == "" || user.IncomeRange == "" ||
-                user.StreetAddress == "" || user.City == "" || user.Province == "" || user.Country == "")
+            if (user.FirstName == null || user.LastName == null || user.IdNumber == null ||
+                user.Gender == null || user.HighestQlfn == null || user.IncomeRange == null ||
+                user.StreetAddress == null || user.City == null || user.Province == null || user.Country == null)
             {
                 emptyFields = true;
 
