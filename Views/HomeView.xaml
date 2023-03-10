@@ -12,8 +12,7 @@
                Margin="10"/>
         <Label Text="Welcome Back" FontSize="Small" FontAttributes="Italic"
                TextColor="#155ca1" HorizontalOptions="Center"/>
-        <Label Text="Navigate through the left pane to capture collected bottles, 
-               Update user information and banking details, delete user account, and more."
+        <Label Text="Navigate through the left pane to capture collected bottles,Update user information and banking details, delete user account, and more."
                TextColor="Black" HorizontalOptions="CenterAndExpand" Margin="10, 50, 10, 10"
                Padding="20"/>
 

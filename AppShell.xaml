@@ -14,7 +14,7 @@
 
     <Shell.ItemTemplate>
         <DataTemplate>
-            <Grid ColumnDefinitions="50, *" Padding="5, 10, 0, 10">
+            <Grid ColumnDefinitions="50, *" Padding="10">
                 <Image Source="{Binding Icon}" WidthRequest="20" HeightRequest="20"/>
                 <Label Grid.Column="1" Text="{Binding Title}" TextColor="Black" FontAttributes="Bold"/>
             </Grid>
@@ -22,7 +22,7 @@
     </Shell.ItemTemplate>
 
     <FlyoutItem Title="Home" Icon="home.png" x:DataType="views:HomeView" FlyoutDisplayOptions="AsSingleItem">
-        <ShellContent 
+        <ShellContent
               ContentTemplate="{x:DataTemplate views:HomeView}"
               Route="HomeView"/>
     </FlyoutItem>

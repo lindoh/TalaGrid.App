@@ -39,8 +39,9 @@
                 <!--Bank Name Tag-->
                 <Label Text="Bank Name" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
-                <Picker HorizontalOptions="Start" FontSize="Caption" TextColor="Black"
-                    SelectedItem="{Binding Banker.BankName, Mode=TwoWay}" BackgroundColor="LightGray">
+                <Picker FontSize="Caption" TextColor="Black"
+                        SelectedItem="{Binding Banker.BankName, Mode=TwoWay}" BackgroundColor="LightGray"
+                        Margin="10, 0" HorizontalOptions="Start">
                     <Picker.Items>
                         <x:String>Absa</x:String>
                         <x:String>Capitec</x:String>
@@ -54,21 +55,21 @@
                 <!--Branch Name Tag-->
                 <Label Text="Branch Name" VerticalOptions="End" HorizontalOptions="Start" 
                        FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
-            <Entry VerticalOptions="Start" HorizontalOptions="Start" BackgroundColor="LightGray"
+                <Entry Margin="10, 0" HorizontalOptions="Start" BackgroundColor="LightGray"
                        FontSize="Caption" TextColor="Black" 
                        Text="{Binding Banker.BranchName, Mode=TwoWay}"/>
 
                 <!--Branch Code Tag-->
                 <Label Text="Branch Code" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
-            <Entry VerticalOptions="Start" HorizontalOptions="Start" BackgroundColor="LightGray"
+                <Entry Margin="10, 0" HorizontalOptions="Start" BackgroundColor="LightGray"
                        FontSize="Caption" TextColor="Black"
                        Text="{Binding Banker.BranchCode, Mode=TwoWay}"/>
 
                 <!--Account Type Tag-->
                 <Label Text="Account Type" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
-                <Picker HorizontalOptions="Start" FontSize="Caption" TextColor="Black"
+                <Picker Margin="10, 0" HorizontalOptions="Start" FontSize="Caption" TextColor="Black"
                         SelectedItem="{Binding Banker.AccountType, Mode=TwoWay}" BackgroundColor="LightGray">
                     <Picker.Items>
                         <x:String>Savings</x:String>
@@ -79,7 +80,7 @@
                 <!--Account Number Tag-->
                 <Label Text="Account Number" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10, 5, 5, 0"/>
-            <Entry VerticalOptions="Start" HorizontalOptions="Start" BackgroundColor="LightGray"
+                <Entry Margin="10, 0" HorizontalOptions="Start" BackgroundColor="LightGray"
                        FontSize="Caption" TextColor="Black"
                        Text="{Binding Banker.AccountNumber, Mode=TwoWay}"/>
 

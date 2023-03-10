@@ -74,6 +74,13 @@ namespace TalaGrid.ViewModels
         [ObservableProperty]
         WasteMaterial wasteMaterialData;
 
+        [ObservableProperty]
+        double wasteSize;
+
+        [ObservableProperty]
+        double wastePrice;
+
+
         //List of Other Waste Material
         [ObservableProperty]
         ObservableCollection<WasteMaterial> wasteMaterialList;
@@ -258,6 +265,10 @@ namespace TalaGrid.ViewModels
                 return;
             }
 
+            //Save the collectorId and AdminId with the transaction
+            transactions.AdminId = buyBackCentre.AdminId;
+            transactions.CollectorId = user.Id;
+
             //Which type of waste material is being captured
             if (showBottles)            //Bottles
             {
@@ -270,9 +281,7 @@ namespace TalaGrid.ViewModels
                 MaterialTransactionId(otherWasteIdList);
             }
 
-            //Save the collectorId and AdminId with the transaction
-            transactions.AdminId = buyBackCentre.AdminId;
-            transactions.CollectorId = user.Id;
+            
 
         }
 
@@ -409,7 +418,7 @@ namespace TalaGrid.ViewModels
             if (wasteMaterialData.MaterialName != null)
             {
                 //Calculate current amount of the selected waste material
-                CurrentAmount = wasteMaterialData.Size * wasteMaterialData.Price;
+                CurrentAmount = wasteSize * wastePrice;
 
                 Amount += currentAmount;
                 AmountString = $"R{amount}";
@@ -487,13 +496,13 @@ namespace TalaGrid.ViewModels
 
         private async void SaveCapturedOtherWaste()
         {
-            if (wasteMaterialData.Size == 0)
+            if (wasteSize == 0)
             {
                 await alerts.ShowAlertAsync("Operation Failed", "Size Cannot be Zero");
                 return;
             }
 
-            if (wasteMaterialData.Price == 0)
+            if (wastePrice == 0)
             {
                 await alerts.ShowAlertAsync("Operation Failed", "Price Cannot be Zero");
                 return;
@@ -508,8 +517,8 @@ namespace TalaGrid.ViewModels
 
                 //Update the Object
                 WasteMaterial.MaterialName = wasteMaterialData.MaterialName;
-                WasteMaterial.Price = wasteMaterialData.Price;
-                WasteMaterial.Size = wasteMaterialData.Size;
+                WasteMaterial.Price = wastePrice;
+                WasteMaterial.Size = wasteSize;
                 WasteMaterial.CollectorId = user.Id;
                 WasteMaterial.BBCId = currentAdmin.UserLogin.BBCId;
                 WasteMaterial.Amount = currentAmount;

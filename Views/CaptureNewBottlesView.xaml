@@ -6,9 +6,10 @@
              xmlns:cct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
              x:DataType="viewmodel:CaptureBottlesViewModel"
              x:Class="TalaGrid.Views.CaptureNewBottlesView"
-             BackgroundImageSource="background_desktop.jpeg">
+             BackgroundImageSource="background_desktop.jpeg"
+             >
 
-    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" Margin="10"  Padding="10">
+    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" HorizontalOptions="Center">
         <VerticalStackLayout>
             <VerticalStackLayout IsVisible="{Binding CaptureBottleDisplay}">
                 <Label Text="Capture New Waste Material" VerticalOptions="Center" HorizontalOptions="Center" 
@@ -92,28 +93,28 @@
                 <HorizontalStackLayout IsVisible="{Binding ShowOtherWaste}">
 
                     <!--Size in Kg-->
-                    <VerticalStackLayout>
-                        <Label Text="Size (Kg)" VerticalOptions="End" HorizontalOptions="Start" 
-                   FontSize="Caption" TextColor="Gray" Margin="10"/>
-                        <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
-                                TextColor="Black" Text="{Binding WasteMaterialData.Size, Mode=TwoWay}" 
+                    <VerticalStackLayout HorizontalOptions="Start">
+                        <Label Text="Size (Kg)"  
+                               FontSize="Caption" TextColor="Gray" Margin="10"/>
+                        <Entry  FontSize="Caption" 
+                                TextColor="Black" Text="{Binding WasteSize, Mode=TwoWay}" 
                                 Margin="10" BackgroundColor="LightGray" />
                     </VerticalStackLayout>
 
                     <!--Price (Rands)-->
-                    <VerticalStackLayout>
-                        <Label Text="Price (Rands)" VerticalOptions="End" HorizontalOptions="Start" 
-                   FontSize="Caption" TextColor="Gray" Margin="10"/>
-                        <Entry  VerticalOptions="Start" HorizontalOptions="Start" FontSize="Caption" 
-                                TextColor="Black" Text="{Binding WasteMaterialData.Price, Mode=TwoWay}" 
-                                Margin="10,0" BackgroundColor="LightGray"/>
+                    <VerticalStackLayout HorizontalOptions="Start">
+                        <Label Text="Price (Rands)"  
+                               FontSize="Caption" TextColor="Gray" Margin="10"/>
+                        <Entry  FontSize="Caption" 
+                                TextColor="Black" Text="{Binding WastePrice, Mode=TwoWay}" 
+                                Margin="10" BackgroundColor="LightGray"/>
                     </VerticalStackLayout>
                 </HorizontalStackLayout>
                 <!--=============================================================================================================-->
 
                 <!-- Add New Data Button Tag -->
                 <Button x:Name="addNewDataBtn" Text="Calculate and Add New Entry" FontSize="Small" BackgroundColor="#155ca1"
-                    Margin="20" Padding="5" Command="{Binding Add_and_CalculateCommand}"/>
+                    Margin="20" HorizontalOptions="Center" Command="{Binding Add_and_CalculateCommand}"/>
 
                 <!--Amount Due Tag-->
                 <HorizontalStackLayout>
@@ -155,17 +156,18 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <HorizontalStackLayout Margin="5">
+                <HorizontalStackLayout Margin="5" HorizontalOptions="Center">
                     <!--Delete Selected Item Button-->
                     <Button Text="Delete Item" FontSize="Small" TextColor="#155ca1"
-                        BackgroundColor="White"
-                        Margin="10, 0, 0, 0" 
+                        BackgroundColor="White" Padding="30, 0"
+                        Margin="10, 10, 0, 0" 
+                            
                         Command="{Binding DeleteItemCommand}"/>
 
                     <!--Delete All Item Button-->
                     <Button Text="Delete All Items" FontSize="Small" TextColor="#155ca1"
-                        BackgroundColor="White"
-                        Margin="0, 0, 10, 0" 
+                        BackgroundColor="White" 
+                        Margin="0, 10, 10, 0" 
                         Command="{Binding DeleteAllItemsCommand}"/>
                 </HorizontalStackLayout>
                 
