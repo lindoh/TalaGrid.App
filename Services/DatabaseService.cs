@@ -25,9 +25,14 @@ namespace TalaGrid.Services
             try
             {
                 //SQL Authentication Connection String
-                string DataConnection = "Server=tcp:farecost-server.database.windows.net,1433;Initial Catalog=GreenWayAfrica_DB;" +
+                 string DataConnection = "Server=tcp:farecost-server.database.windows.net,1433;Initial Catalog=GreenWayAfrica_DB;" +
                     "Persist Security Info=False;User ID=CloudSAb2b69ffa;Password=P@55Code;MultipleActiveResultSets=False;" +
                     "Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+                
+
+               /* 
+                * string DataConnection = "Server=LAPTOP-J3M5FNUA;Database=GreenWayData;User ID=AdminSql;Password=P@55Code"; 
+                */
 
                 sqlConnection = new SqlConnection(DataConnection);
                 sqlCommand = new SqlCommand();

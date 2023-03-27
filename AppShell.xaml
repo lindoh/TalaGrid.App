@@ -6,6 +6,8 @@
     xmlns:local="clr-namespace:TalaGrid"
     xmlns:views="clr-namespace:TalaGrid.Views"
     Shell.FlyoutBehavior="{x:OnPlatform Android=Flyout, WinUI=Locked}"
+    FlyoutHeader="Menu"
+    FlyoutHeaderBehavior="Fixed"
     FlyoutVerticalScrollMode="Auto"
     FlyoutBackgroundColor="#6e9b19"
     Shell.BackgroundColor="{x:OnPlatform Android=#6e9b19, WinUI=White}"

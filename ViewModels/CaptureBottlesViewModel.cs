@@ -241,10 +241,20 @@ namespace TalaGrid.ViewModels
 
                 //Find the Banking details
                 Banker = dataService.SearchBanking(user.Id);
-                transactions.BankDetailsId = banker.BankDetailsId;
+
+                if (Banker != null)
+                    transactions.BankDetailsId = banker.BankDetailsId;
+                else
+                    await alerts.ShowAlertAsync("Operation Failed", "No banking details associated with the collector were found!");
+                
             }
             else if (display_1)      //If display is set to MobileMoney Display
-                transactions.TransactionType = "Mobile Money Payment";
+            {
+                if(user.CellNumber != null)
+                    transactions.TransactionType = "Mobile Money Payment";
+                else
+                    await alerts.ShowAlertAsync("Operation Failed", "No cellphone number associated with the collector was found!");
+            }
             else if (display_2)
                 transactions.TransactionType = "Cash Payment";
 
@@ -402,7 +412,7 @@ namespace TalaGrid.ViewModels
                 else if (size >= 2000)
                     CurrentAmount = Quantity * 1.5;
 
-                Amount += CurrentAmount;
+                Amount += Math.Round((Double)CurrentAmount, 3);
                 AmountString = $"R{amount}";
 
             }
@@ -420,7 +430,7 @@ namespace TalaGrid.ViewModels
                 //Calculate current amount of the selected waste material
                 CurrentAmount = wasteSize * wastePrice;
 
-                Amount += currentAmount;
+                Amount += Math.Round((Double)CurrentAmount, 3);
                 AmountString = $"R{amount}";
             }
             else

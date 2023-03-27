@@ -52,22 +52,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_16s.png" />
-	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_24s.png" />
-	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_256s.png" />
-	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_32s.png" />
-	  <None Remove="Resources\Images\appicon_altform_unplated_targetsize_48s.png" />
-	  <None Remove="Resources\Images\appicon_scale_100s.png" />
-	  <None Remove="Resources\Images\appicon_scale_125s.png" />
-	  <None Remove="Resources\Images\appicon_scale_150s.png" />
-	  <None Remove="Resources\Images\appicon_scale_200s.png" />
-	  <None Remove="Resources\Images\appicon_scale_400s.png" />
-	  <None Remove="Resources\Images\appicon_targetsize_16s.png" />
-	  <None Remove="Resources\Images\appicon_targetsize_24s.png" />
-	  <None Remove="Resources\Images\appicon_targetsize_256s.png" />
-	  <None Remove="Resources\Images\appicon_targetsize_32s.png" />
-	  <None Remove="Resources\Images\appicon_targetsize_48s.png" />
-	  <None Remove="Resources\Splash\appicon.png" />
+	  <None Include="C:\Users\lindo\.nuget\packages\microsoft.windowsappsdk\1.1.5\buildTransitive\Microsoft.Build.Msix.Packaging.targets" Link="Microsoft.Build.Msix.Packaging.targets" />
 	</ItemGroup>
 
 

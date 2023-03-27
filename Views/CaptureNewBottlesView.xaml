@@ -6,10 +6,9 @@
              xmlns:cct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
              x:DataType="viewmodel:CaptureBottlesViewModel"
              x:Class="TalaGrid.Views.CaptureNewBottlesView"
-             BackgroundImageSource="background_desktop.jpeg"
-             >
+             BackgroundImageSource="background_desktop.jpeg">
 
-    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" HorizontalOptions="Center">
+    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=350, WinUI=600}" HorizontalOptions="Center">
         <VerticalStackLayout>
             <VerticalStackLayout IsVisible="{Binding CaptureBottleDisplay}">
                 <Label Text="Capture New Waste Material" VerticalOptions="Center" HorizontalOptions="Center" 
@@ -303,11 +302,12 @@
                         <CheckBox x:Name="ClearCheckBox" CheckedChanged="CheckBox_CheckedChanged" Margin="5"/>
                     </HorizontalStackLayout>
 
-                    <Button Text="Sign" Clicked="Button_Clicked"/>
+                    <Button Text="Sign" FontSize="Small" Clicked="Button_Clicked" Margin="20" 
+                            Padding="5" WidthRequest="200"/>
                 </VerticalStackLayout>
 
                 <Button Text="Submit Transaction Record" FontSize="Small" BackgroundColor="#155ca1"
-                    Margin="20" Padding="5" Command="{Binding SubmitTransactionCommand}"/>
+                    Margin="20" Padding="5" HorizontalOptions="Center" Command="{Binding SubmitTransactionCommand}"/>
             </VerticalStackLayout>
 
         </VerticalStackLayout>

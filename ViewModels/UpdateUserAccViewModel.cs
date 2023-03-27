@@ -76,6 +76,8 @@ namespace TalaGrid.ViewModels
             {
                 await alerts.ShowAlertAsync("Operation Failed", "Id Number must be 13 digits long");
             }
+            if (User.CellNumber.Length != 10)
+                await alerts.ShowAlertAsync("Operation Failed", "Cell Number must be 10 digits long");
             else if (!CheckTextFields())
             {
                 bool isUpdated = dataService.Update(user, selectedUser);
@@ -125,7 +127,7 @@ namespace TalaGrid.ViewModels
                     alerts.ShowAlertAsync("BBC Data Update Required", "No assocciated BuyBackCentre data found, please Update!");
                     NewBBCUser = true;
                     BBC.Country = "South Africa";
-                    BBC.Suburb = " ";
+                    BBC.Suburb = "";
                 }
                 else
                     NewBBCUser = false;

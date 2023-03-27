@@ -8,7 +8,7 @@
 
 
 
-    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" Margin="10"  Padding="10">
+    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" HorizontalOptions="Center">
         
         <VerticalStackLayout Margin="80">
             <Image Source="appicon.png" 

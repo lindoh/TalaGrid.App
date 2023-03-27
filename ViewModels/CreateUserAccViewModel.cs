@@ -21,9 +21,9 @@ namespace TalaGrid.ViewModels
             alerts = new AlertService();
 
             //Default Values
-            User.Email = " ";
-            user.Suburb = " ";
-            User.CellNumber = " ";
+            User.Email = "";
+            user.Suburb = "";
+            User.CellNumber = "";
             User.Country = "South Africa";
 
         }
@@ -51,6 +51,8 @@ namespace TalaGrid.ViewModels
             {
                 await alerts.ShowAlertAsync("Operation Failed", "Id Number must be 13 digits long");
             }
+            if (User.CellNumber.Length != 10)
+                await alerts.ShowAlertAsync("Operation Failed", "Cell Number must be 10 digits long");
             else if (CheckTextFields(this.user))
             {
                 await alerts.ShowAlertAsync("Operation Failed", "One or more empty text fields found");  
