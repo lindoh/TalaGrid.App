@@ -14,9 +14,9 @@ namespace TalaGrid.Services
     public class DatabaseService
     {
         #region Class Properties
-        SqlConnection sqlConnection;
-        SqlCommand sqlCommand;
-        AlertService alerts;
+        readonly SqlConnection sqlConnection;
+        readonly SqlCommand sqlCommand;
+        readonly AlertService alerts;
         #endregion
 
         #region Default Constructor
@@ -28,16 +28,13 @@ namespace TalaGrid.Services
                  string DataConnection = "Server=tcp:farecost-server.database.windows.net,1433;Initial Catalog=GreenWayAfrica_DB;" +
                     "Persist Security Info=False;User ID=CloudSAb2b69ffa;Password=P@55Code;MultipleActiveResultSets=False;" +
                     "Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-                
-
-               /* 
-                * string DataConnection = "Server=LAPTOP-J3M5FNUA;Database=GreenWayData;User ID=AdminSql;Password=P@55Code"; 
-                */
-
+  
                 sqlConnection = new SqlConnection(DataConnection);
-                sqlCommand = new SqlCommand();
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand = new()
+                {
+                    Connection = sqlConnection,
+                    CommandType = CommandType.StoredProcedure
+                };
             }
             catch (StackOverflowException ex)
             {
@@ -323,21 +320,23 @@ namespace TalaGrid.Services
 
                     while (sqlDataReader.Read())
                     {
-                        user = new Users();
-                        user.Id = sqlDataReader.GetInt32(0);
-                        user.FirstName = sqlDataReader.GetString(1);
-                        user.LastName = sqlDataReader.GetString(2);
-                        user.IdNumber = sqlDataReader.GetString(3);
-                        user.Gender = sqlDataReader.GetString(4);
-                        user.HighestQlfn = sqlDataReader.GetString(5);
-                        user.IncomeRange = sqlDataReader.GetString(6);
-                        user.Email = sqlDataReader.GetString(7);
-                        user.CellNumber = sqlDataReader.GetString(8);
-                        user.StreetAddress = sqlDataReader.GetString(9);
-                        user.Suburb = sqlDataReader.GetString(10);
-                        user.City = sqlDataReader.GetString(11);
-                        user.Province = sqlDataReader.GetString(12);
-                        user.Country = sqlDataReader.GetString(13);
+                        user = new()
+                        {
+                            Id = sqlDataReader.GetInt32(0),
+                            FirstName = sqlDataReader.GetString(1),
+                            LastName = sqlDataReader.GetString(2),
+                            IdNumber = sqlDataReader.GetString(3),
+                            Gender = sqlDataReader.GetString(4),
+                            HighestQlfn = sqlDataReader.GetString(5),
+                            IncomeRange = sqlDataReader.GetString(6),
+                            Email = sqlDataReader.GetString(7),
+                            CellNumber = sqlDataReader.GetString(8),
+                            StreetAddress = sqlDataReader.GetString(9),
+                            Suburb = sqlDataReader.GetString(10),
+                            City = sqlDataReader.GetString(11),
+                            Province = sqlDataReader.GetString(12),
+                            Country = sqlDataReader.GetString(13)
+                        };
 
                         usersList.Add(user);
                     }
@@ -362,7 +361,7 @@ namespace TalaGrid.Services
         #region Search AdminId using IdNumber
         public Users SearchAdmin(string IdNumber)
         {
-            Users user = new Users();
+            Users user = new();
 
             try
             {
@@ -556,7 +555,7 @@ namespace TalaGrid.Services
         /// <returns>A List with the User's banking details</returns>
         public Banking SearchBanking(int CollectorId)
         {
-            Banking banker = new Banking();
+            Banking banker = new();
 
             try
             {
@@ -685,7 +684,7 @@ namespace TalaGrid.Services
         #region Get The List of Bottles
         public List<BottleDataSource> GetBottleList()
         {
-            List<BottleDataSource> bottleList = new List<BottleDataSource>();
+            List<BottleDataSource> bottleList = new();
 
             try
             {
@@ -702,11 +701,12 @@ namespace TalaGrid.Services
 
                     while (sqlDataReader.Read())
                     {
-                        bottle = new BottleDataSource();
-
-                        bottle.BottleDataSourceId = sqlDataReader.GetInt32(0);
-                        bottle.BottleName = sqlDataReader.GetString(1);
-                        bottle.Size = sqlDataReader.GetString(2);
+                        bottle = new BottleDataSource
+                        {
+                            BottleDataSourceId = sqlDataReader.GetInt32(0),
+                            BottleName = sqlDataReader.GetString(1),
+                            Size = sqlDataReader.GetString(2)
+                        };
 
                         bottleList.Add(bottle);
 
@@ -733,7 +733,7 @@ namespace TalaGrid.Services
         #region Get The List of Other Waste Material
         public List<WasteMaterial> GetOtherWasteList()
         {
-            List<WasteMaterial> otherWasteList = new List<WasteMaterial>();
+            List<WasteMaterial> otherWasteList = new();
 
             try
             {
@@ -750,9 +750,11 @@ namespace TalaGrid.Services
 
                     while (sqlDataReader.Read())
                     {
-                        wasteMaterial = new WasteMaterial();
+                        wasteMaterial = new WasteMaterial
+                        {
+                            MaterialName = sqlDataReader.GetString(1)
+                        };
 
-                        wasteMaterial.MaterialName = sqlDataReader.GetString(1);
                         otherWasteList.Add(wasteMaterial);
                     }
                     sqlDataReader.Close();
@@ -826,7 +828,7 @@ namespace TalaGrid.Services
         #region Search BuyBackCentre Details
         public BuyBackCentre SearchBBC(int AdminId)
         {
-            BuyBackCentre buyBackCentre = new BuyBackCentre();
+            BuyBackCentre buyBackCentre = new();
 
             try
             {
