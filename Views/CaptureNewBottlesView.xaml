@@ -23,8 +23,8 @@
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
 
-                <!--Search User from Database-->
-                <Label Text="Search User from Database" VerticalOptions="End" HorizontalOptions="Start" 
+                <!--Search Collector from Database-->
+                <Label Text="Search Collector from Database" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10"/>
                 <SearchBar x:Name="searchBar"  
                            TextChanged="searchBar_TextChanged"
@@ -46,6 +46,14 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                
+                <!--Find waste material by name-->
+                <!--Search Collector from Database-->
+                <Label Text="Search Collector from Database" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10"/>
+                <SearchBar x:Name="searchBar_waste"  
+                           TextChanged=""
+                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
 
                 <!-- Bottle Type Name Tag -->
                 <ListView Margin="10" MaximumHeightRequest="90" Header="Bottle Name and Size"
@@ -294,12 +302,15 @@
 
                     <cct:DrawingView x:Name="SignatureDrawing"
                                      HorizontalOptions="Center"
-                                     WidthRequest="300" HeightRequest="200"
-                                     BackgroundColor="LightGray" IsMultiLineModeEnabled="True"/>
+                                     WidthRequest="300" HeightRequest="300"
+                                     LineWidth="5"
+                                     LineColor="DarkGreen"
+                                     BackgroundColor="LightGray" 
+                                     IsMultiLineModeEnabled="True"/>
 
                     <HorizontalStackLayout Margin="10">
-                        <Label Text="Clear" FontSize="Small" Margin="5"/>
-                        <CheckBox x:Name="ClearCheckBox" CheckedChanged="CheckBox_CheckedChanged" Margin="5"/>
+                        <Button Text="Clear Board" x:Name="Clear_Board" Clicked="Clear_Board_Clicked"
+                                BackgroundColor="White" TextColor="Blue"/>
                     </HorizontalStackLayout>
 
                     <Button Text="Sign" FontSize="Small" Clicked="Button_Clicked" Margin="20" 

@@ -1,3 +1,5 @@
+using Android.Graphics;
+using Aspose.Email.Clients.Exchange.WebService.Schema_2016;
 using TalaGrid.Models;
 using TalaGrid.Services;
 using TalaGrid.ViewModels;
@@ -16,10 +18,10 @@ public partial class CaptureNewBottlesView : ContentPage
         searchService = new SearchService();
     }
 
-    AlertService alerts;
-    SearchService searchService;
+    readonly AlertService alerts;
+    readonly SearchService searchService;
 
-    CaptureBottlesViewModel viewModel;
+    readonly CaptureBottlesViewModel viewModel;
 
     /// <summary>
     /// Select a User from the ListView List and update the ViewModel selected user
@@ -28,17 +30,17 @@ public partial class CaptureNewBottlesView : ContentPage
     /// <param name="args"></param>
     private void usersListView_ItemSelected(object sender, SelectedItemChangedEventArgs args)
     {
-        viewModel.selectedItem(sender, args);
+        viewModel.SelectedItem(sender, args);
     }
 
     private void bottlesListView_ItemSelected(object sender, SelectedItemChangedEventArgs args)
     {
-        viewModel.selectedBottle(sender, args);
+        viewModel.SelectedBottle(sender, args);
     }
 
     private void wasteListView_ItemSelected(object sender, SelectedItemChangedEventArgs args)
     {
-        viewModel.selectedWaste(sender, args);
+        viewModel.SelectedWaste(sender, args);
     }
 
     /// <summary>
@@ -75,6 +77,7 @@ public partial class CaptureNewBottlesView : ContentPage
     /// <param name="e"></param>
     private async void Button_Clicked(object sender, EventArgs e)
     {
+
         using var stream = await SignatureDrawing.GetImageStream(1024, 1024);
         using var memoryStream = new MemoryStream();
         stream.CopyTo(memoryStream);
@@ -82,20 +85,25 @@ public partial class CaptureNewBottlesView : ContentPage
         stream.Position = 0;
         memoryStream.Position = 0;
 
-        byte[] imageFile = memoryStream.ToArray();
-        viewModel.Transactions.Signature = memoryStream.ToArray();
+        //Get the internal buffer of the memory stream
+        byte[] buffer = memoryStream.GetBuffer();
+
+        //Create a new byte array with the exact length as the image
+        byte[] imageData = new byte[memoryStream.Length];
+
+        //Copy the image data from the buffer to the new byte array
+        Array.Copy(buffer, imageData, memoryStream.Length);
+
+        //Image image = new();
+        // image.Source = ImageSource.FromStream(() => stream);
+
+        viewModel.Transactions.Signature = imageData;
 
         if (viewModel.Transactions.Signature != null)
             await alerts.ShowAlertAsync("Success", "Signature saved successfully");
         else
             await alerts.ShowAlertAsync("Failure", "System could not save Signature");
 
-    }
-
-    private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
-    {
-        if (ClearCheckBox.IsChecked)
-            SignatureDrawing.Clear();
     }
 
     private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -122,9 +130,27 @@ public partial class CaptureNewBottlesView : ContentPage
         viewModel.CapturedOtherWasteItem = args.SelectedItem as OtherWaste;
     }
 
+    /// <summary>
+    /// Search the collector from the Database
+    /// </summary>
     private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
         SearchBar searchBar = (SearchBar)sender;
         viewModel.UsersList = searchService.FindUser(searchBar.Text, viewModel.SelectedUser);
     }
+
+    /// <summary>
+    /// Search Waster material from the Database
+    /// </summary>
+    private void searchBar_waste_TextChanged(object sender, TextChangedEventArgs e)
+    {
+
+    }
+
+    private void Clear_Board_Clicked(object sender, EventArgs e)
+    {
+        SignatureDrawing.Lines.Clear();
+    }
+
+
 }
