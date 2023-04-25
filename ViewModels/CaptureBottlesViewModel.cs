@@ -32,7 +32,7 @@ namespace TalaGrid.ViewModels
             GetBottles();
             GetOtherWaste();
 
-            Amount = 0.0;
+            Amount = 0.0M;
             CaptureBottleDisplay = true;
             PaymentsDisplay = !captureBottleDisplay;
             display_0 = display_1 = false;
@@ -47,9 +47,9 @@ namespace TalaGrid.ViewModels
         #endregion
 
         #region Class Properties
-        DatabaseService dataService;
-        SearchService searchService;
-        AlertService alerts;
+        readonly DatabaseService dataService;
+        readonly SearchService searchService;
+        readonly AlertService alerts;
 
         //Collector
         [ObservableProperty]
@@ -75,10 +75,10 @@ namespace TalaGrid.ViewModels
         WasteMaterial wasteMaterialData;
 
         [ObservableProperty]
-        double wasteSize;
+        decimal wasteSize;
 
         [ObservableProperty]
-        double wastePrice;
+        decimal wastePrice;
 
 
         //List of Other Waste Material
@@ -117,11 +117,11 @@ namespace TalaGrid.ViewModels
 
         //Current Amount
         [ObservableProperty]
-        double currentAmount;
+        decimal currentAmount;
 
         //The amount due to the collector
         [ObservableProperty]
-        static double amount;
+        static decimal amount;
 
         [ObservableProperty]
         string amountString;
@@ -204,8 +204,8 @@ namespace TalaGrid.ViewModels
                 else
                 {
                     SaveCapturedOtherWaste();
-                    WasteMaterialData.Size = 0.0;
-                    WasteMaterialData.Price = 0.0;
+                    WasteMaterialData.Size = 0.0M;
+                    WasteMaterialData.Price = 0.0M;
                 }
                 
             }
@@ -336,7 +336,7 @@ namespace TalaGrid.ViewModels
             if (answer)
             {
 
-                Amount = 0.0;
+                Amount = 0.0M;
                 AmountString = $"R{Amount}";
 
                 if (showBottles)
@@ -363,24 +363,24 @@ namespace TalaGrid.ViewModels
         /// The selectedItem method updates the User object
         /// with the selected user from the ListView
         /// </summary>
-        public void selectedItem(object sender, SelectedItemChangedEventArgs args)
+        public void SelectedItem(object sender, SelectedItemChangedEventArgs args)
         {
             //The collector selected from the Listview
             User = args.SelectedItem as Users;
         }
 
         /// <summary>
-        /// The selectedBottle method updates the BottleData object with
+        /// The SelectedBottle method updates the BottleData object with
         /// the chosen bottle
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        public void selectedBottle(object sender, SelectedItemChangedEventArgs args)
+        public void SelectedBottle(object sender, SelectedItemChangedEventArgs args)
         {
             BottleData = args.SelectedItem as BottleDataSource;
         }
 
-        public void selectedWaste(object sender, SelectedItemChangedEventArgs args)
+        public void SelectedWaste(object sender, SelectedItemChangedEventArgs args)
         {
             WasteMaterialData = args.SelectedItem as WasteMaterial;
         }
@@ -408,11 +408,11 @@ namespace TalaGrid.ViewModels
                 int size = Int32.Parse(bottleSize);
 
                 if (size > 0 && size < 2000)
-                    CurrentAmount = Quantity;
+                    CurrentAmount = (decimal)Quantity;
                 else if (size >= 2000)
-                    CurrentAmount = Quantity * 1.5;
+                    CurrentAmount = (decimal)(Quantity * 1.5);
 
-                Amount += Math.Round((Double)CurrentAmount, 3);
+                Amount += Math.Round((decimal)CurrentAmount, 3);
                 AmountString = $"R{amount}";
 
             }
@@ -430,7 +430,7 @@ namespace TalaGrid.ViewModels
                 //Calculate current amount of the selected waste material
                 CurrentAmount = wasteSize * wastePrice;
 
-                Amount += Math.Round((Double)CurrentAmount, 3);
+                Amount += Math.Round((decimal)CurrentAmount, 3);
                 AmountString = $"R{amount}";
             }
             else
@@ -456,12 +456,12 @@ namespace TalaGrid.ViewModels
         {
             if (clearAll)
             {
-                Amount = 0.0;
+                Amount = 0.0M;
                 AmountString = $"R{amount}";
                 CapturedBottles.Clear();
                 CapturedWaste.Clear();
-                WasteMaterialData.Size = 0.0;
-                WasteMaterialData.Price = 0.0;
+                WasteMaterialData.Size = 0.0M;
+                WasteMaterialData.Price = 0.0M;
             }
 
             Quantity = 0;
@@ -647,8 +647,13 @@ namespace TalaGrid.ViewModels
             }
         }
 
+   
+
+        #endregion
 
     }
 
-    #endregion
+
+
+
 }

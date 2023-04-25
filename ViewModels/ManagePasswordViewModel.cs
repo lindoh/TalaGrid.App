@@ -5,6 +5,7 @@ using TalaGrid.Services;
 using TalaGrid.Views;
 using System.Text;
 
+
 namespace TalaGrid.ViewModels
 {
     public partial class ManagePasswordViewModel : ObservableObject
@@ -124,9 +125,13 @@ namespace TalaGrid.ViewModels
         }
 
         [RelayCommand]
-        async void GenerateNewOTP()
+        void GenerateNewOTP()
         {
+            TakePhoto();
+
+
             //If The Generate OTP Button is pressed it means we are resetting Password
+            /*
             Reset_Update_Password = false;
 
             Users user = new Users();
@@ -140,6 +145,7 @@ namespace TalaGrid.ViewModels
                 GenerateOTP(user);
                 await alerts.ShowAlertAsync("Success", "User found, please check your email address for the OTP");
             }
+            */
         }
 
         [RelayCommand]
@@ -190,6 +196,54 @@ namespace TalaGrid.ViewModels
             }
             else
                 reset_Update_Password = false;
+        }
+
+        /// <summary>
+        /// Take a Photo
+        /// </summary>
+        public async void TakePhoto()
+        {
+            if (MediaPicker.Default.IsCaptureSupported)
+            {
+                var photo = await MediaPicker.Default.CapturePhotoAsync();
+
+                if (photo != null)
+                {
+                    
+                    using Stream stream = await photo.OpenReadAsync();
+
+
+                    //using var stream = await SignatureDrawing.GetImageStream(1024, 1024);
+                    using var memoryStream = new MemoryStream();
+                    stream.CopyTo(memoryStream);
+
+                    stream.Position = 0;
+                    memoryStream.Position = 0;
+
+#if WINDOWS
+                    await System.IO.File.WriteAllBytesAsync(
+                        @"C:\Users\Lindo\Desktop\SignatureImage\test.png", memoryStream.ToArray());
+
+#elif ANDROID
+                    var context = Platform.CurrentActivity;
+
+                    Android.Content.ContentResolver resolver = context.ContentResolver;
+                    Android.Content.ContentValues contentValues = new();
+                    contentValues.Put(Android.Provider.MediaStore.IMediaColumns.DisplayName, "test.png");
+                    contentValues.Put(Android.Provider.MediaStore.IMediaColumns.MimeType, "image/png");
+                    contentValues.Put(Android.Provider.MediaStore.IMediaColumns.RelativePath, "DCIM/" + "test");
+                    Android.Net.Uri imageUri = resolver.Insert(Android.Provider.MediaStore.Images.Media.ExternalContentUri, contentValues);
+                    var os = resolver.OpenOutputStream(imageUri);
+                    Android.Graphics.BitmapFactory.Options options = new();
+                    options.InJustDecodeBounds = true;
+                    var bitmap = Android.Graphics.BitmapFactory.DecodeStream(stream);
+                    bitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 100, os);
+                    os.Flush();
+                    os.Close();
+
+#endif
+                }
+            }
         }
     }
 }

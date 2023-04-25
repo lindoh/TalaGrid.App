@@ -15,6 +15,13 @@ namespace TalaGrid.Services
         readonly DatabaseService dataService;
         readonly AlertService alerts;
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="selectedUser"></param>
+        /// <returns></returns>
         public ObservableCollection<Users> FindUser(string name, string selectedUser)
         {
             ObservableCollection<Users> UsersList = new();
