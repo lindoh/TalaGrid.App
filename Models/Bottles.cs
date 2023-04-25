@@ -20,7 +20,7 @@ namespace TalaGrid.Models
         int bBCId;
 
         [ObservableProperty]
-        double amount;
+        decimal amount;
 
         [ObservableProperty]
         static int adminId;

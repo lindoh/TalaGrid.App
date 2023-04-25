@@ -6,8 +6,9 @@ namespace TalaGrid.Models
     {
         public Transaction()
         {
-            signature = new byte[0];
+            Signature = new byte[0];
         }
+
 
         [ObservableProperty]
         string transactionType;

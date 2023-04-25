@@ -17,9 +17,9 @@ namespace TalaGrid.Models
         string materialName;
 
         [ObservableProperty]
-        double size;
+        decimal size;
 
         [ObservableProperty]
-        double price;
+        decimal price;
     }
 }

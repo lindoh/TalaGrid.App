@@ -9,10 +9,10 @@ namespace TalaGrid.Models
         string materialName;
 
         [ObservableProperty]
-        double size;
+        decimal size;
 
         [ObservableProperty]
-        double price;
+        decimal price;
 
         [ObservableProperty]
         int collectorId;
@@ -21,7 +21,7 @@ namespace TalaGrid.Models
         int bBCId;
 
         [ObservableProperty]
-        double amount;
+        decimal amount;
 
         [ObservableProperty]
         static int adminId;
