@@ -48,11 +48,10 @@
                 </ListView>
                 
                 <!--Find waste material by name-->
-                <!--Search Collector from Database-->
-                <Label Text="Search Collector from Database" VerticalOptions="End" HorizontalOptions="Start" 
+                <Label Text="Search waste material from Database" VerticalOptions="End" HorizontalOptions="Start" 
                    FontSize="Caption" TextColor="Gray" Margin="10"/>
                 <SearchBar x:Name="searchBar_waste"  
-                           TextChanged=""
+                           TextChanged="searchBar_waste_TextChanged"
                            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
 
                 <!-- Bottle Type Name Tag -->

@@ -17,10 +17,10 @@ namespace TalaGrid.Services
 
 
         /// <summary>
-        /// 
+        /// This method is used to find a collector from the database
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="selectedUser"></param>
+        /// <param name="name">Collector's name</param>
+        /// <param name="selectedUser">Collector</param>
         /// <returns></returns>
         public ObservableCollection<Users> FindUser(string name, string selectedUser)
         {
@@ -40,5 +40,7 @@ namespace TalaGrid.Services
 
             return UsersList;
         }
+
+     
     }
 }

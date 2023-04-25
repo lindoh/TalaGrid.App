@@ -1,4 +1,3 @@
-using Android.Graphics;
 using Aspose.Email.Clients.Exchange.WebService.Schema_2016;
 using TalaGrid.Models;
 using TalaGrid.Services;
@@ -144,9 +143,22 @@ public partial class CaptureNewBottlesView : ContentPage
     /// </summary>
     private void searchBar_waste_TextChanged(object sender, TextChangedEventArgs e)
     {
+        SearchBar searchBar = (SearchBar)sender;
 
+        if (BottleRadioBtn.IsChecked)
+        {
+            viewModel.GetBottles(searchBar.Text);
+        }
+        else if (OtherWasteRadioBtn.IsChecked)
+        {
+            viewModel.GetOtherWaste(searchBar.Text);
+        }
     }
 
+
+    /// <summary>
+    /// Clear the DrawingView board lines
+    /// </summary>
     private void Clear_Board_Clicked(object sender, EventArgs e)
     {
         SignatureDrawing.Lines.Clear();

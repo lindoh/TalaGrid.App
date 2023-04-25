@@ -29,8 +29,8 @@ namespace TalaGrid.ViewModels
 
             selectedUser = "Collector";
 
-            GetBottles();
-            GetOtherWaste();
+            //GetBottles();
+            //GetOtherWaste();
 
             Amount = 0.0M;
             CaptureBottleDisplay = true;
@@ -85,6 +85,10 @@ namespace TalaGrid.ViewModels
         [ObservableProperty]
         ObservableCollection<WasteMaterial> wasteMaterialList;
 
+        //List of Bottles from the database
+        [ObservableProperty]
+        ObservableCollection<BottleDataSource> bottlesList;
+
         [ObservableProperty]
         OtherWaste wasteMaterial;
 
@@ -106,10 +110,6 @@ namespace TalaGrid.ViewModels
         //Selected item from the captured list
         [ObservableProperty]
         OtherWaste capturedOtherWasteItem;
-
-        //List of Bottles from the database
-        [ObservableProperty]
-        ObservableCollection<BottleDataSource> bottlesList;
 
         //The quantity of bottles submitted by the Collector
         [ObservableProperty]
@@ -386,14 +386,14 @@ namespace TalaGrid.ViewModels
         }
 
 
-        public void GetBottles()
+        public void GetBottles(string name)
         {
-            BottlesList = new ObservableCollection<BottleDataSource>(dataService.GetBottleList());
+            BottlesList = new ObservableCollection<BottleDataSource>(dataService.GetBottleList(name));
         }
 
-        private void GetOtherWaste()
+        public void GetOtherWaste(string name)
         {
-            WasteMaterialList = new ObservableCollection<WasteMaterial>(dataService.GetOtherWasteList());
+            WasteMaterialList = new ObservableCollection<WasteMaterial>(dataService.GetOtherWasteList(name));
         }
 
         private void BottleAmount()

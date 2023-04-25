@@ -288,7 +288,7 @@ namespace TalaGrid.Services
 
         #endregion
 
-        #region GetAll User's Data 
+        #region Search Collector's Data 
         /// <summary>
         /// Get all data that matches a given name, i.e., Firstname
         /// </summary>
@@ -682,7 +682,7 @@ namespace TalaGrid.Services
         #endregion
 
         #region Get The List of Bottles
-        public List<BottleDataSource> GetBottleList()
+        public List<BottleDataSource> GetBottleList(string name)
         {
             List<BottleDataSource> bottleList = new();
 
@@ -690,6 +690,8 @@ namespace TalaGrid.Services
             {
                 sqlCommand.Parameters.Clear();
                 sqlCommand.CommandText = "GetBottles";
+
+                sqlCommand.Parameters.AddWithValue("@BottleName", name);
 
                 sqlConnection.Open();
 
@@ -731,7 +733,7 @@ namespace TalaGrid.Services
         #endregion
 
         #region Get The List of Other Waste Material
-        public List<WasteMaterial> GetOtherWasteList()
+        public List<WasteMaterial> GetOtherWasteList(string name)
         {
             List<WasteMaterial> otherWasteList = new();
 
@@ -739,6 +741,8 @@ namespace TalaGrid.Services
             {
                 sqlCommand.Parameters.Clear();
                 sqlCommand.CommandText = "GetOtherWasteList";
+
+                sqlCommand.Parameters.AddWithValue("@MaterialName", name);
 
                 sqlConnection.Open();
 
