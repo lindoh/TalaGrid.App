@@ -80,6 +80,7 @@ namespace TalaGrid.Services
                 sqlCommand.Parameters.AddWithValue("@City", user.City);
                 sqlCommand.Parameters.AddWithValue("@Province", user.Province);
                 sqlCommand.Parameters.AddWithValue("@Country", user.Country);
+                sqlCommand.Parameters.AddWithValue("@BBCId", user.BBCId);
 
                 //Open Sql database connection
                 sqlConnection.Open();
@@ -309,6 +310,7 @@ namespace TalaGrid.Services
             {
                 sqlCommand.Parameters.Clear();
                 sqlCommand.CommandText = userToSearch;
+
                 sqlCommand.Parameters.AddWithValue("@FirstName", name);
 
                 sqlConnection.Open();

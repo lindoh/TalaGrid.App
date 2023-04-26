@@ -70,6 +70,10 @@ namespace TalaGrid.Models
         [ObservableProperty]
         private string country;
 
+        //BuyBackCanter at which the user/collector account is created
+        [ObservableProperty]
+        private int bBCId;
+
         #endregion
 
     }
