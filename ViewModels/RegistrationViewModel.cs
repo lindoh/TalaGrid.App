@@ -64,7 +64,19 @@ namespace TalaGrid.ViewModels
             {
                 User.BBCId = 0;
                 dataService.SaveAdminData(user);
-                await alerts.ShowAlertAsync("Success", "User Account Created Successfully");
+
+                if (user.AdminRole == user.AdminRoleValue[0]) // Admin
+                    await alerts.ShowAlertAsync("Success", "User Account Created Successfully");
+
+                else if (user.AdminRole == user.AdminRoleValue[1]) // GW_Admin
+                {
+                    await alerts.ShowAlertAsync("Success", "User Account Created Successfully, pending verification");
+                }
+                else if (user.AdminRole == user.AdminRoleValue[2]) // BBC_Admin
+                {
+                    await alerts.ShowAlertAsync("Success", "User Account Created Successfully, pending verification");
+                }
+
 
                 //Save the user's Id number before class properties are cleared 
                 Logins.IdNumber = user.IdNumber;

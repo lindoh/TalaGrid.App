@@ -134,6 +134,7 @@ namespace TalaGrid.Services
                 sqlCommand.Parameters.AddWithValue("@Province", user.Province);
                 sqlCommand.Parameters.AddWithValue("@Country", user.Country);
                 sqlCommand.Parameters.AddWithValue("@AdminRole", user.AdminRole);
+                sqlCommand.Parameters.AddWithValue("@VerifiedAdmin", user.VerifiedAdmin);
 
                 //Open Sql database connection
                 sqlConnection.Open();

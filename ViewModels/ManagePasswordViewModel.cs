@@ -125,13 +125,13 @@ namespace TalaGrid.ViewModels
         }
 
         [RelayCommand]
-        void GenerateNewOTP()
+        async void GenerateNewOTP()
         {
-            TakePhoto();
+           // TakePhoto();
 
 
             //If The Generate OTP Button is pressed it means we are resetting Password
-            /*
+            
             Reset_Update_Password = false;
 
             Users user = new Users();
@@ -145,7 +145,7 @@ namespace TalaGrid.ViewModels
                 GenerateOTP(user);
                 await alerts.ShowAlertAsync("Success", "User found, please check your email address for the OTP");
             }
-            */
+            
         }
 
         [RelayCommand]
@@ -185,7 +185,7 @@ namespace TalaGrid.ViewModels
 
             OneTimePin = randomString.ToString();
 
-            email.SendEmail(user.Email, user.FirstName, user.LastName, oneTimePin);
+            email.SendOTP(user.Email, user.FirstName, user.LastName, oneTimePin);
         }
 
         private void Reset_or_Update_Password()

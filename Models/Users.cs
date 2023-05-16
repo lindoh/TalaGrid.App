@@ -16,6 +16,9 @@ namespace TalaGrid.Models
             Email = "";
             CellNumber = "";
             Suburb = "";
+
+            AdminRoleValue = new string[] { "Admin", "GW_Admin", "BBC_Admin" };
+
         }
 
         #region Class Properties
@@ -71,19 +74,27 @@ namespace TalaGrid.Models
         [ObservableProperty]
         private string province;
 
-        // AdminRole 
-        // 1. Admin (Developer)
-        // 2. GW_Admin (GreenWay Africa Admin)
-        // 3. BBC_Admin (Buy Back Center Admin)
-        public enum AdminRoleValue { Admin, GW_Admin, BBC_Admin }
-
         //User's Country Name
         [ObservableProperty]
         private string country;
 
+        //Admin Role Value
+        // 1. Admin (Developer)
+        // 2. GW_Admin (GreenWay Africa Admin)
+        // 3. BBC_Admin (Buy Back Center Admin)
+        public string[] AdminRoleValue { get; }
+
+
         //Admin Role property
         [ObservableProperty]
         private string adminRole;
+
+       
+
+        //Verirfied Admin: GW_Admin must be verified by the Admin,
+        //BBC_Admin must be verified by GW_Admin
+        [ObservableProperty]
+        private bool verifiedAdmin;
 
         //BuyBackCanter at which the user/collector account is created
         [ObservableProperty]
