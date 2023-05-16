@@ -110,10 +110,6 @@ namespace TalaGrid.ViewModels
         {
             User = args.SelectedItem as Users;
 
-            //If the Admin is selected, Load data from the database to
-            //update the BuyBackCentre object
-            if (selectedUser == "Admin")
-                LoadBBCData();
         }
 
         private void LoadBBCData()

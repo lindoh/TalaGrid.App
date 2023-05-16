@@ -1,5 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+// Create different users
+// 1. Collector (No App Access)
+// 2. Admin (Developer)
+// 3. GW_Admin (Green Way Africa Admin)
+// 4. BBC_Admin (Buy Back Center Admin)
 
 
 namespace TalaGrid.Models
@@ -66,9 +71,19 @@ namespace TalaGrid.Models
         [ObservableProperty]
         private string province;
 
+        // AdminRole 
+        // 1. Admin (Developer)
+        // 2. GW_Admin (GreenWay Africa Admin)
+        // 3. BBC_Admin (Buy Back Center Admin)
+        public enum AdminRoleValue { Admin, GW_Admin, BBC_Admin }
+
         //User's Country Name
         [ObservableProperty]
         private string country;
+
+        //Admin Role property
+        [ObservableProperty]
+        private string adminRole;
 
         //BuyBackCanter at which the user/collector account is created
         [ObservableProperty]

@@ -62,6 +62,7 @@ namespace TalaGrid.ViewModels
 
             else if (!CheckTextFields(user))
             {
+                User.BBCId = 0;
                 dataService.SaveAdminData(user);
                 await alerts.ShowAlertAsync("Success", "User Account Created Successfully");
 
@@ -106,7 +107,7 @@ namespace TalaGrid.ViewModels
             if (user.FirstName == "" || user.LastName == "" || user.IdNumber == "" ||
                 user.Gender == "" || user.HighestQlfn == "" || user.IncomeRange == "" ||
                 user.CellNumber == "" || user.StreetAddress == "" ||
-                user.City == "" || user.Province == "" || user.Country == "")
+                user.City == "" || user.Province == "" || user.Country == "" || user.AdminRole == "")
             {
                 emptyFields = true;
 
@@ -133,6 +134,7 @@ namespace TalaGrid.ViewModels
             user.City = "";
             user.Province = "";
             user.Country = "";
+            user.AdminRole = "";
         }
 
         #endregion

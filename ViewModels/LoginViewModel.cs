@@ -16,6 +16,9 @@ namespace TalaGrid.ViewModels
             userLogin = new Login();
             ControlLabel = new LabelControl();
             buyBackCentre = new BuyBackCentre();
+
+            //Clear text fields
+            Clear();
         }
 
         DatabaseService dataService;
@@ -59,6 +62,9 @@ namespace TalaGrid.ViewModels
 
                     //Navigate to the Home Page
                     App.Current.MainPage = new AppShell();
+
+                    //Clear text fields
+                    Clear();
                 }
                 else
                 {

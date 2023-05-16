@@ -133,6 +133,7 @@ namespace TalaGrid.Services
                 sqlCommand.Parameters.AddWithValue("@City", user.City);
                 sqlCommand.Parameters.AddWithValue("@Province", user.Province);
                 sqlCommand.Parameters.AddWithValue("@Country", user.Country);
+                sqlCommand.Parameters.AddWithValue("@AdminRole", user.AdminRole);
 
                 //Open Sql database connection
                 sqlConnection.Open();
@@ -294,7 +295,7 @@ namespace TalaGrid.Services
         /// Get all data that matches a given name, i.e., Firstname
         /// </summary>
         /// <returns>List of users that matches Firstname</returns>
-        public List<Users> Search(string name, string selectedUser)
+        public List<Users> Search(string name, string selectedUser, int BBCId)
         {
             List<Users> usersList = new();
             string userToSearch = "SearchCollector";
@@ -312,6 +313,9 @@ namespace TalaGrid.Services
                 sqlCommand.CommandText = userToSearch;
 
                 sqlCommand.Parameters.AddWithValue("@FirstName", name);
+
+                if(selectedUser == "Collector")
+                    sqlCommand.Parameters.AddWithValue("@BBCId", BBCId);
 
                 sqlConnection.Open();
                 var sqlDataReader = sqlCommand.ExecuteReader();
@@ -441,6 +445,9 @@ namespace TalaGrid.Services
                 sqlCommand.Parameters.AddWithValue("@City", user.City);
                 sqlCommand.Parameters.AddWithValue("@Province", user.Province);
                 sqlCommand.Parameters.AddWithValue("@Country", user.Country);
+
+                if (selectedUser == "Collector")
+                    sqlCommand.Parameters.AddWithValue("@BBCId", user.BBCId);
 
                 //Open Sql database connection
                 sqlConnection.Open();
