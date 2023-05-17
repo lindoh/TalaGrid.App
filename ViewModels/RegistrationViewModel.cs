@@ -16,6 +16,7 @@ namespace TalaGrid.ViewModels
             dataService = new DatabaseService();
             user = new Users();
             alerts = new AlertService();
+            emailService = new EmailService();
             logins = new CreateLoginsViewModel();
 
             //Default Values
@@ -44,6 +45,8 @@ namespace TalaGrid.ViewModels
 
         AlertService alerts;
 
+        EmailService emailService;
+
         #endregion
 
         #region ViewModel Buttons
@@ -71,6 +74,14 @@ namespace TalaGrid.ViewModels
                 else if (user.AdminRole == user.AdminRoleValue[1]) // GW_Admin
                 {
                     await alerts.ShowAlertAsync("Success", "User Account Created Successfully, pending verification");
+
+                    //Reset verification flag
+                    User.VerifiedAdmin = false;
+
+                    //Send verification email to the Application Admin (Developer)
+                    emailService.Send_GW_Verification(user.Email, user.FirstName, user.LastName, user.IdNumber);
+
+                    
                 }
                 else if (user.AdminRole == user.AdminRoleValue[2]) // BBC_Admin
                 {
