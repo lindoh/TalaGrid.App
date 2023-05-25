@@ -28,7 +28,9 @@ namespace TalaGrid.ViewModels
             User.CellNumber = "";
             User.Country = "South Africa";
 
-            LoadBBCData();
+            // If a BBC admin
+            if (user.AdminRole == user.AdminRoleValue[2])
+                LoadBBCData();
 
         }
         #endregion
@@ -55,8 +57,14 @@ namespace TalaGrid.ViewModels
         [RelayCommand]
         async void Save()
         {
-            if (LoadBBCData())
-            {
+            bool BBCAdmin = false;
+
+            // If a BBC admin, Check if a registerd BBC exists
+            if (user.AdminRole == user.AdminRoleValue[2])
+                BBCAdmin = LoadBBCData();
+
+                if (BBCAdmin)
+                {
 
                 if (user.IdNumber == null || user.IdNumber.Length != 13)
                 {

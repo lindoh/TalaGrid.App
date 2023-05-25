@@ -296,27 +296,18 @@ namespace TalaGrid.Services
         /// Get all data that matches a given name, i.e., Firstname
         /// </summary>
         /// <returns>List of users that matches Firstname</returns>
-        public List<Users> Search(string name, string selectedUser, int BBCId)
+        public List<Users> SearchCollector(string name, int BBCId)
         {
             List<Users> usersList = new();
-            string userToSearch = "SearchCollector";
-
-            //Update the userToSearch variable to select the correct 
-            //Stored Procedure for the search
-            if (selectedUser == "Admin")
-                userToSearch = "SearchAdmin";
-            else if (selectedUser == "Collector")
-                userToSearch = "SearchCollector";
 
             try
             {
                 sqlCommand.Parameters.Clear();
-                sqlCommand.CommandText = userToSearch;
+                sqlCommand.CommandText = "SearchCollector";
 
+                //Search the collector using the firstname and BBC id
                 sqlCommand.Parameters.AddWithValue("@FirstName", name);
-
-                if(selectedUser == "Collector")
-                    sqlCommand.Parameters.AddWithValue("@BBCId", BBCId);
+                sqlCommand.Parameters.AddWithValue("@BBCId", BBCId);
 
                 sqlConnection.Open();
                 var sqlDataReader = sqlCommand.ExecuteReader();
@@ -363,6 +354,70 @@ namespace TalaGrid.Services
 
             return usersList;
         }
+        #endregion
+
+        #region Search Admin
+        public List<Users> SearchAdmin(string name, int AdminId)
+        {
+            List<Users> usersList = new();
+
+            try
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.CommandText = "SearchAdmin";
+
+                //Search the admin using the firstname and BBC id
+                sqlCommand.Parameters.AddWithValue("@FirstName", name);
+                sqlCommand.Parameters.AddWithValue("@AdminId", AdminId);
+
+                sqlConnection.Open();
+                var sqlDataReader = sqlCommand.ExecuteReader();
+
+                if (sqlDataReader.HasRows)
+                {
+                    Users user;
+
+                    while (sqlDataReader.Read())
+                    {
+                        user = new()
+                        {
+                            Id = sqlDataReader.GetInt32(0),
+                            FirstName = sqlDataReader.GetString(1),
+                            LastName = sqlDataReader.GetString(2),
+                            IdNumber = sqlDataReader.GetString(3),
+                            Gender = sqlDataReader.GetString(4),
+                            HighestQlfn = sqlDataReader.GetString(5),
+                            IncomeRange = sqlDataReader.GetString(6),
+                            Email = sqlDataReader.GetString(7),
+                            CellNumber = sqlDataReader.GetString(8),
+                            StreetAddress = sqlDataReader.GetString(9),
+                            Suburb = sqlDataReader.GetString(10),
+                            City = sqlDataReader.GetString(11),
+                            Province = sqlDataReader.GetString(12),
+                            Country = sqlDataReader.GetString(13),
+                            AdminRole = sqlDataReader.GetString(14),
+                            VerifiedAdmin = sqlDataReader.GetBoolean(15)
+                        };
+
+                        usersList.Add(user);
+                    }
+                    sqlDataReader.Close();
+
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return usersList;
+        }
+
         #endregion
 
         #region Search AdminId using IdNumber
@@ -822,6 +877,9 @@ namespace TalaGrid.Services
                 int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
                 isSaved = NoOfRowsAffected > 0;
 
+                if (!isSaved)
+                    alerts.ShowAlertAsync("Update Failure", "Something went wrong, BBC details were not updated successfully");
+
             }
             catch (SqlException ex)
             {
@@ -908,6 +966,9 @@ namespace TalaGrid.Services
                 //If affected number of rows is > 0, then data is updated successfully
                 int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
                 isUpdated = NoOfRowsAffected > 0;
+
+                if (!isUpdated)
+                    alerts.ShowAlertAsync("Update Failure", "Something went wrong, BBC details were not updated successfully");
             }
             catch (SqlException ex)
             {

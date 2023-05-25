@@ -47,6 +47,8 @@ namespace TalaGrid.ViewModels
 
         EmailService emailService;
 
+        Notification notification;
+
         #endregion
 
         #region ViewModel Buttons
@@ -57,6 +59,9 @@ namespace TalaGrid.ViewModels
         [RelayCommand]
         async void Register()
         {
+            bool isSaved = false;
+            string adminEmail = "admin@farecost.co.za";
+
             if(dataService.SearchAdmin(User.IdNumber).Id > 0)
                  await alerts.ShowAlertAsync("Operation Failed", "Id Number or User already exists");
 
@@ -66,12 +71,14 @@ namespace TalaGrid.ViewModels
             else if (!CheckTextFields(user))
             {
                 User.BBCId = 0;
-                dataService.SaveAdminData(user);
+                isSaved = dataService.SaveAdminData(user);
 
-                if (user.AdminRole == user.AdminRoleValue[0]) // Admin
+                notification = new Notification();
+
+                if (isSaved && user.AdminRole == user.AdminRoleValue[0]) // Admin
                     await alerts.ShowAlertAsync("Success", "User Account Created Successfully");
 
-                else if (user.AdminRole == user.AdminRoleValue[1]) // GW_Admin
+                else if (isSaved && user.AdminRole == user.AdminRoleValue[1]) // GW_Admin
                 {
                     await alerts.ShowAlertAsync("Success", "User Account Created Successfully, pending verification");
 
@@ -79,11 +86,13 @@ namespace TalaGrid.ViewModels
                     User.VerifiedAdmin = false;
 
                     //Send verification email to the Application Admin (Developer)
-                    emailService.Send_GW_Verification(user.Email, user.FirstName, user.LastName, user.IdNumber);
+                    emailService.Send_GW_Verification(adminEmail, user.FirstName, user.LastName, user.IdNumber);
 
-                    
+                    // Activate a notification for a new registered admin
+                    notification.Title = "New GreenWay Admin Registration";
+                    notification.Message = "";
                 }
-                else if (user.AdminRole == user.AdminRoleValue[2]) // BBC_Admin
+                else if (isSaved && user.AdminRole == user.AdminRoleValue[2]) // BBC_Admin
                 {
                     await alerts.ShowAlertAsync("Success", "User Account Created Successfully, pending verification");
                 }

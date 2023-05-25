@@ -34,8 +34,11 @@ namespace TalaGrid.Services
 
             if (selectedUser != null)
             {
-                //Get the list of users that match the given name and are registered under a unique BBC
-                TempList = new ObservableCollection<Users>(dataService.Search(name, selectedUser, currentAdmin.BBCId));
+                //Get the list of collectors that match the given name and are registered under a unique BBC
+                if (selectedUser == "Collector")
+                    TempList = new ObservableCollection<Users>(dataService.SearchCollector(name, currentAdmin.BBCId));
+                else if (selectedUser == "Admin")
+                    TempList = new ObservableCollection<Users>(dataService.SearchAdmin(name, currentAdmin.AdminId));
 
                 foreach (Users user in TempList)
                 {
@@ -44,14 +47,16 @@ namespace TalaGrid.Services
                         UsersList.Add(user);
                         break;
                     }
+                    else
+                        alerts.ShowAlertAsync("Search Failure", "Admin not logged in properly, relogin or contact system administrator");
                 }
             }
             else
-                alerts.ShowAlert("Search Operation Failed", "Incorrect User Radio Button is selected");
+                alerts.ShowAlert("Search Failure", "Incorrect User Radio Button is selected");
 
             if (UsersList.Count == 0) 
             {
-                alerts.ShowAlertAsync("Search Operation Failed", "User does not exist");
+                alerts.ShowAlertAsync("Search Failure", "User does not exist");
             }
 
             return UsersList;

@@ -16,4 +16,13 @@ public partial class App : Application
             MainPage = new AppShell();
 
     }
+  
+
+    /*
+    public App()
+    {
+        InitializeComponent();
+        MainPage = new NotificationsView();
+    }
+    */
 }

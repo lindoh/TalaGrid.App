@@ -84,12 +84,9 @@ namespace TalaGrid.Models
         // 3. BBC_Admin (Buy Back Center Admin)
         public string[] AdminRoleValue { get; }
 
-
         //Admin Role property
         [ObservableProperty]
         private string adminRole;
-
-       
 
         //Verirfied Admin: GW_Admin must be verified by the Admin,
         //BBC_Admin must be verified by GW_Admin

@@ -10,5 +10,11 @@ namespace TalaGrid.Models
 
         [ObservableProperty]
         public string message;
+
+        [ObservableProperty]
+        private bool btnVisible;
+
+        [ObservableProperty]
+        private Users user;
     }
 }
