@@ -8,47 +8,41 @@ namespace TalaGrid.ViewModels
     {
         public NotificationsViewModel()
         {
-            NewIndex = OldIndex = 0;
-
             // Initialize your notifications collection with some sample data
             Notifications = new ObservableCollection<Notification>
             {
                 new Notification { Title = "Notification 1", Message = "This is the first notification." },
                 new Notification { Title = "Notification 2", Message = "This is the second notification." },
+                new Notification { Title = "Notification 1", Message = "This is the first notification." },
+                new Notification { Title = "Notification 2", Message = "This is the second notification." }
                 // Add more notifications as needed
                 
             };
+
+            OldNotification = new Notification();
         }
 
         [ObservableProperty]
         private ObservableCollection<Notification> notifications;
 
         [ObservableProperty]
-        private Notification notificationObject;
+        private Notification currentNotification;
 
         [ObservableProperty]
-        private int newIndex;
-
-        [ObservableProperty]
-        private int oldIndex;
-
+        static private Notification oldNotification;
 
 
         public void SelectedItem(object sender, SelectedItemChangedEventArgs args)
         {
-            //The collector selected from the Listview
-            NotificationObject = args.SelectedItem as Notification;
-            NewIndex = args.SelectedItemIndex;
 
-            if (newIndex != oldIndex) 
-            { 
-                NotificationObject.BtnVisible = true;
-                OldIndex = newIndex;
-            }
-            else 
-            { 
-                NotificationObject.BtnVisible = false;
-            }
+            // Reset the old notification object button visible property
+            OldNotification.BtnVisible = false;
+            // Initiate a new notification object
+            CurrentNotification = args.SelectedItem as Notification;
+            // Set the current notification button visibility property to true
+            CurrentNotification.BtnVisible = true;
+            // The old notification set to the current notification
+            OldNotification = currentNotification;
         }
     }
 }
