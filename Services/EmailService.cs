@@ -14,6 +14,7 @@ namespace TalaGrid.Services
         string FromEmail = "lindohgamede@outlook.com";
         string Subject;
         string Message;
+        string Message1;
         MailMessage mailMessage;
 
         #endregion
@@ -42,11 +43,8 @@ namespace TalaGrid.Services
         /// <param name="ToFirstName">Recepient Name</param>
         /// <param name="ToLastName">Recepient Lastname</param>
         /// <param name="IdNumber">Recepient Id Number</param>
-        public void Send_GW_Verification(string ToEmail, string ToFirstName, string ToLastName, string IdNumber)
+        public void Send_GW_Verification(string ToEmail, string ToFirstName, string ToLastName, string IdNumber, string Subject, string Message)
         {
-            Subject = "Admin Verification";
-            Message = $"Hi Admin, \n\nA verification for a new registered GreenWay Africa Admin, {ToFirstName} {ToLastName} " +
-                $"with Id Number: {IdNumber} is required. Please Login into the App and action the request. \n\n\nRegards, \nTalagrid";
             mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
 
             client.Send(mailMessage);
@@ -58,12 +56,18 @@ namespace TalaGrid.Services
         /// <param name="ToEmail">Recepient Email</param>
         /// <param name="ToFirstName">Recepient Name</param>
         /// <param name="ToLastName">Recepient Lastname</param>
-        public void Send_GW_Ver_Response(string ToEmail, string ToFirstName, string ToLastName)
+        public void Send_GW_Ver_Response(string ToEmail, string ToFirstName, string ToLastName, bool Approved)
         {
             Subject = "Admin Verification";
             Message = $"Hi {ToFirstName} {ToLastName},\n\nPlease note that your account has been verified, you can now Login and use the application." +
                 $"\n\n\nRegards,\nTalagrid Admin";
-            mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
+            Message1 = $"Hi {ToFirstName} {ToLastName},\n\nPlease note that your account verification has been Rejected," +
+                $"please contact the responsible administrator for more information";
+
+            if (Approved)
+                mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
+            else
+                mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message1);
 
             client.Send(mailMessage);
         }
@@ -80,6 +84,7 @@ namespace TalaGrid.Services
             Subject = "Admin Verification";
             Message = $"Hi Admin, \n\nA verification for a new registered Buy-Back-Center Admin, {ToFirstName} {ToLastName} " +
                 $"with Id Number: {IdNumber} is required. Please Login into the App and action the request. \n\n\nRegards, \nTalagrid";
+
             mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
 
             client.Send(mailMessage);
@@ -96,6 +101,7 @@ namespace TalaGrid.Services
             Subject = "Admin Verification";
             Message = $"Hi {ToFirstName} {ToLastName},\n\nPlease note that your account has been verified, you can now Login and use the application." +
                 $"\n\n\nRegards,\nGreenWay Africa Admin";
+
             mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
 
             client.Send(mailMessage);

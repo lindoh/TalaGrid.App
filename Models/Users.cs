@@ -17,7 +17,7 @@ namespace TalaGrid.Models
             CellNumber = "";
             Suburb = "";
 
-            AdminRoleValue = new string[] { "Admin", "GW_Admin", "BBC_Admin" };
+            AdminRoleValue = new string[] { "Admin (Developer)", "GW_Admin (GreenWay Africa Admin)", "BBC_Admin (Buy Back Center Admin)" };
 
         }
 

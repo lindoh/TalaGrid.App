@@ -54,11 +54,6 @@ namespace TalaGrid.Services
             else
                 alerts.ShowAlert("Search Failure", "Incorrect User Radio Button is selected");
 
-            if (UsersList.Count == 0) 
-            {
-                alerts.ShowAlertAsync("Search Failure", "User does not exist");
-            }
-
             return UsersList;
         }
 

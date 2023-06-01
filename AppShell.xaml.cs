@@ -21,6 +21,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(ResetPasswordView), typeof(ResetPasswordView));
         Routing.RegisterRoute(nameof(UpdateBankingView), typeof(UpdateBankingView));
         Routing.RegisterRoute(nameof(UpdateUserAccountView), typeof(UpdateUserAccountView));
+        Routing.RegisterRoute(nameof(NotificationsView), typeof(NotificationsView));
 
         myShell = new Shell();
 

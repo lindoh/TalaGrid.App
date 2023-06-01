@@ -49,6 +49,12 @@ namespace TalaGrid.ViewModels
 
         Notification notification;
 
+        Users admin;
+
+        string Subject;
+        string Message;
+        string Message1;
+
         #endregion
 
         #region ViewModel Buttons
@@ -60,7 +66,6 @@ namespace TalaGrid.ViewModels
         async void Register()
         {
             bool isSaved = false;
-            string adminEmail = "admin@farecost.co.za";
 
             if(dataService.SearchAdmin(User.IdNumber).Id > 0)
                  await alerts.ShowAlertAsync("Operation Failed", "Id Number or User already exists");
@@ -71,32 +76,51 @@ namespace TalaGrid.ViewModels
             else if (!CheckTextFields(user))
             {
                 User.BBCId = 0;
-                isSaved = dataService.SaveAdminData(user);
 
                 notification = new Notification();
 
-                if (isSaved && user.AdminRole == user.AdminRoleValue[0]) // Admin
-                    await alerts.ShowAlertAsync("Success", "User Account Created Successfully");
+                if (user.AdminRole == user.AdminRoleValue[0]) // Admin
+                    user.VerifiedAdmin = true;  //By default this user should be verified
 
-                else if (isSaved && user.AdminRole == user.AdminRoleValue[1]) // GW_Admin
+                // If GreenWay Africa Admin Registration
+                else if (user.AdminRole == user.AdminRoleValue[1])
                 {
-                    await alerts.ShowAlertAsync("Success", "User Account Created Successfully, pending verification");
+                    User.VerifiedAdmin = false;           //Reset verification flag
 
-                    //Reset verification flag
-                    User.VerifiedAdmin = false;
+                    Subject = "Admin Verification";
+                    Message = $"Hi Admin, \n\nA verification for a new registered GreenWay Africa Admin, {user.FirstName} {user.LastName} " +
+                        $"with Id Number: {user.IdNumber} is required. Please Login into the App and action the request. \n\n\nRegards, \nTalagrid";
 
+                    Message1 = $"Hi Admin, \n\nA verification for a new registered GreenWay Africa Admin, {user.FirstName} {user.LastName} " +
+                        $"with Id Number: {user.IdNumber} is required. Please Action the request";
+
+                    notification.Title = Subject;
+                    notification.Message = Message1;
+                    notification.User = user;
+                    notification.Admin = AdminToAction(user);
+                    notification.Read = false;                  //By default the notification has not been read
+
+                    // Save the notification in the database
+                    dataService.SaveNotification(notification);
                     //Send verification email to the Application Admin (Developer)
-                    emailService.Send_GW_Verification(adminEmail, user.FirstName, user.LastName, user.IdNumber);
+                    emailService.Send_GW_Verification(notification.Admin.Email, user.FirstName, user.LastName, user.IdNumber, Subject, Message);
 
-                    // Activate a notification for a new registered admin
-                    notification.Title = "New GreenWay Admin Registration";
-                    notification.Message = "";
                 }
-                else if (isSaved && user.AdminRole == user.AdminRoleValue[2]) // BBC_Admin
+                else if (user.AdminRole == user.AdminRoleValue[2]) // BBC_Admin
+                {
+                    //As above
+                }
+                else
+                    await alerts.ShowAlertAsync("Operation Failed", "Something went wrong, account could not be created!");
+
+
+                // Save the admin details in the database
+                isSaved = dataService.SaveAdminData(user);
+                
+                if (isSaved) 
                 {
                     await alerts.ShowAlertAsync("Success", "User Account Created Successfully, pending verification");
                 }
-
 
                 //Save the user's Id number before class properties are cleared 
                 Logins.IdNumber = user.IdNumber;
@@ -126,7 +150,24 @@ namespace TalaGrid.ViewModels
 
         #region Helper Methods
 
+        Users AdminToAction(Users user)
+        {
+            Users admin = new();
 
+            // If GreenWay admin registration, admin (developer) to action
+            if (user.AdminRole == user.AdminRoleValue[1])
+            {
+                // Lindokuhle Gamede is the current admin
+                string IdNumber = "9409215626080";
+                admin = dataService.SearchAdmin(IdNumber);
+            }
+            else if (user.AdminRole == user.AdminRoleValue[2])
+            {
+                
+            }
+
+            return admin;
+        }
 
         /// <summary>
         /// Check if any text fields are empty

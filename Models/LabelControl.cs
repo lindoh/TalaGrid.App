@@ -34,6 +34,7 @@ namespace TalaGrid.Models
             messages.Add("Username Valid", "Valid Username");
             messages.Add("Delete Operation Successful", "User Account Deleted Successfully");
             messages.Add("Delete Operation Failed", "User Account Could Not Be Deleted");
+            messages.Add("Account Verification Pedding", "It seems your account has not been verified, please wait for confirmation from the responsible administrator");
         }
     }
 }

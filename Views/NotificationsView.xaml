@@ -12,24 +12,28 @@
         <ListView x:Name="notificationsListView"
                   ItemsSource="{Binding Notifications}"
                   HasUnevenRows="True" 
-                  ItemSelected="notificationsListView_ItemSelected">
+                  ItemSelected="notificationsListView_ItemSelected"
+                  VerticalScrollBarVisibility="Default">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Notification">
                     <ViewCell>
-                        <StackLayout Padding="10">
+                        <StackLayout x:Name="notificationView" Padding="10" BackgroundColor="{Binding BackColor}" Margin="10">
                             <Label Text="{Binding Title}" FontSize="Small" FontAttributes="Bold" TextColor="Coral"/>
                             <Label Text="{Binding Message}" FontSize="Caption" />
-                            <HorizontalStackLayout>
-                                <Button x:Name="ApproveBtn" Text="Approve" FontSize="Small" BackgroundColor="DarkGreen"
-                                    Margin="20" Padding="5" IsVisible="{Binding BtnVisible}"/>
-                                <Button Text="Decline" FontSize="Small" BackgroundColor="DarkGreen"
-                                    Margin="20" Padding="5" IsVisible="{Binding BtnVisible}"/>
-                            </HorizontalStackLayout>
+                          
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Button Text="Approve" FontSize="Small" BackgroundColor="DarkGreen"
+                                    Margin="20" Padding="5"
+                                    Command="{Binding ApproveCommand}"/>
+            <Button Text="Reject" FontSize="Small" BackgroundColor="DarkGreen"
+                                    Margin="20" Padding="5"
+                                    Command="{Binding RejectCommand}"/>
+        </HorizontalStackLayout>
     </StackLayout>
 
 </ContentPage>
