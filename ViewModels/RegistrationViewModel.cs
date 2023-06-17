@@ -66,12 +66,16 @@ namespace TalaGrid.ViewModels
         async void Register()
         {
             bool isSaved = false;
+            bool isSaved1 = false;
 
             if(dataService.SearchAdmin(User.IdNumber).Id > 0)
                  await alerts.ShowAlertAsync("Operation Failed", "Id Number or User already exists");
 
             else if (user.IdNumber == null || user.IdNumber.Length != 13)
                 await alerts.ShowAlertAsync("Operation Failed", "Id Number must be 13 digits long");
+
+            else if (user.CellNumber.Length != 10)
+                await alerts.ShowAlertAsync("Operation Failed", "Cellphone Number must be 10 digits long");
 
             else if (!CheckTextFields(user))
             {
@@ -88,9 +92,12 @@ namespace TalaGrid.ViewModels
                     User.VerifiedAdmin = false;           //Reset verification flag
 
                     Subject = "Admin Verification";
+
+                    // Message to be sent to the Admin via email
                     Message = $"Hi Admin, \n\nA verification for a new registered GreenWay Africa Admin, {user.FirstName} {user.LastName} " +
                         $"with Id Number: {user.IdNumber} is required. Please Login into the App and action the request. \n\n\nRegards, \nTalagrid";
 
+                    // Message for the Admin In-App notification
                     Message1 = $"Hi Admin, \n\nA verification for a new registered GreenWay Africa Admin, {user.FirstName} {user.LastName} " +
                         $"with Id Number: {user.IdNumber} is required. Please Action the request";
 
@@ -100,15 +107,32 @@ namespace TalaGrid.ViewModels
                     notification.Admin = AdminToAction(user);
                     notification.Read = false;                  //By default the notification has not been read
 
-                    // Save the notification in the database
-                    dataService.SaveNotification(notification);
                     //Send verification email to the Application Admin (Developer)
                     emailService.Send_GW_Verification(notification.Admin.Email, user.FirstName, user.LastName, user.IdNumber, Subject, Message);
 
                 }
                 else if (user.AdminRole == user.AdminRoleValue[2]) // BBC_Admin
                 {
-                    //As above
+                    User.VerifiedAdmin = false;           //Reset verification flag
+
+                    Subject = "Admin Verification";
+
+                    // Message to be sent to the Admin via email
+                    Message = $"Hi Admin, \n\nA verification for a new registered Buy-Back-Center Admin, {user.FirstName} {user.LastName} " +
+                        $"with Id Number: {user.IdNumber} is required. Please Login into the App and action the request. \n\n\nRegards, \nTalagrid";
+
+                    // Message for the Admin In-App notification
+                    Message1 = $"Hi Admin, \n\nA verification for a new registered Buy-Back-Center Admin, {user.FirstName} {user.LastName} " +
+                        $"with Id Number: {user.IdNumber} is required. Please Action the request";
+
+                    notification.Title = Subject;
+                    notification.Message = Message1;
+                    notification.User = user;
+                    notification.Admin = AdminToAction(user);
+                    notification.Read = false;                  //By default the notification has not been read
+
+                    //Send verification email to the Application Admin (Developer)
+                    emailService.Send_BBC_Verification(notification.Admin.Email, user.FirstName, user.LastName, user.IdNumber);
                 }
                 else
                     await alerts.ShowAlertAsync("Operation Failed", "Something went wrong, account could not be created!");
@@ -116,20 +140,30 @@ namespace TalaGrid.ViewModels
 
                 // Save the admin details in the database
                 isSaved = dataService.SaveAdminData(user);
-                
-                if (isSaved) 
+                // Save the notification in the database
+                isSaved1 = dataService.SaveNotification(notification);
+
+                if (isSaved && isSaved1) 
                 {
                     await alerts.ShowAlertAsync("Success", "User Account Created Successfully, pending verification");
-                }
 
-                //Save the user's Id number before class properties are cleared 
-                Logins.IdNumber = user.IdNumber;
+                    //Save the user's Id number before class properties are cleared 
+                    Logins.IdNumber = user.IdNumber;
+
+                    //Navigate to the Create Login Details Page
+                    App.Current.MainPage = new CreateLoginsView();
+                    //await Shell.Current.GoToAsync(nameof(CreateLoginsView));
+                }
+                else
+                {
+                    // Delete incomplete records from DB
+                    DeleteFromDB(isSaved, isSaved1, user.IdNumber);
+                        
+                    await alerts.ShowAlertAsync("Operation Failed", "Something went wrong, account could not be created!");
+                }
 
                 Clear(User);    //Clear text fields
 
-                //Navigate to the Create Login Details Page
-                App.Current.MainPage = new CreateLoginsView();
-                //await Shell.Current.GoToAsync(nameof(CreateLoginsView));
             }
             else
             {
@@ -163,7 +197,9 @@ namespace TalaGrid.ViewModels
             }
             else if (user.AdminRole == user.AdminRoleValue[2])
             {
-                
+                // Zee is the current admin
+                string IdNumber = "9703155626084";
+                admin = dataService.SearchAdmin(IdNumber);
             }
 
             return admin;
@@ -210,6 +246,14 @@ namespace TalaGrid.ViewModels
             user.AdminRole = "";
         }
 
+        private void DeleteFromDB(bool isSaved, bool isSaved1, string IdNumber)
+        {
+            if (isSaved)
+                dataService.DeleteAdminWithId(IdNumber);
+
+            if (isSaved1)
+                dataService.DeleteNotification(IdNumber);
+        }
         #endregion
     }
 }

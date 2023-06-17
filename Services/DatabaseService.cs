@@ -463,9 +463,9 @@ namespace TalaGrid.Services
         #endregion
 
         #region Search Admin and verification status
-        public bool SearchAndVerifyAdmin(int AdminId)
+        public Users SearchAndVerifyAdmin(int AdminId)
         {
-            bool VerifiedAdmin =  false;
+            Users user = new();
 
             try
             {
@@ -484,7 +484,8 @@ namespace TalaGrid.Services
 
                     while (sqlDataReader.Read())
                     {
-                        VerifiedAdmin = sqlDataReader.GetBoolean(0);
+                        user.AdminRole = sqlDataReader.GetString(0);
+                        user.VerifiedAdmin = sqlDataReader.GetBoolean(1);
                     }
                     sqlDataReader.Close();
                 }
@@ -498,7 +499,7 @@ namespace TalaGrid.Services
                 sqlConnection.Close();
             }
 
-            return VerifiedAdmin;
+            return user;
         }
 
 
@@ -692,6 +693,71 @@ namespace TalaGrid.Services
             return isDeleted;
         }
 
+        #endregion
+
+        #region Delete Admin Logins
+        public bool DeleteLogins(int AdminId)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();      //Clear Parameters
+                sqlCommand.CommandText = "DeleteLogins";
+
+                sqlCommand.Parameters.AddWithValue("@AdminId", AdminId);
+
+                //Open Sql database connection
+                sqlConnection.Open();
+
+                //If number of rows affected > 0 then the data is deleted succesfully
+                int noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                isDeleted = noOfRowsAffected > 0;
+            }
+            catch (SqlException ex)
+            {
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return isDeleted;
+        }
+
+        #endregion
+
+        #region Delete Admin using Id Number
+        public bool DeleteAdminWithId(string IdNumber)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();      //Clear Parameters
+                sqlCommand.CommandText = "DeleteAdminWithId";
+
+                sqlCommand.Parameters.AddWithValue("@IdNumber", IdNumber);
+
+                //Open Sql database connection
+                sqlConnection.Open();
+
+                //If number of rows affected > 0 then the data is deleted succesfully
+                int noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                isDeleted = noOfRowsAffected > 0;
+            }
+            catch (SqlException ex)
+            {
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return isDeleted;
+        }
         #endregion
 
         #region Insert and Update User Banking Details
@@ -1416,6 +1482,39 @@ namespace TalaGrid.Services
 
             return isUpdated;
         }
+        #endregion
+
+        #region Delete Notification using IdNumber
+        public bool DeleteNotification(string IdNumber)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();      //Clear Parameters
+                sqlCommand.CommandText = "DeleteNotification";
+
+                sqlCommand.Parameters.AddWithValue("@IdNumber", IdNumber);
+
+                //Open Sql database connection
+                sqlConnection.Open();
+
+                //If number of rows affected > 0 then the data is deleted succesfully
+                int noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                isDeleted = noOfRowsAffected > 0;
+            }
+            catch (SqlException ex)
+            {
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return isDeleted;
+        }
+
         #endregion
 
     }

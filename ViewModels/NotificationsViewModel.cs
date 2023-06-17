@@ -15,7 +15,7 @@ namespace TalaGrid.ViewModels
             OldNotification = new();
             CurrentNotification = new();
             dataService = new();
-
+            ControlLabel = new();
             currentAdmin = new();
 
             LoadNotifications();
@@ -23,6 +23,8 @@ namespace TalaGrid.ViewModels
             alerts = new();
 
             emailService = new();
+
+            admin = new();
         }
         #endregion
 
@@ -51,6 +53,14 @@ namespace TalaGrid.ViewModels
         [ObservableProperty]
         private bool btnVisible;
 
+        [ObservableProperty]
+        Users admin;
+
+        string ReadNotification;
+
+        [ObservableProperty]
+        LabelControl controlLabel;
+
         #endregion
 
         #region Class Methods
@@ -66,6 +76,25 @@ namespace TalaGrid.ViewModels
         private void LoadNotifications() 
         {
             notifications = new ObservableCollection<Notification>(dataService.LoadNotifications(currentAdmin.UserLogin.AdminId));
+
+            if (notifications.Count > 0)
+            {
+                BtnVisible = true;
+                ControlLabel.ShowLabel = false;
+            }
+            else
+            {
+                BtnVisible = false;
+                ControlLabel.Color = Colors.Red;
+                ControlLabel.Message = ControlLabel.messages["Notification"];
+                ControlLabel.ShowLabel = true;
+            }
+
+            foreach(Notification notification in notifications)
+            {
+                if (notification.Read)
+                    notification.BackColor = Colors.LightBlue;
+            }
         }
 
         #endregion
@@ -75,53 +104,83 @@ namespace TalaGrid.ViewModels
         [RelayCommand]
         async void Approve()
         {
-            // Confirm the decision
-            bool confirmation = await alerts.ShowConfirmationAsync("Confirmation", "Are you sure you would like to Approve this User?", "Yes", "No");
-            
-            if (confirmation)
+            if (!CurrentNotification.Read)
             {
-                //Update Notifications Read flag and disable the item selection mode
-                bool isUpdated = dataService.UpdateNotification(currentNotification.NotificationsId);
+                // Confirm the decision
+                bool confirmation = await alerts.ShowConfirmationAsync("Confirmation", "Are you sure you would like to Approve this User?", "Yes", "No");
 
-                //Update User's Verified Admin property in the database
-                bool isUpdated1 = dataService.UpdateAdmin(currentNotification.User.IdNumber);
-
-                if (isUpdated && isUpdated1)
+                if (confirmation)
                 {
-                    CurrentNotification.BackColor = Color.FromRgba("#989a9e");
+                    Admin = dataService.SearchAndVerifyAdmin(currentAdmin.UserLogin.AdminId);
 
-                    //Send a response email to the user to alert them, account has been approved
-                    Users user = new();
-                    user = dataService.SearchAdmin(currentNotification.User.IdNumber);
 
-                    Approved = true;
+                    //Update Notifications Read flag 
+                    bool isUpdated = dataService.UpdateNotification(currentNotification.NotificationsId);
+                    CurrentNotification.Read = isUpdated;
 
-                    emailService.Send_GW_Ver_Response(user.Email, user.FirstName, user.LastName, Approved);
+                    //Update User's Verified Admin property in the database
+                    bool isUpdated1 = dataService.UpdateAdmin(currentNotification.User.IdNumber);
+
+                    if (isUpdated && isUpdated1)
+                    {
+                        //Update notification viewcell color
+                        CurrentNotification.BackColor = Colors.LightBlue;
+
+                        
+                        Users user = new();
+                        user = dataService.SearchAdmin(currentNotification.User.IdNumber);
+
+                        Approved = true;
+
+                        //Send a response email to the user to alert them, account has been approved
+                        // Check Admin Role, If Developer?
+                        if (admin.AdminRole == admin.AdminRoleValue[0])
+                            emailService.Send_GW_Ver_Response(user.Email, user.FirstName, user.LastName, Approved);
+                        else if (admin.AdminRole == admin.AdminRoleValue[1])
+                            emailService.Send_BBC_Ver_Response(user.Email, user.FirstName, user.LastName, Approved); 
+                    }
+                    else
+                        await alerts.ShowAlertAsync("Failure", "Something went wrong, process terminated with an error");
                 }
-                else
-                    await alerts.ShowAlertAsync("Failure", "Something went wrong, process terminated with an error");
             }
+            else
+                await alerts.ShowAlertAsync("Acknowledged", "Notification already acknowledged, no need to do anything further");
         }
 
         [RelayCommand]
         async void Reject()
         {
-            // Confirm the decision
-            bool confirmation = await alerts.ShowConfirmationAsync("Confirmation", "Are you sure you would like to Reject this User?", "Yes", "No");
-
-            if (confirmation) 
+            if (!CurrentNotification.Read)
             {
-                CurrentNotification.Read = !CurrentNotification.Read; //Disable the notification viewcell
-                CurrentNotification.BackColor = Color.FromRgba("#989a9e");
+                // Confirm the decision
+                bool confirmation = await alerts.ShowConfirmationAsync("Confirmation", "Are you sure you would like to Reject this User?", "Yes", "No");
 
-                //Send a response email to the user to alert them, account has been approved
-                Users user = new();
-                user = dataService.SearchAdmin(currentNotification.User.IdNumber);
+                if (confirmation)
+                {
+                    //Update notification viewcell color
+                    CurrentNotification.BackColor = Colors.LightBlue;
 
-                Approved = false;
+                    // Update the Notification Read flag
+                    CurrentNotification.Read = true;
 
-                emailService.Send_GW_Ver_Response(user.Email, user.FirstName, user.LastName, Approved);
+                    Users user = new();
+                    user = dataService.SearchAdmin(currentNotification.User.IdNumber);
+
+                    Approved = false;
+
+                    //Send a response email to the user to alert them, account was Rejected
+                    if (admin.AdminRole == admin.AdminRoleValue[0])
+                        emailService.Send_GW_Ver_Response(user.Email, user.FirstName, user.LastName, Approved);
+                    else if (admin.AdminRole == admin.AdminRoleValue[1])
+                        emailService.Send_BBC_Ver_Response(user.Email, user.FirstName, user.LastName, Approved);
+
+                    // Delete the user information from the database
+                    dataService.Delete(user.Id, "Admin");
+                    dataService.DeleteLogins(user.Id);
+                }
             }
+            else
+                await alerts.ShowAlertAsync("Acknowledged", "Notification already acknowledged, no need to do anything further");
         }
 
         #endregion

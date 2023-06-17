@@ -1,4 +1,7 @@
-﻿using TalaGrid.Views;
+﻿using TalaGrid.Models;
+using TalaGrid.Services;
+using TalaGrid.ViewModels;
+using TalaGrid.Views;
 
 namespace TalaGrid;
 
@@ -27,6 +30,8 @@ public partial class AppShell : Shell
 
         myShell.FlyoutBehavior = FlyoutBehavior.Locked;
     }
+
+  
 
 
     Shell myShell;

@@ -10,7 +10,7 @@ namespace TalaGrid.Models
             user = new();
             admin =  new();
             BackColor = new();
-            BackColor = Color.FromRgba("#dce0e6");
+            BackColor = Colors.ForestGreen;
         }
 
         [ObservableProperty]

@@ -29,7 +29,7 @@
               Route="HomeView"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Notifications" Icon="notification.png" x:DataType="views:NotificationsView">
+    <FlyoutItem Title="Notifications" Icon="notification.png" x:DataType="views:NotificationsView" IsVisible="{Binding HideView}">
         <ShellContent 
               ContentTemplate="{x:DataTemplate views:NotificationsView}"
               Route="NotificationsView"/>

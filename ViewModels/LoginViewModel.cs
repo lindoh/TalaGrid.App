@@ -33,7 +33,6 @@ namespace TalaGrid.ViewModels
         [ObservableProperty]
         LabelControl controlLabel;
 
-
         #region Class Buttons
 
         [RelayCommand]
@@ -52,8 +51,11 @@ namespace TalaGrid.ViewModels
                     ControlLabel.ShowLabel = true;
 
                     //Check if Admin is verified
-                    bool verifiedAdmin = dataService.SearchAndVerifyAdmin(userLogin.AdminId);
-                    if (!verifiedAdmin) 
+
+                    Users admin = new();
+                    admin = dataService.SearchAndVerifyAdmin(userLogin.AdminId);
+
+                    if (!admin.VerifiedAdmin) 
                     {
                         ControlLabel.Color = Colors.OrangeRed;
                         ControlLabel.Message = ControlLabel.messages["Account Verification Pedding"];
@@ -95,7 +97,7 @@ namespace TalaGrid.ViewModels
 
 
             //Clear Text fields
-            //Clear();
+            Clear();
         }
 
         [RelayCommand]

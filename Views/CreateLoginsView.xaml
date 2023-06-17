@@ -5,60 +5,63 @@
              x:DataType="viewmodel:CreateLoginsViewModel"
              x:Class="TalaGrid.Views.CreateLoginsView">
 
-    <VerticalStackLayout MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" Margin="10"  Padding="10">
-        <Image Source="appicon.png"
+    <ScrollView>
+        <VerticalStackLayout MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=600}" Margin="10"  Padding="10">
+            <Image Source="appicon.png"
                HorizontalOptions="Center" VerticalOptions="Start" 
                MaximumWidthRequest="150" MaximumHeightRequest="150"/>
 
-        <Label Text="Please Create Login Credentials" TextColor="#6e9b19" FontSize="Title" HorizontalTextAlignment="Center"/>
+            <Label Text="Please Create Login Credentials" TextColor="#6e9b19" FontSize="Title" HorizontalTextAlignment="Center"/>
 
 
-        <Label Text="{Binding ControlLabel.Message}" TextColor="{Binding ControlLabel.Color}" 
+            <Label Text="{Binding ControlLabel.Message}" TextColor="{Binding ControlLabel.Color}" 
                IsVisible="{Binding ControlLabel.ShowLabel}"
                FontSize="Caption" HorizontalOptions="Start" Margin="10, 50, 5, 5"/>
-        
-        <!--Username Tag-->
-        <Label 
+
+            <!--Username Tag-->
+            <Label 
             Text="Username/Email" VerticalOptions="End" HorizontalOptions="Start" 
             FontSize="Caption" TextColor="Gray"
             Margin="10, 50, 5, 0"/>
-        <Entry 
+            <Entry 
             VerticalOptions="Start" HorizontalOptions="Fill" 
             FontSize="Caption" TextColor="Black" BackgroundColor="LightGray"
             Margin="10, 0, 5, 5" Text="{Binding UserLogins.Username, Mode=TwoWay}"/>
 
-        <!--Password Tag-->
-        <Label 
+            <!--Password Tag-->
+            <Label 
             Text="Password" VerticalOptions="End" HorizontalOptions="Start" 
             FontSize="Caption" TextColor="Gray"
             Margin="10, 5, 5, 0"/>
-        <Entry 
+            <Entry 
             VerticalOptions="Start" HorizontalOptions="Fill" BackgroundColor="LightGray"
             FontSize="Caption" TextColor="Black" IsPassword="True"
             Margin="10, 0, 5, 5" Text="{Binding UserLogins.Password, Mode=TwoWay}"/>
 
-        <!--Confirm Password Tag-->
-        <Label 
+            <!--Confirm Password Tag-->
+            <Label 
             Text="Confirm Password" VerticalOptions="End" HorizontalOptions="Start" 
             FontSize="Caption" TextColor="Gray"
             Margin="10, 5, 5, 0"/>
-        <Entry 
+            <Entry 
             VerticalOptions="Start" HorizontalOptions="Fill" BackgroundColor="LightGray"
             FontSize="Caption" TextColor="Black" IsPassword="True"
             Margin="10, 0, 5, 5" Text="{Binding ConfirmPassword, Mode=TwoWay}"/>
-        
-        <!-- Strong Password Tag-->
-        <Label Text="It is mandatory and encouranged that you create a strong password which has:" 
+
+            <!-- Strong Password Tag-->
+            <Label Text="It is mandatory and encouranged that you create a strong password which has:" 
                VerticalOptions="Start" HorizontalOptions="Fill" 
                FontSize="Caption" TextColor="Red" Margin="10, 5, 5, 0"/>
-        <Label Text="~ At least 8 characters and &#x0A;~ A combination of uppercase letters, lowercase letters, numbers, and symbols." 
+            <Label Text="~ At least 8 characters and &#x0A;~ A combination of uppercase letters, lowercase letters, numbers, and symbols." 
                VerticalOptions="Start" HorizontalOptions="Fill" 
                FontSize="Caption" TextColor="Red" Margin="10, 5, 5, 0"/>
 
-        <!--Continue Button Tag-->
-        <Button 
+            <!--Continue Button Tag-->
+            <Button 
              Text="Continue" FontSize="Small" BackgroundColor="#155ca1"
              Margin="20" Padding="5" WidthRequest="200"
              Command="{Binding ContinueCommand}"/>
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+    
 </ContentPage>

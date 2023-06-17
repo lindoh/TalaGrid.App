@@ -9,6 +9,9 @@
     <StackLayout>
         <Label Text="Notifications" VerticalOptions="Center" HorizontalOptions="Center" 
                    FontSize="Title" TextColor="#155ca1" Margin="10" />
+        <Label Text="{Binding ControlLabel.Message}" TextColor="{Binding ControlLabel.Color}" 
+               IsVisible="{Binding ControlLabel.ShowLabel}"
+               FontSize="Caption" HorizontalOptions="Start" Margin="10, 50, 5, 5"/>
         <ListView x:Name="notificationsListView"
                   ItemsSource="{Binding Notifications}"
                   HasUnevenRows="True" 
@@ -29,10 +32,14 @@
         <HorizontalStackLayout HorizontalOptions="Center">
             <Button Text="Approve" FontSize="Small" BackgroundColor="DarkGreen"
                                     Margin="20" Padding="5"
-                                    Command="{Binding ApproveCommand}"/>
+                                    Command="{Binding ApproveCommand}"
+                                    WidthRequest="100"
+                                    IsVisible="{Binding BtnVisible}"/>
             <Button Text="Reject" FontSize="Small" BackgroundColor="DarkGreen"
                                     Margin="20" Padding="5"
-                                    Command="{Binding RejectCommand}"/>
+                                    Command="{Binding RejectCommand}"
+                                    WidthRequest="100"
+                                    IsVisible="{Binding BtnVisible}"/>
         </HorizontalStackLayout>
     </StackLayout>
 

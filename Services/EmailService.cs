@@ -6,16 +6,24 @@ namespace TalaGrid.Services
 {
     public class EmailService
     {
+        public EmailService() 
+        {
+            alerts = new();
+        }   
+
+
         #region Email Service Properties
         // create SmtpClient as client and specify server, port, user name and password
-        SmtpClient client = new SmtpClient("smtp-mail.outlook.com", 587, "lindohgamede@outlook.com", "#PeterS23");
+        SmtpClient client = new SmtpClient("smtpout.secureserver.net", 465, "admin@farecost.co.za", "P@55Code#1");
 
         // create instances of MailMessage class and Specify To, From, Subject, and Message
-        string FromEmail = "lindohgamede@outlook.com";
+        string FromEmail = "admin@farecost.co.za";
         string Subject;
         string Message;
         string Message1;
         MailMessage mailMessage;
+
+        AlertService alerts;
 
         #endregion
 
@@ -27,13 +35,21 @@ namespace TalaGrid.Services
         /// <param name="ToFirstName">Recepient Name</param>
         /// <param name="ToLastName">Recepient Lastname</param>
         /// <param name="OTP">One Time Pin</param>
-        public void SendOTP(string ToEmail, string ToFirstName, string ToLastName, string OTP)
+        public async void SendOTP(string ToEmail, string ToFirstName, string ToLastName, string OTP)
         {
             Subject = "Account Verification OTP";
             Message = $"Hi {ToFirstName} {ToLastName},\n\nPlease see your TalaGrid OTP: {OTP}";
             mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
 
-            client.Send(mailMessage);
+            try
+            {
+                client.Send(mailMessage);
+            }
+            catch (MailException ex)
+            {
+                await alerts.ShowAlertAsync("Error!", ex.Message);
+            }
+            
         }
 
         /// <summary>
@@ -43,11 +59,18 @@ namespace TalaGrid.Services
         /// <param name="ToFirstName">Recepient Name</param>
         /// <param name="ToLastName">Recepient Lastname</param>
         /// <param name="IdNumber">Recepient Id Number</param>
-        public void Send_GW_Verification(string ToEmail, string ToFirstName, string ToLastName, string IdNumber, string Subject, string Message)
+        public async void Send_GW_Verification(string ToEmail, string ToFirstName, string ToLastName, string IdNumber, string Subject, string Message)
         {
             mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
 
-            client.Send(mailMessage);
+            try
+            {
+                client.Send(mailMessage);
+            }
+            catch (MailException ex)
+            {
+                await alerts.ShowAlertAsync("Error!", ex.Message);
+            }
         }
 
         /// <summary>
@@ -56,20 +79,28 @@ namespace TalaGrid.Services
         /// <param name="ToEmail">Recepient Email</param>
         /// <param name="ToFirstName">Recepient Name</param>
         /// <param name="ToLastName">Recepient Lastname</param>
-        public void Send_GW_Ver_Response(string ToEmail, string ToFirstName, string ToLastName, bool Approved)
+        public async void Send_GW_Ver_Response(string ToEmail, string ToFirstName, string ToLastName, bool Approved)
         {
             Subject = "Admin Verification";
             Message = $"Hi {ToFirstName} {ToLastName},\n\nPlease note that your account has been verified, you can now Login and use the application." +
                 $"\n\n\nRegards,\nTalagrid Admin";
             Message1 = $"Hi {ToFirstName} {ToLastName},\n\nPlease note that your account verification has been Rejected," +
-                $"please contact the responsible administrator for more information";
+                $"please contact the responsible administrator for more information\n\n\nRegards,\nTalagrid Admin";
 
-            if (Approved)
-                mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
-            else
-                mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message1);
+            try
+            {
+                if (Approved)
+                    mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
+                else
+                    mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message1);
 
-            client.Send(mailMessage);
+            
+                client.Send(mailMessage);
+            }
+            catch (MailException ex)
+            {
+                await alerts.ShowAlertAsync("Error!", ex.Message);
+            }
         }
 
         /// <summary>
@@ -79,7 +110,7 @@ namespace TalaGrid.Services
         /// <param name="ToFirstName">Recepient Name</param>
         /// <param name="ToLastName">Recepient Lastname</param>
         /// <param name="IdNumber">Recepient Id Number</param>
-        public void Send_BBC_Verification(string ToEmail, string ToFirstName, string ToLastName, string IdNumber)
+        public async void Send_BBC_Verification(string ToEmail, string ToFirstName, string ToLastName, string IdNumber)
         {
             Subject = "Admin Verification";
             Message = $"Hi Admin, \n\nA verification for a new registered Buy-Back-Center Admin, {ToFirstName} {ToLastName} " +
@@ -87,7 +118,14 @@ namespace TalaGrid.Services
 
             mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
 
-            client.Send(mailMessage);
+            try
+            {
+                client.Send(mailMessage);
+            }
+            catch (MailException ex)
+            {
+                await alerts.ShowAlertAsync("Error!", ex.Message);
+            }
         }
 
         /// <summary>
@@ -96,15 +134,27 @@ namespace TalaGrid.Services
         /// <param name="ToEmail">Recepient Email</param>
         /// <param name="ToFirstName">Recepient Name</param>
         /// <param name="ToLastName">Recepient Lastname</param>
-        public void Send_BBC_Ver_Response(string ToEmail, string ToFirstName, string ToLastName)
+        public async void Send_BBC_Ver_Response(string ToEmail, string ToFirstName, string ToLastName, bool Approved)
         {
             Subject = "Admin Verification";
             Message = $"Hi {ToFirstName} {ToLastName},\n\nPlease note that your account has been verified, you can now Login and use the application." +
                 $"\n\n\nRegards,\nGreenWay Africa Admin";
+            Message1 = $"Hi {ToFirstName} {ToLastName},\n\nPlease note that your account verification has been Rejected," +
+                $"please contact the responsible administrator for more information\n\n\nRegards,\nGreenWay Africa Admin";
 
-            mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
+            if (Approved)
+                mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message);
+            else
+                mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Message1);
 
-            client.Send(mailMessage);
+            try
+            {
+                client.Send(mailMessage);
+            }
+            catch (MailException ex)
+            {
+                await alerts.ShowAlertAsync("Error!", ex.Message);
+            }
         }
 
         #endregion
