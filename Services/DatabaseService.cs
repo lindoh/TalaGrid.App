@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 //using Microsoft.Maui.Animations;
 using System.Data;
+using System.Collections.ObjectModel;
 
 
 
@@ -80,6 +81,7 @@ namespace TalaGrid.Services
                 sqlCommand.Parameters.AddWithValue("@City", user.City);
                 sqlCommand.Parameters.AddWithValue("@Province", user.Province);
                 sqlCommand.Parameters.AddWithValue("@Country", user.Country);
+                sqlCommand.Parameters.AddWithValue("@BBCId", user.BBCId);
 
                 //Open Sql database connection
                 sqlConnection.Open();
@@ -132,6 +134,8 @@ namespace TalaGrid.Services
                 sqlCommand.Parameters.AddWithValue("@City", user.City);
                 sqlCommand.Parameters.AddWithValue("@Province", user.Province);
                 sqlCommand.Parameters.AddWithValue("@Country", user.Country);
+                sqlCommand.Parameters.AddWithValue("@AdminRole", user.AdminRole);
+                sqlCommand.Parameters.AddWithValue("@VerifiedAdmin", user.VerifiedAdmin);
 
                 //Open Sql database connection
                 sqlConnection.Open();
@@ -235,10 +239,9 @@ namespace TalaGrid.Services
             }
             catch (SqlException ex)
             {
-
                 alerts.ShowAlert("Error!", ex.Message);
             }
-            finally
+            finally 
             {
                 sqlConnection.Close();
             }
@@ -293,23 +296,18 @@ namespace TalaGrid.Services
         /// Get all data that matches a given name, i.e., Firstname
         /// </summary>
         /// <returns>List of users that matches Firstname</returns>
-        public List<Users> Search(string name, string selectedUser)
+        public List<Users> SearchCollector(string name, int BBCId)
         {
             List<Users> usersList = new();
-            string userToSearch = "SearchCollector";
-
-            //Update the userToSearch variable to select the correct 
-            //Stored Procedure for the search
-            if (selectedUser == "Admin")
-                userToSearch = "SearchAdmin";
-            else if (selectedUser == "Collector")
-                userToSearch = "SearchCollector";
 
             try
             {
                 sqlCommand.Parameters.Clear();
-                sqlCommand.CommandText = userToSearch;
+                sqlCommand.CommandText = "SearchCollector";
+
+                //Search the collector using the firstname and BBC id
                 sqlCommand.Parameters.AddWithValue("@FirstName", name);
+                sqlCommand.Parameters.AddWithValue("@BBCId", BBCId);
 
                 sqlConnection.Open();
                 var sqlDataReader = sqlCommand.ExecuteReader();
@@ -358,6 +356,70 @@ namespace TalaGrid.Services
         }
         #endregion
 
+        #region Search Admin
+        public List<Users> SearchAdmin(string name, int AdminId)
+        {
+            List<Users> usersList = new();
+
+            try
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.CommandText = "SearchAdmin";
+
+                //Search the admin using the firstname and BBC id
+                sqlCommand.Parameters.AddWithValue("@FirstName", name);
+                sqlCommand.Parameters.AddWithValue("@AdminId", AdminId);
+
+                sqlConnection.Open();
+                var sqlDataReader = sqlCommand.ExecuteReader();
+
+                if (sqlDataReader.HasRows)
+                {
+                    Users user;
+
+                    while (sqlDataReader.Read())
+                    {
+                        user = new()
+                        {
+                            Id = sqlDataReader.GetInt32(0),
+                            FirstName = sqlDataReader.GetString(1),
+                            LastName = sqlDataReader.GetString(2),
+                            IdNumber = sqlDataReader.GetString(3),
+                            Gender = sqlDataReader.GetString(4),
+                            HighestQlfn = sqlDataReader.GetString(5),
+                            IncomeRange = sqlDataReader.GetString(6),
+                            Email = sqlDataReader.GetString(7),
+                            CellNumber = sqlDataReader.GetString(8),
+                            StreetAddress = sqlDataReader.GetString(9),
+                            Suburb = sqlDataReader.GetString(10),
+                            City = sqlDataReader.GetString(11),
+                            Province = sqlDataReader.GetString(12),
+                            Country = sqlDataReader.GetString(13),
+                            AdminRole = sqlDataReader.GetString(14),
+                            VerifiedAdmin = sqlDataReader.GetBoolean(15)
+                        };
+
+                        usersList.Add(user);
+                    }
+                    sqlDataReader.Close();
+
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return usersList;
+        }
+
+        #endregion
+
         #region Search AdminId using IdNumber
         public Users SearchAdmin(string IdNumber)
         {
@@ -400,6 +462,49 @@ namespace TalaGrid.Services
 
         #endregion
 
+        #region Search Admin and verification status
+        public Users SearchAndVerifyAdmin(int AdminId)
+        {
+            Users user = new();
+
+            try
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.CommandText = "SearchAndVerifyAdmin";
+
+                sqlCommand.Parameters.AddWithValue("@AdminId", AdminId);
+
+                //Open Sql Connection
+                sqlConnection.Open();
+
+                var sqlDataReader = sqlCommand.ExecuteReader();
+
+                if (sqlDataReader.HasRows)
+                {
+
+                    while (sqlDataReader.Read())
+                    {
+                        user.AdminRole = sqlDataReader.GetString(0);
+                        user.VerifiedAdmin = sqlDataReader.GetBoolean(1);
+                    }
+                    sqlDataReader.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return user;
+        }
+
+
+        #endregion
+
         #region Update User's Data
         public bool Update(Users user, string selectedUser)
         {
@@ -439,6 +544,51 @@ namespace TalaGrid.Services
                 sqlCommand.Parameters.AddWithValue("@City", user.City);
                 sqlCommand.Parameters.AddWithValue("@Province", user.Province);
                 sqlCommand.Parameters.AddWithValue("@Country", user.Country);
+                
+
+                if (selectedUser == "Collector")
+                    sqlCommand.Parameters.AddWithValue("@BBCId", user.BBCId);
+                else
+                    sqlCommand.Parameters.AddWithValue("@VerifiedAdmin", user.VerifiedAdmin);
+
+                //Open Sql database connection
+                sqlConnection.Open();
+
+                //If affected number of rows is > 0, then data is updated successfully
+                int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                isUpdated = NoOfRowsAffected > 0;
+            }
+            catch (SqlException ex)
+            {
+
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return isUpdated;
+        }
+
+        #endregion
+
+        #region Update Admin Data using Admin IdNumber
+        /// <summary>
+        /// Update Admin Verification Status with VerifiedAdmin = true
+        /// </summary>
+        /// <param name="AdminId"></param>
+        /// <returns></returns>
+        public bool UpdateAdmin(string IdNumber)
+        {
+            bool isUpdated = false;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.CommandText = "UpdateAdmiWithId";
+
+                sqlCommand.Parameters.AddWithValue("@IdNumber", IdNumber);
 
                 //Open Sql database connection
                 sqlConnection.Open();
@@ -543,6 +693,71 @@ namespace TalaGrid.Services
             return isDeleted;
         }
 
+        #endregion
+
+        #region Delete Admin Logins
+        public bool DeleteLogins(int AdminId)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();      //Clear Parameters
+                sqlCommand.CommandText = "DeleteLogins";
+
+                sqlCommand.Parameters.AddWithValue("@AdminId", AdminId);
+
+                //Open Sql database connection
+                sqlConnection.Open();
+
+                //If number of rows affected > 0 then the data is deleted succesfully
+                int noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                isDeleted = noOfRowsAffected > 0;
+            }
+            catch (SqlException ex)
+            {
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return isDeleted;
+        }
+
+        #endregion
+
+        #region Delete Admin using Id Number
+        public bool DeleteAdminWithId(string IdNumber)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();      //Clear Parameters
+                sqlCommand.CommandText = "DeleteAdminWithId";
+
+                sqlCommand.Parameters.AddWithValue("@IdNumber", IdNumber);
+
+                //Open Sql database connection
+                sqlConnection.Open();
+
+                //If number of rows affected > 0 then the data is deleted succesfully
+                int noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                isDeleted = noOfRowsAffected > 0;
+            }
+            catch (SqlException ex)
+            {
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return isDeleted;
+        }
         #endregion
 
         #region Insert and Update User Banking Details
@@ -812,6 +1027,9 @@ namespace TalaGrid.Services
                 int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
                 isSaved = NoOfRowsAffected > 0;
 
+                if (!isSaved)
+                    alerts.ShowAlertAsync("Update Failure", "Something went wrong, BBC details were not updated successfully");
+
             }
             catch (SqlException ex)
             {
@@ -898,6 +1116,9 @@ namespace TalaGrid.Services
                 //If affected number of rows is > 0, then data is updated successfully
                 int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
                 isUpdated = NoOfRowsAffected > 0;
+
+                if (!isUpdated)
+                    alerts.ShowAlertAsync("Update Failure", "Something went wrong, BBC details were not updated successfully");
             }
             catch (SqlException ex)
             {
@@ -1135,7 +1356,166 @@ namespace TalaGrid.Services
 
         #endregion
 
+        #region Save Notification
+        public bool SaveNotification(Notification notification)
+        {
+            bool isSaved = false;
 
+            try
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.CommandText = "SaveNotification";
+
+                sqlCommand.Parameters.AddWithValue("@Title", notification.Title);
+                sqlCommand.Parameters.AddWithValue("@Message", notification.Message);
+                sqlCommand.Parameters.AddWithValue("@UserIdNumber", notification.User.IdNumber);
+                sqlCommand.Parameters.AddWithValue("@AdminId", notification.Admin.Id);
+                sqlCommand.Parameters.AddWithValue("@ReadFlag", notification.Read);
+
+                sqlConnection.Open();
+
+                //If affected number of rows > 0, then the save operation is successful
+                int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                isSaved = NoOfRowsAffected > 0;
+            }
+            catch (SqlException ex)
+            {
+
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            catch (System.ArgumentException ex)
+            {
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return isSaved;
+        }
+        #endregion
+
+        #region Load Notifications
+        public List<Notification> LoadNotifications(int AdminId)
+        {
+            Notification notification;
+            List<Notification> notifications = new();
+
+            int count = 1;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.CommandText = "LoadNotifications";
+                sqlCommand.Parameters.AddWithValue("@AdminId", AdminId);
+
+                sqlConnection.Open();
+                var sqlDataReader = sqlCommand.ExecuteReader();
+
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        notification = new();
+
+                        notification.NotificationsId = sqlDataReader.GetInt32(0);
+                        notification.Title = sqlDataReader.GetString(1);
+                        notification.Title = $"{notification.Title} {count}";
+                        notification.Message = sqlDataReader.GetString(2);
+                        notification.User.IdNumber = sqlDataReader.GetString(3);
+                        notification.Read = sqlDataReader.GetBoolean(5);
+
+                        notifications.Add(notification);
+
+                        count += 1;
+                    }
+
+                    
+                    sqlDataReader.Close();
+
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return notifications;
+        }
+
+        #endregion
+
+        #region Update Notification Read Flag
+        public bool UpdateNotification(int NotificationsId)
+        {
+            bool isUpdated = false;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.CommandText = "UpdateNotifications";
+
+                sqlCommand.Parameters.AddWithValue("@NotificationsId", NotificationsId);
+
+                //Open Sql database connection
+                sqlConnection.Open();
+
+                //If affected number of rows is > 0, then data is updated successfully
+                int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                isUpdated = NoOfRowsAffected > 0;
+            }
+            catch (SqlException ex)
+            {
+
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return isUpdated;
+        }
+        #endregion
+
+        #region Delete Notification using IdNumber
+        public bool DeleteNotification(string IdNumber)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();      //Clear Parameters
+                sqlCommand.CommandText = "DeleteNotification";
+
+                sqlCommand.Parameters.AddWithValue("@IdNumber", IdNumber);
+
+                //Open Sql database connection
+                sqlConnection.Open();
+
+                //If number of rows affected > 0 then the data is deleted succesfully
+                int noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                isDeleted = noOfRowsAffected > 0;
+            }
+            catch (SqlException ex)
+            {
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return isDeleted;
+        }
+
+        #endregion
 
     }
 }

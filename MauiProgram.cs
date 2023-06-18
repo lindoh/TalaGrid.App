@@ -42,6 +42,9 @@ public static class MauiProgram
         builder.Services.AddTransient<LogoutView>();
         builder.Services.AddTransient<LoginViewModel>();
 
+        builder.Services.AddTransient<NotificationsView>();
+        builder.Services.AddTransient<NotificationsViewModel>();
+
         builder.Services.AddSingleton<ManagePasswordView>();
         builder.Services.AddSingleton<ManagePasswordViewModel>();
 

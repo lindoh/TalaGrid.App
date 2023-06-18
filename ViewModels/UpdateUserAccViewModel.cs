@@ -76,13 +76,13 @@ namespace TalaGrid.ViewModels
             {
                 await alerts.ShowAlertAsync("Operation Failed", "Id Number must be 13 digits long");
             }
-            if (User.CellNumber.Length != 10)
+            if (User.CellNumber.Length > 10)
                 await alerts.ShowAlertAsync("Operation Failed", "Cell Number must be 10 digits long");
             else if (!CheckTextFields())
             {
                 bool isUpdated = dataService.Update(user, selectedUser);
 
-                if (selectedUser == "Admin")
+                if (selectedUser == "Admin" && (user.AdminRole == user.AdminRoleValue[1] || user.AdminRole == user.AdminRoleValue[2]))
                     UpdateBBC();
 
                 if (isUpdated)
@@ -110,10 +110,6 @@ namespace TalaGrid.ViewModels
         {
             User = args.SelectedItem as Users;
 
-            //If the Admin is selected, Load data from the database to
-            //update the BuyBackCentre object
-            if (selectedUser == "Admin")
-                LoadBBCData();
         }
 
         private void LoadBBCData()
@@ -124,7 +120,7 @@ namespace TalaGrid.ViewModels
 
                 if (BBC.BBCId == 0)
                 {
-                    alerts.ShowAlertAsync("BBC Data Update Required", "No assocciated BuyBackCentre data found, please Update!");
+                    //alerts.ShowAlertAsync("Missing Information", "No assocciated BuyBackCenter data found, please Update under Update User Account tab");
                     NewBBCUser = true;
                     BBC.Country = "South Africa";
                     BBC.Suburb = "";
@@ -138,12 +134,18 @@ namespace TalaGrid.ViewModels
         {
             bool isUpdated = false;
 
+            // If a BBC admin
+            if (user.AdminRole == user.AdminRoleValue[2])
+                LoadBBCData();
+
             //If this is a new BuyBackCentre User, save data in the database
             //Otherwise, update existing data
             if (newBBCUser)
                 isUpdated = dataService.SaveBBCData(bBC, user);
             else
+            {
                 isUpdated = dataService.UpdateBBC(bBC);
+            }
 
             return isUpdated;
         }
@@ -156,7 +158,7 @@ namespace TalaGrid.ViewModels
         {
             bool emptyFields = false;
 
-            if (selectedUser == "Admin")
+            if (selectedUser == "Admin" && (user.AdminRole == user.AdminRoleValue[1] || user.AdminRole == user.AdminRoleValue[2]))
             {
                 if (user.FirstName == null || user.LastName == null || user.IdNumber == null ||
                 user.Gender == null || user.HighestQlfn == null || user.IncomeRange == null ||
@@ -167,7 +169,7 @@ namespace TalaGrid.ViewModels
                     emptyFields = true;
                 }
             }
-            else
+            else if (selectedUser == "Collector" || user.AdminRole == user.AdminRoleValue[0])
             {
                 if (user.FirstName == null || user.LastName == null || user.IdNumber == null ||
                 user.Gender == null || user.HighestQlfn == null || user.IncomeRange == null ||

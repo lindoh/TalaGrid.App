@@ -153,7 +153,8 @@
             Margin="10, 5, 5, 0"/>
             <Entry Grid.Row="8" Grid.Column="1" x:Name="cellNumberTxt"
             VerticalOptions="Start" HorizontalOptions="Fill" BackgroundColor="LightGray"
-            FontSize="Caption" TextColor="Black"
+            FontSize="Caption" TextColor="Black" 
+            Placeholder="0612345678" PlaceholderColor="Gray"
             Margin="10, 0, 5, 5" Text="{Binding User.CellNumber, Mode=TwoWay}"/>
 
             <!-- Physical Address Tag                                 -->

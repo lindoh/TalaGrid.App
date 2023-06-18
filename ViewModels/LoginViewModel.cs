@@ -16,6 +16,9 @@ namespace TalaGrid.ViewModels
             userLogin = new Login();
             ControlLabel = new LabelControl();
             buyBackCentre = new BuyBackCentre();
+
+            //Clear text fields
+            Clear();
         }
 
         DatabaseService dataService;
@@ -30,11 +33,10 @@ namespace TalaGrid.ViewModels
         [ObservableProperty]
         LabelControl controlLabel;
 
-
         #region Class Buttons
 
         [RelayCommand]
-        async void Login()
+        void Login()
         {
 
             //Check if text field are empty first
@@ -48,21 +50,41 @@ namespace TalaGrid.ViewModels
                     ControlLabel.Message = ControlLabel.messages["Access Granted"];
                     ControlLabel.ShowLabel = true;
 
-                    buyBackCentre = dataService.SearchBBC(UserLogin.AdminId);
+                    //Check if Admin is verified
 
-                    //An Old User should hopefully have an existing BBBCId
-                    if (buyBackCentre.BBCId != 0)
+                    Users admin = new();
+                    admin = dataService.SearchAndVerifyAdmin(userLogin.AdminId);
+
+                    if (!admin.VerifiedAdmin) 
                     {
-                        UserLogin.IsBBCUpdated = true;
-                        UserLogin.BBCId = buyBackCentre.BBCId;
+                        ControlLabel.Color = Colors.OrangeRed;
+                        ControlLabel.Message = ControlLabel.messages["Account Verification Pedding"];
+                        ControlLabel.ShowLabel = true;
+                    }
+                    else
+                    {
+                        // Check if admin has a registered BBC
+                        buyBackCentre = dataService.SearchBBC(UserLogin.AdminId);
+
+                        //An Old User should hopefully have an existing BBBCId
+                        if (buyBackCentre.BBCId != 0)
+                        {
+                            UserLogin.IsBBCUpdated = true;
+                            UserLogin.BBCId = buyBackCentre.BBCId;
+                        }
+
+                        //Navigate to the Home Page
+                        App.Current.MainPage = new AppShell();
                     }
 
-                    //Navigate to the Home Page
-                    App.Current.MainPage = new AppShell();
+                    //Clear text fields
+                    Clear();
                 }
                 else
                 {
-                    await alerts.ShowAlertAsync("Login Failed", "The user could not be found, Register a new account instead");
+                    ControlLabel.Color = Colors.Red;
+                    ControlLabel.Message = ControlLabel.messages["Login Failed"];
+                    ControlLabel.ShowLabel = true;
                 }
             }
             else
@@ -75,7 +97,7 @@ namespace TalaGrid.ViewModels
 
 
             //Clear Text fields
-            //Clear();
+            Clear();
         }
 
         [RelayCommand]

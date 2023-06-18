@@ -1,5 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+// Create different users
+// 1. Collector (No App Access)
+// 2. Admin (Developer)
+// 3. GW_Admin (Green Way Africa Admin)
+// 4. BBC_Admin (Buy Back Center Admin)
 
 
 namespace TalaGrid.Models
@@ -11,6 +16,9 @@ namespace TalaGrid.Models
             Email = "";
             CellNumber = "";
             Suburb = "";
+
+            AdminRoleValue = new string[] { "Admin (Developer)", "GW_Admin (GreenWay Africa Admin)", "BBC_Admin (Buy Back Center Admin)" };
+
         }
 
         #region Class Properties
@@ -69,6 +77,25 @@ namespace TalaGrid.Models
         //User's Country Name
         [ObservableProperty]
         private string country;
+
+        //Admin Role Value
+        // 1. Admin (Developer)
+        // 2. GW_Admin (GreenWay Africa Admin)
+        // 3. BBC_Admin (Buy Back Center Admin)
+        public string[] AdminRoleValue { get; }
+
+        //Admin Role property
+        [ObservableProperty]
+        private string adminRole;
+
+        //Verirfied Admin: GW_Admin must be verified by the Admin,
+        //BBC_Admin must be verified by GW_Admin
+        [ObservableProperty]
+        private bool verifiedAdmin;
+
+        //BuyBackCanter at which the user/collector account is created
+        [ObservableProperty]
+        private int bBCId;
 
         #endregion
 

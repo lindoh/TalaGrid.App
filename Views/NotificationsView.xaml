@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
+             xmlns:model="clr-namespace:TalaGrid.Models"
+             x:DataType="viewmodel:NotificationsViewModel"
+             x:Class="TalaGrid.Views.NotificationsView"
+             BackgroundImageSource="background_desktop.jpeg">
+    <StackLayout>
+        <Label Text="Notifications" VerticalOptions="Center" HorizontalOptions="Center" 
+                   FontSize="Title" TextColor="#155ca1" Margin="10" />
+        <Label Text="{Binding ControlLabel.Message}" TextColor="{Binding ControlLabel.Color}" 
+               IsVisible="{Binding ControlLabel.ShowLabel}"
+               FontSize="Caption" HorizontalOptions="Start" Margin="10, 50, 5, 5"/>
+        <ListView x:Name="notificationsListView"
+                  ItemsSource="{Binding Notifications}"
+                  HasUnevenRows="True" 
+                  ItemSelected="notificationsListView_ItemSelected"
+                  VerticalScrollBarVisibility="Default">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:Notification">
+                    <ViewCell>
+                        <StackLayout x:Name="notificationView" Padding="10" BackgroundColor="{Binding BackColor}" Margin="10">
+                            <Label Text="{Binding Title}" FontSize="Small" FontAttributes="Bold" TextColor="Coral"/>
+                            <Label Text="{Binding Message}" FontSize="Caption" />
+                          
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Button Text="Approve" FontSize="Small" BackgroundColor="DarkGreen"
+                                    Margin="20" Padding="5"
+                                    Command="{Binding ApproveCommand}"
+                                    WidthRequest="100"
+                                    IsVisible="{Binding BtnVisible}"/>
+            <Button Text="Reject" FontSize="Small" BackgroundColor="DarkGreen"
+                                    Margin="20" Padding="5"
+                                    Command="{Binding RejectCommand}"
+                                    WidthRequest="100"
+                                    IsVisible="{Binding BtnVisible}"/>
+        </HorizontalStackLayout>
+    </StackLayout>
+
+</ContentPage>

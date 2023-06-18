@@ -1,4 +1,7 @@
-﻿using TalaGrid.Views;
+﻿using TalaGrid.Models;
+using TalaGrid.Services;
+using TalaGrid.ViewModels;
+using TalaGrid.Views;
 
 namespace TalaGrid;
 
@@ -8,6 +11,7 @@ public partial class AppShell : Shell
 	{
 		InitializeComponent();
 
+        Routing.RegisterRoute(nameof(NotificationsView), typeof(NotificationsView));
         Routing.RegisterRoute(nameof(CaptureNewBottlesView), typeof(CaptureNewBottlesView));
         Routing.RegisterRoute(nameof(CreateLoginsView), typeof(CreateLoginsView));
         Routing.RegisterRoute(nameof(CreateUserAccountView), typeof(CreateUserAccountView));
@@ -20,11 +24,14 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(ResetPasswordView), typeof(ResetPasswordView));
         Routing.RegisterRoute(nameof(UpdateBankingView), typeof(UpdateBankingView));
         Routing.RegisterRoute(nameof(UpdateUserAccountView), typeof(UpdateUserAccountView));
+        Routing.RegisterRoute(nameof(NotificationsView), typeof(NotificationsView));
 
         myShell = new Shell();
 
         myShell.FlyoutBehavior = FlyoutBehavior.Locked;
     }
+
+  
 
 
     Shell myShell;

@@ -28,6 +28,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -85,7 +86,9 @@
             Margin="10, 5, 5, 0"/>
             <Picker 
                 Grid.Row="6" Grid.Column="1" x:Name="genderPicker" SelectedItem="{Binding User.Gender, Mode=TwoWay}"
-                FontSize="Caption" TextColor="Black" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray">
+                FontSize="Caption" TextColor="Black" HorizontalOptions="Start" BackgroundColor="LightGray"
+                Margin="10, 0">
+                
                 <Picker.Items>
                     <x:String>Male</x:String>
                     <x:String>Female</x:String>
@@ -100,7 +103,8 @@
             Margin="10, 5, 5, 0"/>
             <Picker
                 Grid.Row="8" Grid.Column="0" x:Name="highestQlfnPicker" BackgroundColor="LightGray"
-                FontSize="Caption" TextColor="Black" SelectedItem="{Binding User.HighestQlfn, Mode=TwoWay}">
+                FontSize="Caption" TextColor="Black" SelectedItem="{Binding User.HighestQlfn, Mode=TwoWay}"
+                Margin="10, 0">
                 <Picker.Items>
                     <x:String>Grade 9</x:String>
                     <x:String>Grade 10 or National (vocational) Certificates level 2</x:String>
@@ -123,7 +127,8 @@
             Margin="10, 5, 5, 0"/>
             <Picker 
                 Grid.Row="8" Grid.Column="1" x:Name="incomeRangePicker" SelectedItem="{Binding User.IncomeRange, Mode=TwoWay}"
-                FontSize="Caption" TextColor="Black" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray">
+                FontSize="Caption" TextColor="Black" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray"
+                Margin="10, 0">
                 <Picker.Items>
                     <x:String>Less than R1000</x:String>
                     <x:String>Between R1001 and R5000</x:String>
@@ -204,7 +209,8 @@
             Margin="10, 5, 5, 0"/>
             <Picker 
                 Grid.Row="15" Grid.Column="1" x:Name="provincePicker" SelectedItem="{Binding User.Province, Mode=TwoWay}"
-                FontSize="Caption" TextColor="Black" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray">
+                FontSize="Caption" TextColor="Black" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray"
+                Margin="10, 0">
                 <Picker.Items>
                     <x:String>Eastern Cape</x:String>
                     <x:String>Free State</x:String>
@@ -229,6 +235,24 @@
                 FontSize="Caption" TextColor="Black" HorizontalOptions="FillAndExpand"
                 Margin="15,0">
             </Label>
+
+            <!-- Admin Role Tag                                 -->
+            <Label 
+            Grid.Row="16" Grid.Column="1"
+            Text="Admin Role" VerticalOptions="End" HorizontalOptions="Start" 
+            FontSize="Caption" TextColor="Gray"
+            Margin="10, 5, 5, 0"/>
+            <Picker 
+                Grid.Row="17" Grid.Column="1" x:Name="adminRolePicker" SelectedItem="{Binding User.AdminRole, Mode=TwoWay}"
+                FontSize="Caption" TextColor="Black" HorizontalOptions="Start" BackgroundColor="LightGray"
+                Margin="10, 0">
+
+                <Picker.Items>
+                    <x:String>Admin (Developer)</x:String>
+                    <x:String>GW_Admin (GreenWay Africa Admin)</x:String>
+                    <x:String>BBC_Admin (Buy Back Center Admin)</x:String>
+                </Picker.Items>
+            </Picker>
 
             <!-- Save Button Tag                                 -->
             <Button 
