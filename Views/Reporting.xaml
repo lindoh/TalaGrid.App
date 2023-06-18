@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TalaGrid.Views.Reporting"
+             Title="Reporting"
+              BackgroundImageSource="background_desktop.jpeg">
+    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=800}" Margin="10"  Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        
+        
+        <VerticalStackLayout Grid.Row="0">
+            <!--View Title-->
+            <Label Text="Reporting" VerticalOptions="Center" HorizontalOptions="Center" 
+                   FontSize="Title" TextColor="#155ca1" Margin="10"/>
+
+            <!--Report Type Radio Buttons-->
+            <VerticalStackLayout>
+                <Label Text="Report Type" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10"/>
+                <RadioButton x:Name="Transaction_RB" Content="Transaction Report"/>
+                <RadioButton x:Name="BBC_RB" Content="BBC Report"/>
+                <RadioButton x:Name="Collectors_RB" Content="Collector Report"/>
+                <RadioButton x:Name="System_RB" Content="System Report"/>
+            </VerticalStackLayout>
+
+            <!--Report type Display Label-->
+            <Label Text="Transaction Report" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Caption" TextColor="Gray" Margin="10"/>
+        </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>
