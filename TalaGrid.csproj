@@ -68,6 +68,9 @@
 	  <Compile Update="Resources\Styles\Strings.xaml.cs">
 	    <DependentUpon>Strings.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\ReportingView.xaml.cs">
+	    <DependentUpon>ReportingView.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -107,7 +110,7 @@
 	  <MauiXaml Update="Views\RegistrationView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Reporting.xaml">
+	  <MauiXaml Update="Views\ReportingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ResetPasswordView.xaml">

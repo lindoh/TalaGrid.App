@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TalaGrid.Views.ReportingView"
+             Title="Reporting"
+              BackgroundImageSource="background_desktop.jpeg">
+    <ScrollView MaximumWidthRequest="{x:OnPlatform Android=450, WinUI=800}" Margin="10"  Padding="10">
+   
+
+        <VerticalStackLayout Grid.Row="0">
+            <!--View Title-->
+            <Label Text="Reporting" VerticalOptions="Center" HorizontalOptions="Center" 
+                   FontSize="Title" TextColor="#155ca1" Margin="10"/>
+            <Label Text="Report Type" VerticalOptions="End" HorizontalOptions="Start" 
+                   Margin="10"/>
+            <!--Report Type Radio Buttons-->
+            <HorizontalStackLayout>
+                <RadioButton x:Name="Transaction_RadioBtn" Content="Transaction Report"/>
+                <RadioButton x:Name="BBC_RadioBtn" Content="BBC Report"/>
+                <RadioButton x:Name="Collectors_RadioBtn" Content="Collector Report"/>
+                <RadioButton x:Name="System_RadioBtn" Content="System Report"/>
+            </HorizontalStackLayout>
+
+            <!--Report type Display Label-->
+            <Label Text="Filter" VerticalOptions="End" HorizontalOptions="Start" 
+                   Margin="10"/>
+            <!--Filter-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Headers-->
+                <Label Text="Duration" TextColor="Gray" FontSize="Micro" 
+                       Grid.Row="0" Grid.Column="0"/>
+                <Label Text="Waste Material" TextColor="Gray" FontSize="Micro" 
+                       Grid.Row="0" Grid.Column="2"/>
+                <Label Text="Bottle Name" TextColor="Gray" FontSize="Micro" 
+                       Grid.Row="0" Grid.Column="3"/>
+                <Label Text="Collector" TextColor="Gray" FontSize="Micro" 
+                       Grid.Row="0" Grid.Column="4"/>
+
+                <!--Start Date-->
+                <HorizontalStackLayout Grid.Row="1" Grid.Column="0">
+                    <Label Text="Start Date" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
+                           Margin="5"/>
+                    <DatePicker VerticalOptions="Center" HorizontalOptions="End" />
+                </HorizontalStackLayout>
+                
+                <!--Bottles Checkbox-->
+                <HorizontalStackLayout Grid.Row="1" Grid.Column="2">
+                    <CheckBox x:Name="BottlesCheckBox" />
+                    <Label Text="Bottles" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"/>
+                </HorizontalStackLayout>
+
+                <ListView Margin="10" MaximumHeightRequest="90" x:Name=" bottlesListView" BackgroundColor="LightGray"
+                          Grid.Row="1" Grid.Column="3">
+                    <ListView.ItemTemplate>
+                        <DataTemplate >
+                            <TextCell />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <!--Filter by Collector Name-->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="4" Grid.RowSpan="2">
+                    <SearchBar x:Name="searchBar_waste"  
+                           TextChanged=""
+                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+                    <ListView Margin="10" MaximumHeightRequest="90" x:Name=" collectorsListView" BackgroundColor="LightGray">
+                        <ListView.ItemTemplate>
+                            <DataTemplate >
+                                <TextCell />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </VerticalStackLayout>
+                
+
+                <!--End Date-->
+                <HorizontalStackLayout Grid.Row="2" Grid.Column="0">
+                    <Label Text="End Date" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
+                           Margin="5"/>
+                    <DatePicker VerticalOptions="Center" HorizontalOptions="End" Margin="5, 0"/>
+                </HorizontalStackLayout>
+
+                <!--Other Waste Checkbox-->
+                <HorizontalStackLayout Grid.Row="2" Grid.Column="2">
+                    <CheckBox x:Name="OtherWasteCheckBox" />
+                    <Label Text="Other Waste" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"/>
+                </HorizontalStackLayout>
+
+            </Grid>
+
+            <!--Report type Display Label-->
+            <Label Text="Transaction Report" VerticalOptions="End" HorizontalOptions="Start" 
+                   Margin="10"/>
+        </VerticalStackLayout>
+
+
+    </ScrollView>
+</ContentPage>

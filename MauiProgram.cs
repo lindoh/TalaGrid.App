@@ -45,6 +45,9 @@ public static class MauiProgram
         builder.Services.AddTransient<NotificationsView>();
         builder.Services.AddTransient<NotificationsViewModel>();
 
+        builder.Services.AddTransient<ReportingView>();
+        builder.Services.AddTransient<ReportingViewModel>();
+
         builder.Services.AddSingleton<ManagePasswordView>();
         builder.Services.AddSingleton<ManagePasswordViewModel>();
 

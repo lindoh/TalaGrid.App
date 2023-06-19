@@ -1,7 +1,4 @@
-﻿using TalaGrid.Models;
-using TalaGrid.Services;
-using TalaGrid.ViewModels;
-using TalaGrid.Views;
+﻿using TalaGrid.Views;
 
 namespace TalaGrid;
 
@@ -25,6 +22,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(UpdateBankingView), typeof(UpdateBankingView));
         Routing.RegisterRoute(nameof(UpdateUserAccountView), typeof(UpdateUserAccountView));
         Routing.RegisterRoute(nameof(NotificationsView), typeof(NotificationsView));
+        Routing.RegisterRoute(nameof(ReportingView), typeof(ReportingView));
 
         myShell = new Shell();
 
