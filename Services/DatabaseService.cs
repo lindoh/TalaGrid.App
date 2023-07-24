@@ -995,6 +995,47 @@ namespace TalaGrid.Services
 
         #endregion
 
+        #region Get All BBC Names
+        public List<string> GetAllBBC(string name) 
+        {
+            List<string> BBCList = new();
+            string BBCName;
+
+            try
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.CommandText = "GetAllBBC";
+                sqlCommand.Parameters.AddWithValue("@BBCName", name);
+
+                sqlConnection.Open();
+                var sqlDataReader = sqlCommand.ExecuteReader();
+
+                if (sqlDataReader.HasRows) 
+                {
+
+                    while (sqlDataReader.Read())
+                    {
+                        BBCName = sqlDataReader.GetString(1);
+                        BBCList.Add(BBCName);
+                    }
+                    sqlDataReader.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                alerts.ShowAlert("Error!", ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return BBCList;
+        }
+
+        #endregion
+
         #region Save BuyBackCentre Details
         /// <summary>
         /// Save the Data for the BuyBackCentre with the Associated Admin details

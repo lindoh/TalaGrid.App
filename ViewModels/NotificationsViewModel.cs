@@ -54,9 +54,7 @@ namespace TalaGrid.ViewModels
         private bool btnVisible;
 
         [ObservableProperty]
-        Users admin;
-
-        string ReadNotification;
+        Users admin;   
 
         [ObservableProperty]
         LabelControl controlLabel;

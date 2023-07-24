@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:TalaGrid.ViewModels"
+             xmlns:model="clr-namespace:TalaGrid.Models"
+             x:DataType="viewmodel:ReportingViewModel"
              x:Class="TalaGrid.Views.ReportingView"
              Title="Reporting"
               BackgroundImageSource="background_desktop.jpeg">
@@ -11,22 +14,28 @@
             <!--View Title-->
             <Label Text="Reporting" VerticalOptions="Center" HorizontalOptions="Center" 
                    FontSize="Title" TextColor="#155ca1" Margin="10"/>
+
+            <!--Report Type Title and Radio Buttons-->
             <Label Text="Report Type" VerticalOptions="End" HorizontalOptions="Start" 
-                   Margin="10"/>
-            <!--Report Type Radio Buttons-->
+                   FontSize="Subtitle" TextColor="#155ca1" Margin="10"/>
+            
             <HorizontalStackLayout>
-                <RadioButton x:Name="Transaction_RadioBtn" Content="Transaction Report"/>
-                <RadioButton x:Name="BBC_RadioBtn" Content="BBC Report"/>
-                <RadioButton x:Name="Collectors_RadioBtn" Content="Collector Report"/>
-                <RadioButton x:Name="System_RadioBtn" Content="System Report"/>
+                <RadioButton x:Name="Transaction_RadioBtn" Content="Transactions Report" CheckedChanged="Transaction_RadioBtn_CheckedChanged"/>
+                <RadioButton x:Name="BBC_RadioBtn" Content="BBC Report" CheckedChanged="Transaction_RadioBtn_CheckedChanged"/>
+                <RadioButton x:Name="Collectors_RadioBtn" Content="Collectors Report" CheckedChanged="Transaction_RadioBtn_CheckedChanged"/>
+                <RadioButton x:Name="System_RadioBtn" Content="System Report" CheckedChanged="Transaction_RadioBtn_CheckedChanged"/>
             </HorizontalStackLayout>
 
-            <!--Report type Display Label-->
+            <!--Filter Title Label-->
             <Label Text="Filter" VerticalOptions="End" HorizontalOptions="Start" 
-                   Margin="10"/>
-            <!--Filter-->
+                   FontSize="Subtitle" TextColor="#155ca1" Margin="10"/>
+            
+            <!--                  Filter             -->
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -39,46 +48,129 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!--Headers-->
-                <Label Text="Duration" TextColor="Gray" FontSize="Micro" 
-                       Grid.Row="0" Grid.Column="0"/>
-                <Label Text="Waste Material" TextColor="Gray" FontSize="Micro" 
-                       Grid.Row="0" Grid.Column="2"/>
-                <Label Text="Bottle Name" TextColor="Gray" FontSize="Micro" 
-                       Grid.Row="0" Grid.Column="3"/>
-                <Label Text="Collector" TextColor="Gray" FontSize="Micro" 
-                       Grid.Row="0" Grid.Column="4"/>
-
-                <!--Start Date-->
-                <HorizontalStackLayout Grid.Row="1" Grid.Column="0">
-                    <Label Text="Start Date" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
-                           Margin="5"/>
-                    <DatePicker VerticalOptions="Center" HorizontalOptions="End" />
-                </HorizontalStackLayout>
+                <!--#region Transaction Report -->
                 
-                <!--Bottles Checkbox-->
-                <HorizontalStackLayout Grid.Row="1" Grid.Column="2">
-                    <CheckBox x:Name="BottlesCheckBox" />
-                    <Label Text="Bottles" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"/>
-                </HorizontalStackLayout>
+                <!--        Headers           -->
+                <Label Text="PERIOD" TextColor="Gray" FontSize="Caption" FontAttributes="Bold"  
+                       Grid.Row="0" Grid.Column="0"/>
+                <Label Text="WASTE MATERIAL TYPE" TextColor="Gray" FontSize="Caption" 
+                       FontAttributes="Bold" Grid.Row="0" Grid.Column="2"/>
+                <Label Text="BBC" TextColor="Gray" FontSize="Caption" FontAttributes="Bold" 
+                       Grid.Row="0" Grid.Column="3"/>
 
-                <ListView Margin="10" MaximumHeightRequest="90" x:Name=" bottlesListView" BackgroundColor="LightGray"
-                          Grid.Row="1" Grid.Column="3">
-                    <ListView.ItemTemplate>
-                        <DataTemplate >
-                            <TextCell />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <!--<Label Text="COLLECTOR" TextColor="Gray" FontSize="Caption" FontAttributes="Bold"
+                       Grid.Row="0" Grid.Column="4"/>-->
 
-                <!--Filter by Collector Name-->
-                <VerticalStackLayout Grid.Row="1" Grid.Column="4" Grid.RowSpan="2">
-                    <SearchBar x:Name="searchBar_waste"  
-                           TextChanged=""
-                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
-                    <ListView Margin="10" MaximumHeightRequest="90" x:Name=" collectorsListView" BackgroundColor="LightGray">
+                <!--#region Time Period -->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <!--Start Date-->
+                    <HorizontalStackLayout >
+                        <Label Text="Start Date" TextColor="Gray" FontSize="Caption" Margin="5"/>
+                        <DatePicker Date="{Binding CurrentReport.StartDate}" VerticalOptions="Start"/>
+                    </HorizontalStackLayout>
+
+                    <!--End Date-->
+                    <HorizontalStackLayout>
+                        <Label Text="End Date" TextColor="Gray" FontSize="Caption"
+                           Margin="5" VerticalOptions="Center"/>
+                        <DatePicker Date="{Binding CurrentReport.EndDate}" 
+                                VerticalOptions="Start" Margin="5"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                <!--#endregion-->
+
+                <!--#region Waste Material Radio Buttons -->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="2">
+                    <RadioButton x:Name="Bottles_RadioBtn" Content="Bottles" 
+                                 CheckedChanged="Bottles_RadioBtn_CheckedChanged"
+                                 FontSize="Caption"/>
+                    <RadioButton x:Name="OtherWaste_RadioBtn" Content="Other Waste" 
+                                 CheckedChanged="Bottles_RadioBtn_CheckedChanged"
+                                 FontSize="Caption"/>
+                </VerticalStackLayout>
+                <!--#endregion-->
+
+
+                <!--#region  Waste material name-->
+                <!--<VerticalStackLayout Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" 
+                                     VerticalOptions="Start">
+                    <SearchBar x:Name="searchBar_Waste" TextChanged="searchBar_Waste_TextChanged"  
+                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar_Waste}}"
+                               HorizontalOptions="Start"/>
+
+                    <ListView Margin="10" MaximumHeightRequest="120" x:Name="bottleListView" 
+                              BackgroundColor="LightGray" ItemSelected="bottleListView_ItemSelected"
+                              ItemsSource="{Binding BottlesList}" HorizontalOptions="Start"
+                              IsVisible="{Binding ShowBottles}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:BottleDataSource">
+                                <TextCell Text="{Binding BottleName}" Detail="{Binding Size}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <ListView Margin="10" MaximumHeightRequest="120" x:Name="wasteListView" 
+                              BackgroundColor="LightGray" ItemSelected="wasteListView_ItemSelected"
+                              ItemsSource="{Binding WasteMaterialList}" HorizontalOptions="Start"
+                              IsVisible="{Binding ShowOtherWaste}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:WasteMaterial">
+                                <TextCell Text="{Binding MaterialName}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </VerticalStackLayout>-->
+                <!--#endregion-->
+
+                <!--#region Filter by Collector Name -->
+                <!--<VerticalStackLayout Grid.Row="1" Grid.Column="4" Grid.RowSpan="2">
+                    <SearchBar x:Name="searchBar_Collector" TextChanged="searchBar_Collector_TextChanged"  
+                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar_Collector}}"
+                               HorizontalOptions="Start"/>
+                    <ListView Margin="10" MaximumHeightRequest="120" x:Name="collectorsListView" 
+                              BackgroundColor="LightGray" ItemSelected="collectorsListView_ItemSelected"
+                              ItemsSource="{Binding CollectorsList}" HorizontalOptions="Start">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Users">
+                                <ViewCell>
+                                    <HorizontalStackLayout Spacing="2">
+                                        <Label Text="{Binding FirstName}"/>
+                                        <Label Text="{Binding LastName}"/>
+                                    </HorizontalStackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </VerticalStackLayout>-->
+                <!--#endregion-->
+
+
+                <!--Headers-->
+                <!--<Label Text="BBC" TextColor="Gray"
+                       FontSize="Caption" FontAttributes="Bold"
+                       Grid.Row="3" Grid.Column="0" Margin="0, 15"/>-->
+                <Label Text="PROVINCE" TextColor="Gray" 
+                       FontSize="Caption" FontAttributes="Bold"
+                       Grid.Row="3" Grid.Column="0" Margin="0, 15"/>
+                <Label Text="CITY" TextColor="Gray" 
+                       FontSize="Caption" FontAttributes="Bold"
+                       Grid.Row="3" Grid.Column="2" Margin="0, 15"/>
+                <Label Text="PAYMENT METHOD" TextColor="Gray"
+                       FontSize="Caption" FontAttributes="Bold"
+                       Grid.Row="3" Grid.Column="3" Margin="0, 15"/>
+
+                <!--Search by Buy Back Center-->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="3" 
+                                     HorizontalOptions="Start">
+                    <SearchBar x:Name="searchBar_BBC" TextChanged="searchBar_BBC_TextChanged"  
+                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar_BBC}}"
+                               HorizontalOptions="Start"/>
+                    <ListView Margin="10" MaximumHeightRequest="120" x:Name="BBCListView" 
+                              BackgroundColor="LightGray" ItemSelected="BBCListView_ItemSelected"
+                              ItemsSource="{Binding BBCList}" HorizontalOptions="Start">
                         <ListView.ItemTemplate>
                             <DataTemplate >
                                 <TextCell />
@@ -86,26 +178,157 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </VerticalStackLayout>
-                
 
-                <!--End Date-->
-                <HorizontalStackLayout Grid.Row="2" Grid.Column="0">
-                    <Label Text="End Date" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
+                <!---->
+                <!--#region Search by Province -->
+                <Picker 
+                Grid.Row="4" Grid.Column="0" x:Name="provincePicker" 
+                FontSize="Caption" TextColor="Black" BackgroundColor="LightGray"
+                    SelectedItem="{Binding CurrentReport.Province}">
+                    <Picker.Items>
+                        <x:String>Eastern Cape</x:String>
+                        <x:String>Free State</x:String>
+                        <x:String>Gauteng</x:String>
+                        <x:String>KwaZulu-Natal</x:String>
+                        <x:String>Limpopo</x:String>
+                        <x:String>Mpumalanga</x:String>
+                        <x:String>Northern Cape</x:String>
+                        <x:String>North West</x:String>
+                        <x:String>Western Cape</x:String>
+                    </Picker.Items>
+                </Picker>
+                <!--#endregion-->
+
+                <!---->
+                <!--#region Search by City -->
+                <VerticalStackLayout Grid.Row="4" Grid.Column="2" Grid.RowSpan="2">
+                    <SearchBar x:Name="searchBar_City" TextChanged="searchBar_City_TextChanged" 
+                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar_City}}"
+                               HorizontalOptions="Start"/>
+                    <ListView Margin="10" MaximumHeightRequest="90" x:Name="CityListView" BackgroundColor="LightGray"
+                              ItemSelected="CityListView_ItemSelected"
+                              ItemsSource="{Binding CitiesList}" HorizontalOptions="Start">
+                        <ListView.ItemTemplate>
+                            <DataTemplate >
+                                <TextCell />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </VerticalStackLayout>
+                <!--#endregion-->
+
+                <!---->
+                <!--#region Search by Payment Method -->
+                <Picker 
+                Grid.Row="4" Grid.Column="3" x:Name="paymentMethodPicker" 
+                FontSize="Caption" TextColor="Black" BackgroundColor="LightGray"
+                    SelectedItem="{Binding CurrentReport.PaymentMethod}">
+                    <Picker.Items>
+                        <x:String>Mobile Money</x:String>
+                        <x:String>Bank</x:String>
+                        <x:String>Cash</x:String>
+                    </Picker.Items>
+                </Picker>
+                <!--#endregion-->
+                <!--#endregion-->
+
+                <!--#region Collector and BBC Report -->
+                <!--        Headers Collector and BBC          -->
+                <Label Text="REGISTRATION DATE" TextColor="Gray" 
+                       FontSize="Caption" FontAttributes="Bold"
+                       Grid.Row="0" Grid.Column="4" 
+                       IsVisible="{Binding CurrentReport.IsEnabled_Col}"/>
+                <Label Text="EARNED INCOME" TextColor="Gray" 
+                       FontSize="Caption" FontAttributes="Bold"
+                       Grid.Row="3" Grid.Column="4" Margin="0, 15"
+                       IsVisible="{Binding CurrentReport.IsEnabled_Col}"/>
+                <Label Text="PAYED-OUT AMOUNT" TextColor="Gray"
+                       FontSize="Caption" FontAttributes="Bold"
+                       Grid.Row="0" Grid.Column="4"
+                       IsVisible="{Binding CurrentReport.IsEnabled_BBC}"/>
+                <Label Text="# OF COLLECTORS" TextColor="Gray"
+                       FontSize="Caption" FontAttributes="Bold"
+                       Grid.Row="3" Grid.Column="4" Margin="0, 15"
+                       IsVisible="{Binding CurrentReport.IsEnabled_BBC}"/>
+
+                <VerticalStackLayout Grid.Row="1" Grid.Column="4">
+                    <!--Registration Start Date-->
+                    <HorizontalStackLayout  IsVisible="{Binding CurrentReport.IsEnabled_Col}">
+                        <Label Text="Start Date" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
+                           Margin="5" />
+                        <DatePicker Date="{Binding CurrentReport.RegStartDate}" VerticalOptions="Center" HorizontalOptions="End" Margin="5, 0"/>
+                    </HorizontalStackLayout>
+
+                    <!--Registration End Date-->
+                    <HorizontalStackLayout IsVisible="{Binding CurrentReport.IsEnabled_Col}">
+                        <Label Text="End Date" TextColor="Gray" 
+                               FontSize="Caption" VerticalTextAlignment="Center"
                            Margin="5"/>
-                    <DatePicker VerticalOptions="Center" HorizontalOptions="End" Margin="5, 0"/>
-                </HorizontalStackLayout>
+                        <DatePicker Date="{Binding CurrentReport.RegEndDate}"
+                                    VerticalOptions="Center" HorizontalOptions="End" Margin="10, 0"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
 
-                <!--Other Waste Checkbox-->
-                <HorizontalStackLayout Grid.Row="2" Grid.Column="2">
-                    <CheckBox x:Name="OtherWasteCheckBox" />
-                    <Label Text="Other Waste" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"/>
-                </HorizontalStackLayout>
+                <!--Earned Income-->
+                <VerticalStackLayout Grid.Row="4" Grid.Column="4" IsVisible="{Binding CurrentReport.IsEnabled_Col}">
+                    <!--Earned Income Minimum-->
+                    <HorizontalStackLayout>
+                        <Label Text="Min" TextColor="Gray" FontSize="Caption"
+                           Margin="5"/>
+                        <Entry Text="{Binding CurrentReport.IncomeMin}" TextColor="Gray" FontSize="Micro" />
+                    </HorizontalStackLayout>
 
+                    <!--Earned Income Maximum-->
+                    <HorizontalStackLayout >
+                        <Label Text="Max" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
+                           Margin="5"/>
+                        <Entry Text="{Binding CurrentReport.IncomeMax}" TextColor="Gray" FontSize="Micro" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+
+                <!--#region Payed-Out Amount -->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="4" IsVisible="{Binding CurrentReport.IsEnabled_BBC}">
+                    <!--Minimum-->
+                    <HorizontalStackLayout >
+                        <Label Text="Min" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
+                           Margin="5"/>
+                        <Entry Text="{Binding CurrentReport.PayedOutAmountMin}" TextColor="Gray" FontSize="Micro" />
+                    </HorizontalStackLayout>
+
+                    <!--Maximum-->
+                    <HorizontalStackLayout>
+                        <Label Text="Max" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
+                           Margin="5"/>
+                        <Entry Text="{Binding CurrentReport.PayedOutAmountMax}" TextColor="Gray" FontSize="Micro" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                <!--#endregion-->
+
+
+                <!--#region Number of Collectors -->
+                <VerticalStackLayout Grid.Row="4" Grid.Column="4" IsVisible="{Binding CurrentReport.IsEnabled_BBC}">
+                    <!-- Minimum-->
+                    <HorizontalStackLayout>
+                        <Label Text="Min" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
+                           Margin="5"/>
+                        <Entry Text="{Binding CurrentReport.CollectorsMin}" TextColor="Gray" FontSize="Micro" />
+                    </HorizontalStackLayout>
+
+                    <!-- Maximum-->
+                    <HorizontalStackLayout >
+                        <Label Text="Max" TextColor="Gray" FontSize="Caption" VerticalTextAlignment="Center"
+                           Margin="5"/>
+                        <Entry Text="{Binding CurrentReport.CollectorsMax}" TextColor="Gray" FontSize="Micro" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                <!--#endregion-->
+                <!--#endregion-->
             </Grid>
 
             <!--Report type Display Label-->
-            <Label Text="Transaction Report" VerticalOptions="End" HorizontalOptions="Start" 
-                   Margin="10"/>
+            <Label Text="{Binding CurrentReport.ReportType}" VerticalOptions="End" HorizontalOptions="Start" 
+                   FontSize="Subtitle" TextColor="#155ca1" Margin="10"/>
         </VerticalStackLayout>
 
 
